@@ -1,0 +1,45 @@
+# Docker Compose — Development & Production
+# Usage:
+#   Development:  docker-compose up
+#   Production:   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+
+version: '3.9'
+
+services:
+  # ── Development Service ────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: market-dev
+    ports:
+      - "4200:4200"
+    volumes:
+      # Mount source code for live hot-reload
+      - ./src:/app/src
+      - ./angular.json:/app/angular.json
+      - ./tailwind.config.js:/app/tailwind.config.js
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./tsconfig.app.json:/app/tsconfig.app.json
+      # Prevent overwriting node_modules inside container
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+  # ── Production Service ─────────────────────────────────────────────────────
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: market-prod
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    profiles:
+      - production

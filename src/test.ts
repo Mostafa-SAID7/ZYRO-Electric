@@ -1,4 +1,5 @@
-// This file is required by karma.conf.js and loads recursively all the .spec and framework files
+// This file is required by karma.conf.js and sets up the Angular testing environment.
+// Spec files are auto-discovered via tsconfig.spec.json include patterns.
 
 import 'zone.js/testing';
 import { getTestBed } from '@angular/core/testing';
@@ -7,21 +8,9 @@ import {
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 
-declare const require: {
-  context(path: string, deep?: boolean, filter?: RegExp): {
-    keys(): string[];
-    <T>(id: string): T;
-  };
-};
-
-// First, initialize the Angular testing environment.
+// Initialize the Angular testing environment once.
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting(),
   { teardown: { destroyAfterEach: true }},
 );
-
-// Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
-// And load the modules.
-context.keys().map(context);

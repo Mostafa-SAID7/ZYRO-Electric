@@ -1,0 +1,25 @@
+# Development Dockerfile — Hot reload with ng serve
+FROM node:20-alpine
+
+LABEL maintainer="Market Dev Team"
+LABEL description="Market - Angular E-Commerce App (Development)"
+
+WORKDIR /app
+
+# Install Angular CLI globally
+RUN npm install -g @angular/cli@18 --legacy-peer-deps
+
+# Copy dependency files
+COPY package.json package-lock.json ./
+
+# Install all dependencies including devDependencies
+RUN npm ci --legacy-peer-deps
+
+# Copy source (will be overridden by volume mount in docker-compose)
+COPY . .
+
+# Expose Angular dev server port
+EXPOSE 4200
+
+# Start Angular dev server — bind to all interfaces for Docker access
+CMD ["ng", "serve", "--host", "0.0.0.0", "--poll", "500", "--disable-host-check"]
