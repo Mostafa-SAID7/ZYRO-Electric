@@ -1,31 +1,79 @@
-<div class="max-w-7xl mx-auto p-4">
-  <!-- Filter Section -->
-  <div class="mb-8">
-    <div class="max-w-xs">
-      <app-select 
-        [data]="categories" 
-        [title]="'Categories'" 
-        (selectedValue)="filterCategory($event)">
-      </app-select>
+<div class="min-h-screen bg-background text-foreground">
+  <!-- Header -->
+  <div class="bg-card border-b border-border p-4 sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center justify-between gap-4">
+        <h1 class="text-2xl font-bold gradient-text">Products</h1>
+        <div class="flex items-center gap-2 text-sm text-muted-foreground">
+          <lucide-icon name="packages" class="w-4 h-4"></lucide-icon>
+          {{ totalProducts }} items
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Products Grid -->
-  <div 
-    *ngIf="!loading"
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    <div *ngFor="let item of products">
-      <app-product 
-        [data]="item" 
-        (item)="addToCart($event)">
-      </app-product>
+  <div class="max-w-7xl mx-auto p-4 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Filters Sidebar - Using Reusable Component -->
+      <div class="lg:col-span-1">
+        <app-ui-filter-panel 
+          [filterGroups]="filterGroups"
+          (filterChange)="onFilterChange($event)"
+          (reset)="resetFilters()">
+        </app-ui-filter-panel>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="lg:col-span-3">
+        <!-- Sort - Using Reusable Component -->
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-border">
+          <app-ui-sort-dropdown
+            label="Sort by"
+            [options]="sortOptions"
+            [(selectedSort)]="sortBy"
+            (sortChange)="onSortChange($event)">
+          </app-ui-sort-dropdown>
+        </div>
+
+        <!-- Loading -->
+        <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <app-ui-skeleton *ngFor="let i of [1,2,3,4,5,6]"></app-ui-skeleton>
+        </div>
+
+        <!-- Products Grid -->
+        <div *ngIf="!isLoading && products.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <app-product
+            *ngFor="let product of products"
+            [product]="product"
+            (addToCart)="addToCart($event)">
+          </app-product>
+        </div>
+
+        <!-- No Products -->
+        <div *ngIf="!isLoading && products.length === 0" class="text-center py-12">
+          <lucide-icon name="inbox" class="w-16 h-16 text-muted-foreground mx-auto mb-4"></lucide-icon>
+          <h3 class="text-lg font-bold mb-2">No products found</h3>
+          <p class="text-muted-foreground mb-6">Try adjusting your filters</p>
+          <button
+            (click)="resetFilters()"
+            class="btn-primary px-6 py-2 inline-flex items-center gap-2">
+            <lucide-icon name="rotate-ccw" class="w-4 h-4"></lucide-icon>
+            Reset Filters
+          </button>
+        </div>
+
+        <!-- Pagination - Using Reusable Component -->
+        <app-ui-pagination
+          *ngIf="!isLoading && totalPages > 1"
+          [currentPage]="currentPage"
+          [totalPages]="totalPages"
+          [totalItems]="totalProducts"
+          (pageChange)="onPageChange($event)">
+        </app-ui-pagination>
+      </div>
     </div>
   </div>
 
-  <!-- Loading Spinner -->
-  <div 
-    *ngIf="loading"
-    class="flex justify-center items-center min-h-screen">
-    <app-spinner></app-spinner>
-  </div>
+  <!-- Toast -->
+  <app-ui-toast #toast></app-ui-toast>
 </div>

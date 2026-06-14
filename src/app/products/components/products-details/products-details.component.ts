@@ -1,33 +1,104 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
+import { CartsService } from '../../../carts/services/carts.service';
+import { Product, Review } from '../../models';
+import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
 
 @Component({
   selector: 'app-products-details',
-  templateUrl: './products-details.component.html',
-  styleUrls: ['./products-details.component.scss']
+  templateUrl: './products-details.component.html'
 })
 export class ProductsDetailsComponent implements OnInit {
-  id:any
-  data:any = {}
-  loading:boolean = false
-  constructor(private route:ActivatedRoute , private service:ProductsService) {
-   this.id = this.route.snapshot.paramMap.get("id")
-   console.log(this.id)
-  }
-  
+  @ViewChild('toast') toast!: UiToastComponent;
+
+  product: Product | null = null;
+  reviews: Review[] = [];
+  isLoading = false;
+  quantity = 1;
+  Math = Math;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private productsService: ProductsService,
+    private cartsService: CartsService
+  ) {}
+
   ngOnInit(): void {
-    this.getProduct()
+    this.loadProduct();
   }
 
-  getProduct() {
-    this.loading = true
-    this.service.getProductById(this.id).subscribe(res => {
-      this.loading = false
-      this.data = res
-    } ,error => {
-      this.loading = false
-      alert(error)
-    })
+  loadProduct(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      this.router.navigate(['/products']);
+      return;
+    }
+
+    this.isLoading = true;
+    this.productsService.getProductById(id).subscribe({
+      next: (product) => {
+        this.product = product;
+        this.loadReviews(id);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.showToast('Product not found', 'This product does not exist', 'error');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  loadReviews(productId: string): void {
+    this.productsService.getProductReviews(productId).subscribe({
+      next: (response) => {
+        this.reviews = response.items;
+      },
+      error: () => {
+        // Reviews optional
+      }
+    });
+  }
+
+  increaseQuantity(): void {
+    if (this.product && this.quantity < this.product.stock) {
+      this.quantity++;
+    }
+  }
+
+  decreaseQuantity(): void {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+
+  addToCart(): void {
+    if (!this.product || this.product.stock === 0) return;
+
+    this.cartsService.addToCart({
+      productId: this.product.id,
+      quantity: this.quantity
+    }).subscribe({
+      next: () => {
+        this.showToast('Added to cart', `${this.product!.title} has been added to your cart`, 'success');
+        this.quantity = 1;
+      },
+      error: () => {
+        this.showToast('Error', 'Failed to add item to cart', 'error');
+      }
+    });
+  }
+
+  goBack(): void {
+    this.router.navigate(['/products']);
+  }
+
+  private showToast(title: string, message: string, type: 'success' | 'error' | 'info' | 'warning'): void {
+    this.toast.type = type;
+    this.toast.title = title;
+    this.toast.message = message;
+    this.toast.show();
   }
 }
+

@@ -1,50 +1,76 @@
-<div class="item card project-card-hover accent-glow">
-  <div class="cursor-pointer" [routerLink]="['/details', data.id]">
-    <img 
-      src="{{ data.image }}" 
-      alt="{{ data.title }}"
-      class="w-full h-48 object-cover rounded-t-[calc(var(--radius)-2px)]">
-    <div class="p-4">
-      <h4 class="font-bold text-lg mb-3 line-clamp-2 text-foreground">
-        {{ data.title }}
-      </h4>
-      <p class="text-sm text-muted-foreground line-clamp-3">
-        {{ data.description }}
-      </p>
+<app-ui-card padding="none" class="overflow-hidden hover:shadow-lg transition-shadow">
+  <!-- Product Image -->
+  <div class="w-full h-48 bg-muted flex items-center justify-center relative overflow-hidden group cursor-pointer"
+    (click)="viewDetails()">
+    <div class="w-full h-full bg-gradient-to-br from-muted to-muted-foreground/20 flex items-center justify-center">
+      <lucide-icon name="image" class="w-12 h-12 text-muted-foreground"></lucide-icon>
+    </div>
+    
+    <!-- Badge -->
+    <div *ngIf="product.discount" class="absolute top-2 right-2 bg-accent text-white px-2 py-1 rounded text-xs font-bold">
+      -{{ product.discount }}%
+    </div>
+
+    <!-- Stock Badge -->
+    <div *ngIf="product.stock === 0" class="absolute inset-0 bg-black/50 flex items-center justify-center">
+      <span class="text-white font-bold">Out of Stock</span>
     </div>
   </div>
 
-  <!-- Add to Cart Section -->
-  <div class="px-4 pb-4 flex flex-col gap-3">
-    <div class="flex justify-between items-center gap-2">
-      <span class="font-bold text-lg text-accent">{{ data.price }} L.E</span>
-      
-      <!-- Add Button -->
-      <button 
-        *ngIf="!addButton"
-        (click)="addButton = true"
-        class="btn-primary px-4 py-2 text-xs flex items-center gap-1">
+  <!-- Product Details -->
+  <div class="p-4">
+    <!-- Title -->
+    <h3 class="font-bold text-foreground mb-2 line-clamp-2 cursor-pointer hover:text-accent transition"
+      (click)="viewDetails()">
+      {{ product.title }}
+    </h3>
+
+    <!-- Category -->
+    <p class="text-xs text-muted-foreground mb-3">{{ product.category }}</p>
+
+    <!-- Rating -->
+    <div class="flex items-center gap-2 mb-3">
+      <div class="flex items-center gap-0.5">
+        <lucide-icon
+          *ngFor="let i of [1,2,3,4,5]"
+          name="star"
+          [class]="i <= Math.floor(product.rating.average) ? 'fill-accent text-accent' : 'text-muted'"
+          class="w-4 h-4"></lucide-icon>
+      </div>
+      <span class="text-xs text-muted-foreground">({{ product.rating.count }})</span>
+    </div>
+
+    <!-- Price -->
+    <div class="mb-4">
+      <div class="flex items-baseline gap-2">
+        <span class="text-lg font-bold text-accent">{{ product.price | number:'1.2-2' }} L.E</span>
+        <span *ngIf="product.originalPrice" class="text-xs text-muted-foreground line-through">
+          {{ product.originalPrice | number:'1.2-2' }} L.E
+        </span>
+      </div>
+    </div>
+
+    <!-- Stock Info -->
+    <p class="text-xs text-muted-foreground mb-4">
+      <span *ngIf="product.stock > 0" class="text-accent">{{ product.stock }} in stock</span>
+      <span *ngIf="product.stock === 0" class="text-red-500">Out of stock</span>
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="flex gap-2">
+      <button
+        (click)="viewDetails()"
+        class="btn-outline flex-1 py-2 flex items-center justify-center gap-2 text-sm">
+        <lucide-icon name="eye" class="w-4 h-4"></lucide-icon>
+        View
+      </button>
+      <button
+        (click)="addCart()"
+        [disabled]="product.stock === 0"
+        class="btn-primary flex-1 py-2 flex items-center justify-center gap-2 text-sm">
         <lucide-icon name="shopping-cart" class="w-4 h-4"></lucide-icon>
         Add
       </button>
     </div>
-
-    <!-- Quantity Input -->
-    <div 
-      *ngIf="addButton"
-      class="flex gap-2 w-full">
-      <input 
-        type="number" 
-        [(ngModel)]="amount"
-        min="1"
-        class="form-input flex-1"
-        placeholder="Qty">
-      <button 
-        (click)="add(); addButton = false"
-        class="btn-primary px-3 text-xs font-bold flex items-center gap-1">
-        <lucide-icon name="check" class="w-4 h-4"></lucide-icon>
-        Add
-      </button>
-    </div>
   </div>
-</div>
+</app-ui-card>

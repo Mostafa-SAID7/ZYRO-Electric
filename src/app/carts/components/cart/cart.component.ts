@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CartsService } from '../../services/carts.service';
+import { CartItem, CartSummary } from '../../models';
+import { Router } from '@angular/router';
+import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
+import { UiConfirmationComponent } from '../../../shared/ui/components/confirmation/confirmation.component';
 
 @Component({
   selector: 'app-cart',
@@ -7,72 +11,105 @@ import { CartsService } from '../../services/carts.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  constructor(private service:CartsService) { }
-  cartProducts:any[] = [];
-  total:number = 0;
-  success:boolean = false
+  @ViewChild('toast') toast!: UiToastComponent;
+  @ViewChild('confirm') confirm!: UiConfirmationComponent;
+
+  cartItems: CartItem[] = [];
+  cartSummary: CartSummary = {
+    itemCount: 0,
+    uniqueProducts: 0,
+    subtotal: 0,
+    tax: 0,
+    shipping: 0,
+    total: 0
+  };
+  couponCode = '';
+
+  constructor(
+    private cartService: CartsService,
+    private router: Router
+  ) {}
+
   ngOnInit(): void {
-    this.getCartProducts()
+    this.loadCart();
   }
 
-
-  getCartProducts() {
-    if("cart" in localStorage) {
-      this.cartProducts = JSON.parse(localStorage.getItem("cart")!)
-    }
-    this.getCartTotal()
+  loadCart(): void {
+    this.cartService.cartState$.subscribe(state => {
+      this.cartItems = state.items;
+      this.cartSummary = this.cartService.getCartSummary();
+    });
   }
 
-  addAmount(index:number) {
-    this.cartProducts[index].quantity++
-    this.getCartTotal()
-    localStorage.setItem("cart" , JSON.stringify(this.cartProducts))
-  }
-  minsAmount(index:number) {
-    this.cartProducts[index].quantity--
-    this.getCartTotal()
-    localStorage.setItem("cart" , JSON.stringify(this.cartProducts))
-  }
-  detectChange() {
-    this.getCartTotal()
-    localStorage.setItem("cart" , JSON.stringify(this.cartProducts))
+  increaseQuantity(item: CartItem): void {
+    item.quantity++;
+    this.updateQuantity(item);
   }
 
-  deleteProduct(index:number) {
-    this.cartProducts.splice(index , 1)
-    this.getCartTotal()
-    localStorage.setItem("cart" , JSON.stringify(this.cartProducts))
-  }
-
-  clearCart() {
-    this.cartProducts = []
-    this.getCartTotal()
-    localStorage.setItem("cart" , JSON.stringify(this.cartProducts))
-  }
-  getCartTotal() {
-    this.total = 0
-    for(let x in this.cartProducts) {
-      this.total += this.cartProducts[x].item.price * this.cartProducts[x].quantity;
+  decreaseQuantity(item: CartItem): void {
+    if (item.quantity > 1) {
+      item.quantity--;
+      this.updateQuantity(item);
     }
   }
 
-  addCart() {
-   let products = this.cartProducts.map(item => {
-    return {productId:item.item.id , quantity:item.quantity}
-   })
-
-    let Model = {
-      userId:5,
-      date: new Date(),
-      products:products
-    }
-
-    this.service.createNewCart(Model).subscribe(res => {
-      this.success = true
-    })
-
-    console.log(Model)
+  getCartSummary() {
+    return this.cartSummary;
   }
 
- 
+  updateQuantity(item: CartItem): void {
+    this.cartService.updateCartItem({
+      productId: item.productId,
+      quantity: item.quantity
+    }).subscribe();
+  }
+
+  removeItem(item: CartItem): void {
+    this.cartService.removeFromCart(item.productId).subscribe(() => {
+      this.showToast('Item removed', 'Item has been removed from your cart', 'success');
+    });
+  }
+
+  showClearConfirm(): void {
+    this.confirm.open();
+  }
+
+  clearCart(): void {
+    this.cartService.clearCart().subscribe(() => {
+      this.showToast('Cart cleared', 'Your cart is now empty', 'info');
+    });
+  }
+
+  applyCoupon(): void {
+    if (!this.couponCode.trim()) {
+      this.showToast('Invalid coupon', 'Please enter a coupon code', 'error');
+      return;
+    }
+
+    this.cartService.applyCoupon(this.couponCode).subscribe({
+      next: (response) => {
+        this.showToast('Coupon applied', response.message, 'success');
+        this.couponCode = '';
+      },
+      error: () => {
+        this.showToast('Invalid coupon', 'This coupon code is not valid', 'error');
+      }
+    });
+  }
+
+  proceedToCheckout(): void {
+    this.router.navigate(['/checkout']);
+  }
+
+  continueShopping(): void {
+    this.router.navigate(['/products']);
+  }
+
+  private showToast(title: string, message: string, type: 'success' | 'error' | 'info' | 'warning'): void {
+    this.toast.type = type;
+    this.toast.title = title;
+    this.toast.message = message;
+    this.toast.show();
+  }
 }
+

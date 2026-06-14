@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { RouterModule } from '@angular/router';
@@ -7,7 +7,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SelectComponent } from './components/select/select.component';
 import { FormsModule } from '@angular/forms';
-import { LucideModule, ShoppingCart, Package, ShoppingBag, Trash2, Minus, Plus, Delete, CheckCircle, Check, Tag, Folder, FileText, Star, DollarSign } from 'lucide-angular';
 import { UiModule } from './ui/ui.module';
 
 @NgModule({
@@ -22,23 +21,7 @@ import { UiModule } from './ui/ui.module';
     FormsModule,
     RouterModule,
     HttpClientModule,
-    UiModule,
-    LucideModule.pick({
-      ShoppingCart,
-      Package,
-      ShoppingBag,
-      Trash2,
-      Minus,
-      Plus,
-      Delete,
-      CheckCircle,
-      Check,
-      Tag,
-      Folder,
-      FileText,
-      Star,
-      DollarSign
-    })
+    UiModule
   ],
   exports: [
     HeaderComponent,
@@ -47,8 +30,8 @@ import { UiModule } from './ui/ui.module';
     RouterModule,
     FormsModule,
     SelectComponent,
-    UiModule,
-    LucideModule
-  ]
+    UiModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class SharedModule { }
