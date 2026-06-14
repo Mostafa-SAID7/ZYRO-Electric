@@ -38,15 +38,56 @@ export class UiErrorComponent {
 @Component({
   selector: 'app-ui-error-boundary',
   template: `
-    <div *ngIf="hasError; else content" class="p-4">
-      <app-ui-error 
-        [title]="'Component Error'"
-        [message]="errorMessage"
-        (retried)="resetError()">
-      </app-ui-error>
-    </div>
-    <ng-template #content>
+    <ng-container *ngIf="!hasError; else errorState">
       <ng-content></ng-content>
+    </ng-container>
+    <ng-template #errorState>
+      <div class="p-4 min-h-96 flex items-center justify-center">
+        <div class="max-w-2xl w-full">
+          <!-- Error Icon -->
+          <div class="flex justify-center mb-6">
+            <div class="w-20 h-20 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+              <lucide-icon name="alert-triangle" class="w-10 h-10 text-red-500"></lucide-icon>
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-foreground mb-2">Something went wrong</h2>
+            <p class="text-muted-foreground">{{ errorMessage }}</p>
+          </div>
+
+          <!-- Error Details -->
+          <app-ui-error 
+            [title]="'Component Error'"
+            [message]="errorMessage"
+            [details]="errorDetails"
+            (retried)="resetError()">
+          </app-ui-error>
+
+          <!-- Recovery Actions -->
+          <div class="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+            <button 
+              (click)="resetError()"
+              class="btn-primary px-6 py-2 flex items-center justify-center gap-2">
+              <lucide-icon name="refresh-cw" class="w-4 h-4"></lucide-icon>
+              Try Again
+            </button>
+            <button 
+              (click)="goHome()"
+              class="btn-outline px-6 py-2 flex items-center justify-center gap-2">
+              <lucide-icon name="home" class="w-4 h-4"></lucide-icon>
+              Go Home
+            </button>
+          </div>
+
+          <!-- Error Code -->
+          <div class="text-center mt-6 text-xs text-muted-foreground">
+            <p>Error ID: {{ errorId }}</p>
+            <p>Time: {{ errorTime }}</p>
+          </div>
+        </div>
+      </div>
     </ng-template>
   `,
   styles: []
@@ -54,15 +95,38 @@ export class UiErrorComponent {
 export class UiErrorBoundaryComponent {
   hasError = false;
   errorMessage = '';
+  errorDetails = '';
+  errorId = '';
+  errorTime = '';
 
-  captureError(error: Error): void {
+  captureError(error: Error | any): void {
     this.hasError = true;
-    this.errorMessage = error.message || 'An unexpected error occurred';
-    console.error('Error Boundary:', error);
+    this.errorMessage = error?.message || 'An unexpected error occurred. Please try again.';
+    this.errorDetails = error?.stack || JSON.stringify(error, null, 2);
+    this.errorId = 'ERR_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    this.errorTime = new Date().toLocaleTimeString();
+    console.error('Error Boundary Caught:', error);
+    this.reportError(error);
   }
 
   resetError(): void {
     this.hasError = false;
     this.errorMessage = '';
+    this.errorDetails = '';
+  }
+
+  goHome(): void {
+    window.location.href = '/';
+  }
+
+  private reportError(error: Error | any): void {
+    // TODO: Send to error tracking service (Sentry, LogRocket, etc.)
+    console.log('Report Error:', {
+      errorId: this.errorId,
+      message: this.errorMessage,
+      timestamp: this.errorTime,
+      stack: this.errorDetails
+    });
   }
 }
+
