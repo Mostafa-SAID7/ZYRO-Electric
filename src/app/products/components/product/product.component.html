@@ -1,18 +1,48 @@
-<div class="item" >
-    <div routerLink="/details/{{data.id}}">
-        <img src="{{data.image}}" alt="">
-        <div class="body">
-            <h4>{{data.title}}</h4>
-            <p>{{data.description}}</p>
-        </div>
+<div class="item card project-card-hover accent-glow">
+  <div class="cursor-pointer" [routerLink]="['/details', data.id]">
+    <img 
+      src="{{ data.image }}" 
+      alt="{{ data.title }}"
+      class="w-full h-48 object-cover rounded-t-[calc(var(--radius)-2px)]">
+    <div class="p-4">
+      <h4 class="font-bold text-lg mb-3 line-clamp-2 text-foreground">
+        {{ data.title }}
+      </h4>
+      <p class="text-sm text-muted-foreground line-clamp-3">
+        {{ data.description }}
+      </p>
     </div>
-   
-    <div class="px-3 mb-2 d-flex justify-content-between align-datas-center ">
-        <button class="btn btn-success" *ngIf="!addButton" (click)="addButton = true" >Add To Cart</button>
-        <div class="d-flex w-50" *ngIf="addButton">
-            <input type="number" class="form-control" [(ngModel)]="amount">
-            <button class="btn btn-danger" (click)="add();addButton = false">Add</button>
-        </div>
-        <span>{{data.price}} L.E</span>
+  </div>
+
+  <!-- Add to Cart Section -->
+  <div class="px-4 pb-4 flex flex-col gap-3">
+    <div class="flex justify-between items-center gap-2">
+      <span class="font-bold text-lg text-accent">{{ data.price }} L.E</span>
+      
+      <!-- Add Button -->
+      <button 
+        *ngIf="!addButton"
+        (click)="addButton = true"
+        class="btn-primary px-4 py-2 text-xs">
+        Add to Cart
+      </button>
     </div>
+
+    <!-- Quantity Input -->
+    <div 
+      *ngIf="addButton"
+      class="flex gap-2 w-full">
+      <input 
+        type="number" 
+        [(ngModel)]="amount"
+        min="1"
+        class="form-input flex-1"
+        placeholder="Qty">
+      <button 
+        (click)="add(); addButton = false"
+        class="btn-primary px-3 text-xs font-bold">
+        Add
+      </button>
+    </div>
+  </div>
 </div>

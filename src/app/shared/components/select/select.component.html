@@ -1,5 +1,18 @@
-<label for="" class="my-1">{{title}} :</label>
-<select class="form-control" (change)="detectChanges($event)">
+<div class="mb-4">
+  <label 
+    for="category-select"
+    class="section-label block mb-2">
+    {{ title }}
+  </label>
+  <select 
+    id="category-select"
+    (change)="detectChanges($event)"
+    class="form-input w-full">
     <option value="all" selected>All</option>
-    <option value="{{option}}" *ngFor="let option of data">{{option}}</option>
-</select>
+    <option 
+      value="{{ option }}" 
+      *ngFor="let option of data">
+      {{ option }}
+    </option>
+  </select>
+</div>
