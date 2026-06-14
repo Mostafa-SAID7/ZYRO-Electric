@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist/market/browser"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NODE_OPTIONS = "--openssl-legacy-provider"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
