@@ -1,33 +1,113 @@
 <header class="sticky top-0 z-50 bg-card border-b border-border shadow-md">
   <nav class="max-w-7xl mx-auto">
-    <div class="flex justify-between items-center px-4 py-4">
-      <!-- Logo -->
-      <h1 class="text-2xl font-bold gradient-text cursor-pointer flex items-center gap-2">
-        <lucide-icon name="shopping-bag" class="w-8 h-8"></lucide-icon>
-        Market
-      </h1>
+    <div class="flex items-center justify-between px-4 md:px-6 py-3 md:py-4">
+      
+      <!-- Left: Cart Icon -->
+      <div class="flex items-center gap-2">
+        <button 
+          (click)="toggleCartDrawer()"
+          class="relative p-2 hover:bg-secondary rounded-lg transition-colors duration-200 group">
+          <lucide-icon name="shopping-cart" class="w-6 h-6 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+          <span *ngIf="cartItemCount > 0" 
+            class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-accent-foreground bg-accent rounded-full">
+            {{ cartItemCount }}
+          </span>
+        </button>
+      </div>
 
-      <!-- Navigation Links -->
-      <ul class="flex gap-8 list-none m-0 p-0">
-        <li class="nav-link-hover">
-          <a 
-            routerLink="/products"
-            routerLinkActive="!text-accent"
-            class="text-foreground font-semibold transition-colors flex items-center gap-2">
-            <lucide-icon name="package" class="w-5 h-5"></lucide-icon>
-            Products
-          </a>
-        </li>
-        <li class="nav-link-hover">
-          <a 
-            routerLink="/cart"
-            routerLinkActive="!text-accent"
-            class="text-foreground font-semibold transition-colors flex items-center gap-2">
-            <lucide-icon name="shopping-cart" class="w-5 h-5"></lucide-icon>
-            Cart
-          </a>
-        </li>
-      </ul>
+      <!-- Center: Logo & Main Links -->
+      <div class="flex-1 flex flex-col items-center">
+        <!-- Logo -->
+        <h1 class="text-xl md:text-2xl font-bold gradient-text cursor-pointer flex items-center gap-2 mb-2"
+          (click)="goToHome()">
+          <lucide-icon name="shopping-bag" class="w-6 md:w-8 h-6 md:h-8"></lucide-icon>
+          <span class="hidden sm:inline">Market</span>
+        </h1>
+
+        <!-- Main Navigation -->
+        <ul class="flex gap-6 md:gap-12 list-none m-0 p-0">
+          <li class="nav-link-hover">
+            <a 
+              routerLink="/products"
+              routerLinkActive="!text-accent"
+              class="text-foreground font-semibold text-sm md:text-base transition-colors flex items-center gap-2">
+              <lucide-icon name="home" class="w-4 h-4 md:w-5 md:h-5"></lucide-icon>
+              <span class="hidden xs:inline">Home</span>
+            </a>
+          </li>
+          <li class="nav-link-hover">
+            <a 
+              href="#featured"
+              class="text-foreground font-semibold text-sm md:text-base transition-colors flex items-center gap-2">
+              <lucide-icon name="star" class="w-4 h-4 md:w-5 md:h-5"></lucide-icon>
+              <span class="hidden xs:inline">Featured</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right: User Icons -->
+      <div class="flex items-center gap-2">
+        <button 
+          (click)="isLoggedIn ? logout() : goToAuth()"
+          class="p-2 hover:bg-secondary rounded-lg transition-colors duration-200 group"
+          [title]="isLoggedIn ? 'Logout' : 'Login'">
+          <lucide-icon [name]="isLoggedIn ? 'log-out' : 'user'" 
+            class="w-6 h-6 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+        </button>
+      </div>
     </div>
   </nav>
 </header>
+
+<!-- Cart Drawer -->
+<div *ngIf="isCartDrawerOpen" 
+  class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+  (click)="closeCartDrawer()">
+</div>
+
+<div [class.translate-x-0]="isCartDrawerOpen" 
+  [class.translate-x-full]="!isCartDrawerOpen"
+  class="fixed right-0 top-16 h-[calc(100vh-64px)] w-96 max-w-[calc(100vw-32px)] bg-card border-l border-border shadow-lg transition-transform duration-300 ease-out z-40 flex flex-col">
+  
+  <!-- Drawer Header -->
+  <div class="flex items-center justify-between px-6 py-4 border-b border-border">
+    <h2 class="text-lg font-bold flex items-center gap-2">
+      <lucide-icon name="shopping-cart" class="w-5 h-5"></lucide-icon>
+      Shopping Cart
+    </h2>
+    <button 
+      (click)="closeCartDrawer()"
+      class="p-1 hover:bg-secondary rounded-lg transition-colors">
+      <lucide-icon name="x" class="w-5 h-5"></lucide-icon>
+    </button>
+  </div>
+
+  <!-- Drawer Content (scrollable) -->
+  <div class="flex-1 overflow-y-auto custom-scrollbar px-6 py-4">
+    <!-- Empty State -->
+    <div class="flex flex-col items-center justify-center h-full text-center py-12">
+      <lucide-icon name="shopping-bag" class="w-12 h-12 text-muted-foreground mb-3 opacity-50"></lucide-icon>
+      <p class="text-muted-foreground font-medium mb-2">Your cart is empty</p>
+      <p class="text-sm text-muted-foreground mb-4">Add items to get started</p>
+      <button 
+        (click)="goToHome()"
+        class="btn-primary text-xs">
+        Continue Shopping
+      </button>
+    </div>
+  </div>
+
+  <!-- Drawer Footer -->
+  <div class="border-t border-border px-6 py-4 space-y-3">
+    <button 
+      class="w-full btn-primary justify-center">
+      View Cart
+    </button>
+    <button 
+      class="w-full btn-outline justify-center"
+      (click)="closeCartDrawer()">
+      Continue Shopping
+    </button>
+  </div>
+</div>
