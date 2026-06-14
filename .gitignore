@@ -10,8 +10,7 @@
 node_modules/
 npm-debug.log
 yarn-error.log
-package-lock.json
-yarn.lock
+# package-lock.json and yarn.lock are committed for reproducible CI builds
 
 # IDEs and editors
 .idea/
