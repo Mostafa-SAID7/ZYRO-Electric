@@ -1,0 +1,135 @@
+<footer class="bg-card border-t border-border mt-16">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 py-12">
+    <!-- Main Footer Content -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+      <!-- Brand Section -->
+      <div class="lg:col-span-1">
+        <h3 class="text-lg font-bold gradient-text mb-4 flex items-center gap-2">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7 4V3m10 0v1m3.15 2.75h2.08a2 2 0 012 2v12a2 2 0 01-2 2H1.92a2 2 0 01-2-2V8.75a2 2 0 012-2h2.08m0 0A2 2 0 017 5h10a2 2 0 012 2m0 0V7a2 2 0 11-4 0V5m-4 0a2 2 0 11-4 0v2m0-2V5a2 2 0 10-4 0v2"></path>
+          </svg>
+          Market
+        </h3>
+        <p class="text-sm text-muted-foreground mb-6">Your one-stop shop for quality products at great prices.</p>
+        
+        <!-- Social Links -->
+        <div class="flex gap-3">
+          <a *ngFor="let social of footerLinks.social"
+            (click)="openExternal(social.url)"
+            class="p-2 hover:bg-secondary rounded-lg transition-colors cursor-pointer"
+            [title]="social.label">
+            <svg class="w-5 h-5 text-foreground hover:text-accent transition-colors" fill="currentColor" viewBox="0 0 24 24">
+              <circle *ngIf="social.icon === 'facebook'" cx="12" cy="12" r="10"></circle>
+              <path *ngIf="social.icon === 'twitter'" d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7"></path>
+              <rect *ngIf="social.icon === 'instagram'" x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path *ngIf="social.icon === 'linkedin'" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Company Links -->
+      <div>
+        <h4 class="font-semibold text-foreground mb-4">Company</h4>
+        <ul class="space-y-3">
+          <li *ngFor="let link of footerLinks.company">
+            <a (click)="navigateTo(link.route)"
+              class="text-sm text-muted-foreground hover:text-accent transition-colors cursor-pointer">
+              {{ link.label }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Support Links -->
+      <div>
+        <h4 class="font-semibold text-foreground mb-4">Support</h4>
+        <ul class="space-y-3">
+          <li *ngFor="let link of footerLinks.support">
+            <a (click)="navigateTo(link.route)"
+              class="text-sm text-muted-foreground hover:text-accent transition-colors cursor-pointer">
+              {{ link.label }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Legal Links -->
+      <div>
+        <h4 class="font-semibold text-foreground mb-4">Legal</h4>
+        <ul class="space-y-3">
+          <li *ngFor="let link of footerLinks.legal">
+            <a (click)="navigateTo(link.route)"
+              class="text-sm text-muted-foreground hover:text-accent transition-colors cursor-pointer">
+              {{ link.label }}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div>
+        <h4 class="font-semibold text-foreground mb-4">Newsletter</h4>
+        <p class="text-sm text-muted-foreground mb-4">Subscribe to get special offers and updates.</p>
+        <div class="flex flex-col gap-2">
+          <input 
+            type="email" 
+            placeholder="Enter your email"
+            class="form-input text-sm px-3 py-2 rounded">
+          <button class="btn-primary text-sm py-2">Subscribe</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="border-t border-border my-8"></div>
+
+    <!-- Features Row -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-accent flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <div>
+          <h5 class="font-semibold text-sm text-foreground">Fast Shipping</h5>
+          <p class="text-xs text-muted-foreground">Free shipping on orders over $50</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-accent flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <div>
+          <h5 class="font-semibold text-sm text-foreground">Secure Payment</h5>
+          <p class="text-xs text-muted-foreground">100% secure transactions</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-accent flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <div>
+          <h5 class="font-semibold text-sm text-foreground">Easy Returns</h5>
+          <p class="text-xs text-muted-foreground">30-day returns guaranteed</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-border">
+      <p class="text-sm text-muted-foreground">
+        &copy; {{ currentYear }} Market. All rights reserved.
+      </p>
+      <div class="flex gap-4 mt-4 md:mt-0">
+        <p class="text-xs text-muted-foreground">Accepted payments:</p>
+        <div class="flex gap-2">
+          <span class="text-xs px-2 py-1 bg-muted rounded">Visa</span>
+          <span class="text-xs px-2 py-1 bg-muted rounded">Mastercard</span>
+          <span class="text-xs px-2 py-1 bg-muted rounded">PayPal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

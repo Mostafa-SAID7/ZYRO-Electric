@@ -10,6 +10,7 @@ import {
   Review,
   ProductRating
 } from '../models';
+import { MOCK_PRODUCTS } from '../data/mock-products';
 
 @Injectable({
   providedIn: 'root'
@@ -265,41 +266,7 @@ export class ProductsService {
   // ============ Mock Data Generators ============
 
   private generateMockProducts(): Product[] {
-    const products: Product[] = [];
-    const categories = ['Electronics', 'Fashion', 'Books', 'Home', 'Sports'];
-
-    for (let i = 1; i <= 30; i++) {
-      products.push({
-        id: `prod-${i}`,
-        title: `Product ${i}`,
-        description: `High-quality product with excellent features and durability. Perfect for everyday use.`,
-        price: Math.round((Math.random() * 200 + 20) * 100) / 100,
-        originalPrice: Math.round((Math.random() * 300 + 50) * 100) / 100,
-        discount: Math.round(Math.random() * 50),
-        image: `https://images.unsplash.com/photo-${Math.floor(Math.random() * 1000000)}?w=500&h=500&fit=crop`,
-        category: categories[Math.floor(Math.random() * categories.length)],
-        rating: {
-          average: Math.round((Math.random() * 2 + 3) * 10) / 10,
-          count: Math.floor(Math.random() * 500 + 10),
-          distribution: {
-            1: Math.floor(Math.random() * 50),
-            2: Math.floor(Math.random() * 50),
-            3: Math.floor(Math.random() * 100),
-            4: Math.floor(Math.random() * 200),
-            5: Math.floor(Math.random() * 300)
-          }
-        },
-        stock: Math.floor(Math.random() * 100),
-        sku: `SKU-${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
-        createdAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000),
-        updatedAt: new Date(),
-        isActive: true,
-        isFeatured: Math.random() > 0.7,
-        vendor: `Vendor ${Math.floor(Math.random() * 5 + 1)}`
-      });
-    }
-
-    return products;
+    return MOCK_PRODUCTS;
   }
 
   private generateMockCategories(): Category[] {
@@ -307,32 +274,32 @@ export class ProductsService {
       {
         id: 'cat-1',
         name: 'Electronics',
-        description: 'Latest gadgets and electronics',
-        productCount: 150
+        description: 'Latest gadgets, smartphones, and audio equipment',
+        productCount: 3
       },
       {
         id: 'cat-2',
         name: 'Fashion',
-        description: 'Trendy fashion items',
-        productCount: 200
+        description: 'Trendy clothing, accessories, and watches',
+        productCount: 3
       },
       {
         id: 'cat-3',
         name: 'Books',
-        description: 'Wide selection of books',
-        productCount: 300
+        description: 'Wide selection of books and learning materials',
+        productCount: 2
       },
       {
         id: 'cat-4',
         name: 'Home',
-        description: 'Home and living products',
-        productCount: 180
+        description: 'Home improvement, furniture, and living essentials',
+        productCount: 2
       },
       {
         id: 'cat-5',
         name: 'Sports',
-        description: 'Sports and outdoor gear',
-        productCount: 120
+        description: 'Sports equipment and fitness gear',
+        productCount: 2
       }
     ];
   }

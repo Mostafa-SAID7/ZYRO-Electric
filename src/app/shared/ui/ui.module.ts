@@ -17,6 +17,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { FilterPanelComponent } from './components/filter-panel/filter-panel.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { SortDropdownComponent } from './components/sort-dropdown/sort-dropdown.component';
+import { UiDrawerComponent } from './components/drawer/drawer.component';
 
 const UI_COMPONENTS = [
   UiButtonComponent,
@@ -34,7 +35,8 @@ const UI_COMPONENTS = [
   SearchBarComponent,
   FilterPanelComponent,
   PaginationComponent,
-  SortDropdownComponent
+  SortDropdownComponent,
+  UiDrawerComponent
 ];
 
 @NgModule({
