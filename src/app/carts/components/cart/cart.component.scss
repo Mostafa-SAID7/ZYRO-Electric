@@ -1,53 +1,30 @@
+/* Cart component - uses centralized styles from src/styles.scss */
+/* Apply Tailwind classes in HTML: */
+/* class="card" - for card containers (uses var(--card), var(--border)) */
+/* class="form-input" - for input fields */
+/* class="btn-primary btn-outline" - for buttons */
+/* Colors: var(--accent), var(--border), var(--foreground), etc. */
 
+/* Layout-only styles here, no color overrides */
+.quantity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 
+  input {
+    width: 80px;
+    text-align: center;
+  }
+}
 
-.cartBox {
-    border: 1px solid #DDD;
-    border-radius: 5px;
-    padding: 0 20px;
-    margin: 50px 0;
-    .table  {
-        .quantity {
-            display: flex;
-            justify-content: space-between;
-            input {
-                margin: 0 20px;
-            }
-        }
-        tbody {
-            border-top: 1px solid #c61d21;
-            border-bottom: 1px solid #c61d21;
-            tr {
-                td {
-                    border-bottom: 0;
-                    text-align: center;
-                vertical-align: middle;
-                    img {
-                        width: 80px;
-                        height: 80px;
-                        border-radius: 50%;
-                    }
-                }
-            }
-            
-            input {
-                text-align: center;
-            }
-        }
-    }
-    .headCart {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        span {
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            &:hover {
-                background-color: #e67779;
-                color: #FFF!important;
-                box-shadow: 0px 5px 10px rgba($color: #000000, $alpha: 0.3);
-            }
-        }
-    }
+.table-wrapper {
+  overflow-x: auto;
+}
+
+img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
 }
