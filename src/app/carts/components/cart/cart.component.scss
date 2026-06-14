@@ -1,30 +1,13 @@
-/* Cart component - uses centralized styles from src/styles.scss */
-/* Apply Tailwind classes in HTML: */
-/* class="card" - for card containers (uses var(--card), var(--border)) */
-/* class="form-input" - for input fields */
-/* class="btn-primary btn-outline" - for buttons */
-/* Colors: var(--accent), var(--border), var(--foreground), etc. */
+/* Cart component - minimal layout styles only */
+/* All colors/utilities come from src/styles.scss */
 
-/* Layout-only styles here, no color overrides */
 .quantity {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 
   input {
     width: 80px;
     text-align: center;
   }
-}
-
-.table-wrapper {
-  overflow-x: auto;
-}
-
-img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
 }

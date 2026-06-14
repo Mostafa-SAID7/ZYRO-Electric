@@ -1,57 +1,13 @@
-/* Product component - uses centralized styles from src/styles.scss */
-/* Use Tailwind classes in HTML: */
-/* class="card project-card-hover" - for product cards */
-/* class="accent-glow" - for glow effects */
-/* Colors: var(--accent), var(--border), var(--card), etc. */
+/* Product component - minimal layout styles */
+/* All styling (colors, hover, transitions) uses Tailwind classes from HTML */
 
-/* Layout-only styles */
 .item {
   width: 100%;
-  text-decoration: none;
   display: inline-block;
-  margin: 15px;
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
 
-  img {
-    width: 100%;
-    height: 200px;
-    border-radius: var(--radius);
-    object-fit: cover;
-  }
-
-  .body {
-    padding-top: 0;
-  }
-
-  p {
-    margin: 15px 0;
-    height: 100px;
-    overflow: hidden;
-    font-size: 16px;
-    padding: 5px 15px;
-  }
-
-  h4 {
-    height: 75px;
-    overflow: hidden;
-    padding: 5px 15px;
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 10px;
-    background-color: var(--muted);
-    color: var(--foreground);
-  }
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  span {
-    padding: 3px 7px;
-    border-radius: 30px;
-    background-color: var(--accent);
-    color: var(--accent-foreground);
-    display: inline-block;
-    margin: 5px;
-  }
+img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }

@@ -1,30 +1,18 @@
-/* Products Details component - uses centralized styles */
-/* Use Tailwind classes in HTML: */
-/* class="card glass-card" - for detail containers */
-/* class="accent-glow" - for highlight effects */
+/* Products Details component - layout only */
+/* All colors and styling from src/styles.scss and Tailwind */
 
-/* Layout-only styles */
 .box {
-  width: 90%;
-  margin: 100px auto;
-  padding: 2rem;
+  padding: 2rem 0;
+}
 
-  ul {
-    list-style: none;
-    padding: 0;
+ul {
+  list-style: none;
+  padding: 0;
+}
 
-    li {
-      font-size: 1.375rem;
-      margin: 20px 0;
-      line-height: 1.6;
-    }
-  }
-
-  img {
-    width: 100%;
-    max-height: 500px;
-    min-height: 500px;
-    object-fit: cover;
-    border-radius: var(--radius);
-  }
+img {
+  width: 100%;
+  max-height: 500px;
+  min-height: 500px;
+  object-fit: cover;
 }
