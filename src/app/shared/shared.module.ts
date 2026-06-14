@@ -7,8 +7,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SelectComponent } from './components/select/select.component';
 import { FormsModule } from '@angular/forms';
-import { LucideModule } from 'lucide-angular';
-import { ShoppingCart, Package, ShoppingBag, Trash2, Minus, Plus, Delete, CheckCircle, Check, Tag, Folder, FileText, Star, DollarSign } from 'lucide-angular';
+import { LucideModule, ShoppingCart, Package, ShoppingBag, Trash2, Minus, Plus, Delete, CheckCircle, Check, Tag, Folder, FileText, Star, DollarSign } from 'lucide-angular';
+import { UiModule } from './ui/ui.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +22,7 @@ import { ShoppingCart, Package, ShoppingBag, Trash2, Minus, Plus, Delete, CheckC
     FormsModule,
     RouterModule,
     HttpClientModule,
+    UiModule,
     LucideModule.pick({
       ShoppingCart,
       Package,
@@ -46,6 +47,7 @@ import { ShoppingCart, Package, ShoppingBag, Trash2, Minus, Plus, Delete, CheckC
     RouterModule,
     FormsModule,
     SelectComponent,
+    UiModule,
     LucideModule
   ]
 })
