@@ -52,7 +52,7 @@ export class UiToastComponent {
   }
 
   getToastClasses(): string {
-    const baseClasses = 'fixed bottom-4 right-4 max-w-md p-4 rounded-lg shadow-lg backdrop-blur-sm animate-pulse-glow';
+    const baseClasses = 'fixed bottom-4 right-4 max-w-sm p-3.5 rounded-xl shadow-lg backdrop-blur-sm animate-pulse-glow text-sm';
     const typeClasses: Record<ToastType, string> = {
       success: 'bg-green-500 text-white border-l-4 border-green-700',
       error: 'bg-red-500 text-white border-l-4 border-red-700',

@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { BrowserModule } from '@angular/platform-browser';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SelectComponent } from './components/select/select.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UiModule } from './ui/ui.module';
 
 @NgModule({
@@ -21,6 +21,7 @@ import { UiModule } from './ui/ui.module';
     CommonModule,
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     HttpClientModule,
     UiModule
@@ -32,6 +33,7 @@ import { UiModule } from './ui/ui.module';
     SpinnerComponent,
     RouterModule,
     FormsModule,
+    ReactiveFormsModule,
     SelectComponent,
     UiModule
   ],

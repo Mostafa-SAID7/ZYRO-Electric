@@ -20,7 +20,7 @@
   --border: #222222;
   --input: #1A1A1A;
   --ring: #E8C547;
-  --radius: 0.75rem;
+  --radius: 1.5rem;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
   --font-arabic: 'Tajawal', sans-serif;
 }
@@ -385,13 +385,26 @@
     animation: blink 1s step-end infinite;
   }
 
+  /* Badges */
+  .badge-accent {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    background: var(--accent);
+    color: var(--accent-foreground);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
   /* Form Inputs */
   .form-input {
     width: 100%;
     background: var(--input);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 0.875rem 1.125rem;
+    padding: 0.75rem 1rem;
     color: var(--foreground);
     font-family: inherit;
     font-size: 0.875rem;
@@ -420,22 +433,25 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.875rem 2rem;
+    padding: 0.75rem 1.5rem;
     background: var(--accent);
     color: var(--accent-foreground);
-    border-radius: var(--radius);
+    border-radius: 9999px;
     font-weight: 800;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 0.875rem;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
   }
 
-  .btn-primary:hover {
+  .btn-primary:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(232, 197, 71, 0.35);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .btn-outline {
@@ -443,14 +459,12 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.875rem 2rem;
+    padding: 0.75rem 1.5rem;
     background: transparent;
     color: var(--foreground);
-    border-radius: var(--radius);
-    font-weight: 800;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.875rem;
     border: 1px solid var(--border);
     cursor: pointer;
     transition: all 0.3s ease;
@@ -474,4 +488,29 @@
   .light .mobile-menu-overlay {
     background: rgba(250, 250, 250, 0.98);
   }
+}
+
+/* Custom Scrollbar — adapts to dark/light mode via CSS variables */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 9999px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--background);
 }

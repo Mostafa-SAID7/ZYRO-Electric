@@ -3,7 +3,7 @@ import { Category, FeaturedProduct, PromoOffer, Feature } from '../models';
 export const MOCK_CATEGORIES: Category[] = [
   { id: '1', name: 'Electronics', icon: '📱', color: 'from-blue-600 to-blue-400' },
   { id: '2', name: 'Fashion', icon: '👔', color: 'from-pink-600 to-pink-400' },
-  { id: '3', name: 'Home & Garden', icon: '🏠', color: 'from-green-600 to-green-400' },
+  { id: '3', name: 'Home', icon: '🏠', color: 'from-green-600 to-green-400' },
   { id: '4', name: 'Sports', icon: '⚽', color: 'from-orange-600 to-orange-400' },
   { id: '5', name: 'Books', icon: '📚', color: 'from-purple-600 to-purple-400' },
   { id: '6', name: 'Beauty', icon: '💄', color: 'from-red-600 to-red-400' }

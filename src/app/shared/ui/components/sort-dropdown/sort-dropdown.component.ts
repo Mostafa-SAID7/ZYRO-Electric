@@ -9,17 +9,38 @@ export interface SortOption {
 @Component({
   selector: 'app-ui-sort-dropdown',
   template: `
-    <div class="flex items-center gap-2">
-      <span class="text-sm text-muted-foreground">{{ label }}:</span>
-      <select
-        [(ngModel)]="selectedSort"
-        (change)="onSortChange()"
-        class="form-input text-sm">
-        <option *ngFor="let option of options" [value]="option.value">
-          {{ option.label }}
-        </option>
-      </select>
+    <div class="flex items-center gap-3 relative">
+      <span class="text-sm font-semibold text-muted-foreground whitespace-nowrap">{{ label }}</span>
+      
+      <!-- Custom Dropdown Button -->
+      <button 
+        (click)="toggleDropdown()"
+        class="flex items-center justify-between gap-3 bg-secondary/30 hover:bg-secondary/60 border border-border/50 px-4 py-2.5 rounded-full transition-all duration-200 min-w-[160px] group text-sm font-medium">
+        <span class="text-foreground">{{ getSelectedLabel() }}</span>
+        <lucide-icon name="chevron-down" class="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-transform duration-200" [class.rotate-180]="isOpen"></lucide-icon>
+      </button>
+
+      <!-- Dropdown Menu -->
+      <div *ngIf="isOpen" 
+        class="absolute top-full right-0 mt-2 w-48 bg-card/95 dark:bg-black/95 backdrop-blur-xl border border-border/50 shadow-2xl rounded-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div class="p-1.5 flex flex-col gap-0.5">
+          <button *ngFor="let option of options"
+            (click)="selectOption(option.value)"
+            class="flex items-center justify-between w-full px-3 py-2.5 text-left text-sm rounded-xl transition-colors duration-150"
+            [class.bg-accent]="selectedSort === option.value"
+            [class.text-accent-foreground]="selectedSort === option.value"
+            [class.font-bold]="selectedSort === option.value"
+            [class.hover:bg-secondary]="selectedSort !== option.value"
+            [class.text-foreground]="selectedSort !== option.value">
+            {{ option.label }}
+            <lucide-icon *ngIf="selectedSort === option.value" name="check" class="w-4 h-4"></lucide-icon>
+          </button>
+        </div>
+      </div>
     </div>
+    
+    <!-- Invisible overlay to catch outside clicks -->
+    <div *ngIf="isOpen" class="fixed inset-0 z-40" (click)="closeDropdown()"></div>
   `,
   styles: []
 })
@@ -29,7 +50,24 @@ export class SortDropdownComponent {
   @Input() selectedSort: string = '';
   @Output() sortChange = new EventEmitter<string>();
 
-  onSortChange(): void {
+  isOpen = false;
+
+  toggleDropdown(): void {
+    this.isOpen = !this.isOpen;
+  }
+
+  closeDropdown(): void {
+    this.isOpen = false;
+  }
+
+  selectOption(value: string): void {
+    this.selectedSort = value;
     this.sortChange.emit(this.selectedSort);
+    this.isOpen = false;
+  }
+
+  getSelectedLabel(): string {
+    const option = this.options.find(o => o.value === this.selectedSort);
+    return option ? option.label : 'Select...';
   }
 }

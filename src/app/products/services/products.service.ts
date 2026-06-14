@@ -274,32 +274,32 @@ export class ProductsService {
       {
         id: 'cat-1',
         name: 'Electronics',
-        description: 'Latest gadgets, smartphones, and audio equipment',
-        productCount: 3
+        description: 'Latest gadgets, smartphones, keyboards, monitors and audio equipment',
+        productCount: 8
       },
       {
         id: 'cat-2',
         name: 'Fashion',
-        description: 'Trendy clothing, accessories, and watches',
-        productCount: 3
+        description: 'Trendy clothing, accessories, shoes and watches',
+        productCount: 5
       },
       {
         id: 'cat-3',
         name: 'Books',
         description: 'Wide selection of books and learning materials',
-        productCount: 2
+        productCount: 4
       },
       {
         id: 'cat-4',
         name: 'Home',
         description: 'Home improvement, furniture, and living essentials',
-        productCount: 2
+        productCount: 6
       },
       {
         id: 'cat-5',
         name: 'Sports',
         description: 'Sports equipment and fitness gear',
-        productCount: 2
+        productCount: 12
       }
     ];
   }

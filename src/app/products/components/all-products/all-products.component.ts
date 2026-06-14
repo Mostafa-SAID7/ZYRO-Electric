@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
 import { Product, ProductFilter, ProductPage } from '../../models';
 import { CartsService } from '../../../carts/services/carts.service';
@@ -31,13 +32,13 @@ export class AllProductsComponent implements OnInit {
 
   constructor(
     private productsService: ProductsService,
-    private cartsService: CartsService
+    private cartsService: CartsService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loadCategories();
     this.initFilterGroups();
-    this.loadProducts();
+    this.loadCategories();
   }
 
   loadCategories(): void {
@@ -45,6 +46,18 @@ export class AllProductsComponent implements OnInit {
       next: (categories) => {
         this.categories = categories;
         this.updateFilterGroups();
+
+        // Apply category from URL param after options are loaded
+        this.route.queryParams.subscribe(params => {
+          if (params['category']) {
+            const categoryFilter = this.filterGroups.find(g => g.id === 'category');
+            if (categoryFilter) {
+              const matchedCat = this.categories.find(c => c.name.toLowerCase() === params['category'].toLowerCase());
+              categoryFilter.currentValue = matchedCat ? matchedCat.id : params['category'];
+            }
+          }
+          this.loadProducts();
+        }).add(() => {});
       },
       error: () => {
         this.showToast('Error', 'Failed to load categories', 'error');

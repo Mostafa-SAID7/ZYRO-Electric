@@ -15,7 +15,7 @@ export class UiCardComponent {
   @Input() hover: boolean = false;
 
   getCardClasses(): string {
-    const baseClasses = 'rounded-[var(--radius)] transition-all';
+    const baseClasses = 'rounded-[var(--radius)] overflow-hidden transition-all relative';
     
     const variantClasses: Record<string, string> = {
       default: 'card',

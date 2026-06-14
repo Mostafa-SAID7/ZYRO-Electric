@@ -1,13 +1,25 @@
 <div class="min-h-screen bg-background text-foreground">
-  <!-- Header -->
-  <div class="bg-card border-b border-border p-4 sticky top-0 z-10">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex items-center justify-between gap-4">
-        <h1 class="text-2xl font-bold gradient-text">Products</h1>
-        <div class="flex items-center gap-2 text-sm text-muted-foreground">
-          <lucide-icon name="packages" class="w-4 h-4"></lucide-icon>
-          {{ totalProducts }} items
+  <!-- Hero/Header Section -->
+  <div class="max-w-7xl mx-auto px-4 pt-6 pb-2">
+    <div class="relative overflow-hidden bg-card/60 backdrop-blur-md border border-border/50 p-8 rounded-[2rem] shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 group">
+      
+      <!-- Subtle gradient background effect -->
+      <div class="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+      <div class="relative flex items-center gap-4 z-10">
+        <div class="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20">
+          <lucide-icon name="shopping-bag" class="w-7 h-7 text-accent"></lucide-icon>
         </div>
+        <div>
+          <h1 class="text-3xl md:text-4xl font-black gradient-text tracking-tight mb-1">Our Collection</h1>
+          <p class="text-sm text-muted-foreground font-medium">Discover premium products tailored for you</p>
+        </div>
+      </div>
+
+      <div class="relative z-10 flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-full border border-border/50 shadow-inner">
+        <lucide-icon name="package" class="w-4 h-4 text-accent"></lucide-icon>
+        <span class="text-sm font-bold text-foreground">{{ totalProducts }}</span>
+        <span class="text-sm text-muted-foreground font-semibold">Items Available</span>
       </div>
     </div>
   </div>
@@ -16,11 +28,13 @@
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
       <!-- Filters Sidebar - Using Reusable Component -->
       <div class="lg:col-span-1">
-        <app-ui-filter-panel 
-          [filterGroups]="filterGroups"
-          (filterChange)="onFilterChange($event)"
-          (reset)="resetFilters()">
-        </app-ui-filter-panel>
+        <div class="bg-card/60 backdrop-blur-md border border-border/50 rounded-[2rem] shadow-lg overflow-hidden sticky top-24">
+          <app-ui-filter-panel 
+            [filterGroups]="filterGroups"
+            (filterChange)="onFilterChange($event)"
+            (reset)="resetFilters()">
+          </app-ui-filter-panel>
+        </div>
       </div>
 
       <!-- Products Grid -->

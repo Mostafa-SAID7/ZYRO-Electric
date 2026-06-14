@@ -3,6 +3,26 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+// Import Lucide icons explicitly
+import { 
+  LucideAngularModule, 
+  LogIn, UserPlus, ShoppingCart, ArrowLeft, Image as ImageIcon, Minus, Plus, Trash2, Trash, 
+  ShoppingBag, Check, CreditCard, Lock, Truck, Undo2, MapPin, Globe, Smartphone, 
+  CheckCircle, Activity, XCircle, Download, Package, Inbox, RotateCcw, Star, Eye, 
+  MessageSquare, ThumbsUp, ShoppingBasket, Home, Store, Sun, Moon, User, LogOut, 
+  X, Loader2, AlertTriangle, RefreshCw, AlertCircle, Filter, SearchX, ArrowRight, 
+  ChevronLeft, ChevronRight, ChevronDown, Search, Mail
+} from 'lucide-angular';
+
+const icons = {
+  LogIn, UserPlus, ShoppingCart, ArrowLeft, Image: ImageIcon, Minus, Plus, Trash2, Trash, 
+  ShoppingBag, Check, CreditCard, Lock, Truck, Undo2, MapPin, Globe, Smartphone, 
+  CheckCircle, Activity, XCircle, Download, Package, Inbox, RotateCcw, Star, Eye, 
+  MessageSquare, ThumbsUp, ShoppingBasket, Home, Store, Sun, Moon, User, LogOut, 
+  X, Loader2, AlertTriangle, RefreshCw, AlertCircle, Filter, SearchX, ArrowRight, 
+  ChevronLeft, ChevronRight, ChevronDown, Search, Mail
+};
+
 import { UiButtonComponent } from './components/button/button.component';
 import { UiCardComponent } from './components/card/card.component';
 import { UiInputComponent } from './components/input/input.component';
@@ -44,9 +64,13 @@ const UI_COMPONENTS = [
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    LucideAngularModule.pick(icons)
   ],
-  exports: [...UI_COMPONENTS],
+  exports: [
+    ...UI_COMPONENTS,
+    LucideAngularModule
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class UiModule { }

@@ -12,6 +12,7 @@ export class ProductComponent {
   @Output() addToCart = new EventEmitter<Product>();
 
   Math = Math;
+  imgError = false;
 
   constructor(private router: Router) {}
 

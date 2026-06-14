@@ -4,6 +4,7 @@ import { CartItem, CartSummary } from '../../models';
 import { Router } from '@angular/router';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
 import { UiConfirmationComponent } from '../../../shared/ui/components/confirmation/confirmation.component';
+import { ProductsService } from '../../../products/services/products.service';
 
 @Component({
   selector: 'app-cart',
@@ -27,6 +28,7 @@ export class CartComponent implements OnInit {
 
   constructor(
     private cartService: CartsService,
+    private productsService: ProductsService,
     private router: Router
   ) {}
 
@@ -37,7 +39,20 @@ export class CartComponent implements OnInit {
   loadCart(): void {
     this.cartService.cartState$.subscribe(state => {
       this.cartItems = state.items;
+      this.loadProductDetails(this.cartItems);
       this.cartSummary = this.cartService.getCartSummary();
+    });
+  }
+
+  private loadProductDetails(items: CartItem[]): void {
+    items.forEach(item => {
+      if (!item.product) {
+        this.productsService.getProductById(item.productId).subscribe({
+          next: (product) => {
+            item.product = product;
+          }
+        });
+      }
     });
   }
 

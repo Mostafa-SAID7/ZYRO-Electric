@@ -3,41 +3,47 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
 @Component({
   selector: 'app-ui-drawer',
   template: `
-    <!-- Drawer Overlay - Blocks everything -->
-    <div *ngIf="isOpen" 
-      class="fixed inset-0 z-40 bg-black/60 backdrop-blur-md transition-opacity duration-300"
+    <!-- Backdrop Overlay -->
+    <div *ngIf="isOpen"
+      class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm transition-opacity duration-300"
       (click)="close()">
     </div>
 
-    <!-- Drawer Container - Full Height -->
-    <div [ngClass]="{'translate-x-0': isOpen, 'translate-x-full': !isOpen}"
+    <!-- Drawer Panel -->
+    <div [ngClass]="getTranslationClass()"
       [class]="getDrawerClasses()">
-      
+
+      <!-- Gradient top accent bar -->
+      <div class="h-1 w-full bg-gradient-to-r from-accent via-yellow-300 to-accent flex-shrink-0"></div>
+
       <!-- Drawer Header -->
-      <div class="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-border bg-card">
-        <h2 class="text-base sm:text-lg font-bold flex items-center gap-2 overflow-hidden">
-          <ng-content select="[drawer-icon]"></ng-content>
-          <span class="truncate">{{ title }}</span>
-          <app-ui-badge *ngIf="badge" [label]="badge" variant="accent"></app-ui-badge>
-        </h2>
-        <button 
+      <div class="flex items-center justify-between px-6 py-5 border-b border-border/50 bg-card/80 backdrop-blur-md flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-accent/10 rounded-xl flex items-center justify-center border border-accent/20">
+            <ng-content select="[drawer-icon]"></ng-content>
+          </div>
+          <div>
+            <h2 class="text-base font-black tracking-tight">{{ title }}</h2>
+            <app-ui-badge *ngIf="badge" [label]="badge + ' items'" variant="accent"></app-ui-badge>
+          </div>
+        </div>
+        <button
           (click)="close()"
-          class="p-2 hover:bg-secondary rounded-lg transition-colors flex-shrink-0"
-          [title]="'Close'"
+          class="w-9 h-9 flex items-center justify-center rounded-full bg-secondary hover:bg-muted border border-border/50 transition-all hover:scale-110"
           aria-label="Close drawer">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 6L6 18M6 6l12 12"></path>
           </svg>
         </button>
       </div>
 
       <!-- Drawer Content (scrollable) -->
-      <div class="flex-1 overflow-y-auto custom-scrollbar px-4 sm:px-6 py-4">
+      <div class="flex-1 overflow-y-auto px-5 py-5" style="scrollbar-width: thin;">
         <ng-content select="[drawer-content]"></ng-content>
       </div>
 
       <!-- Drawer Footer -->
-      <div class="border-t border-border px-4 sm:px-6 py-4 bg-card">
+      <div class="border-t border-border/50 px-5 py-5 bg-card/80 backdrop-blur-md flex-shrink-0">
         <ng-content select="[drawer-footer]"></ng-content>
       </div>
     </div>
@@ -63,14 +69,21 @@ export class UiDrawerComponent {
   }
 
   getDrawerClasses(): string {
-    const baseClasses = 'fixed top-0 left-0 h-screen w-full sm:w-96 bg-card shadow-2xl transition-transform duration-300 ease-out z-50 flex flex-col overflow-hidden';
+    const baseClasses = 'fixed top-0 h-screen w-full sm:w-96 bg-card shadow-2xl transition-transform duration-300 ease-out z-50 flex flex-col overflow-hidden';
     
     const positionClasses: Record<string, string> = {
-      left: 'border-r border-border',
-      right: 'ml-auto border-l border-border'
+      left: 'left-0 border-r border-border rounded-r-[2rem]',
+      right: 'right-0 border-l border-border rounded-l-[2rem]'
     };
 
     return `${baseClasses} ${positionClasses[this.position]}`;
+  }
+
+  getTranslationClass(): string {
+    if (this.isOpen) {
+      return 'translate-x-0';
+    }
+    return this.position === 'left' ? '-translate-x-full' : 'translate-x-full';
   }
 
   close(): void {

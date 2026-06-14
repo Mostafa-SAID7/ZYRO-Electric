@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home.component';
+import { UiModule } from '../shared/ui/ui.module';
 
 @NgModule({
   declarations: [HomeComponent],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    UiModule
   ],
   exports: [HomeComponent]
 })
