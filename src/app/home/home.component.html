@@ -1,0 +1,192 @@
+<div class="min-h-screen bg-background">
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-r from-accent/10 via-primary/5 to-accent/10 border-b border-border">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24">
+      <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <!-- Left Content -->
+        <div class="space-y-6">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+            Welcome to <span class="gradient-text">Market</span>
+          </h1>
+          <p class="text-lg text-muted-foreground max-w-lg">
+            Discover thousands of high-quality products at unbeatable prices. Shop from the comfort of your home with fast delivery and 100% satisfaction guarantee.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 pt-4">
+            <button 
+              (click)="goToProducts()"
+              class="btn-primary whitespace-nowrap">
+              Shop Now
+            </button>
+            <button class="btn-outline whitespace-nowrap">
+              Learn More
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Image -->
+        <div class="relative h-64 md:h-80">
+          <div class="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/20 rounded-2xl"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="text-6xl">🛍️</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="grid grid-cols-3 gap-4 mt-12 md:mt-16">
+        <div class="text-center">
+          <p class="text-2xl md:text-3xl font-bold text-accent">10K+</p>
+          <p class="text-sm text-muted-foreground mt-1">Products</p>
+        </div>
+        <div class="text-center">
+          <p class="text-2xl md:text-3xl font-bold text-accent">50K+</p>
+          <p class="text-sm text-muted-foreground mt-1">Happy Customers</p>
+        </div>
+        <div class="text-center">
+          <p class="text-2xl md:text-3xl font-bold text-accent">24/7</p>
+          <p class="text-sm text-muted-foreground mt-1">Support</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="max-w-7xl mx-auto px-4 md:px-6 py-16">
+    <div class="space-y-8">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Shop by Category</h2>
+        <p class="text-muted-foreground">Browse our wide selection of categories</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div *ngFor="let category of categories"
+          (click)="goToCategory(category)"
+          class="group cursor-pointer">
+          <div [ngClass]="'bg-gradient-to-br ' + category.color" 
+            class="p-8 rounded-xl text-white text-center space-y-3 group-hover:shadow-lg transition-all duration-300 transform group-hover:-translate-y-2">
+            <div class="text-4xl">{{ category.icon }}</div>
+            <p class="font-semibold text-sm md:text-base">{{ category.name }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="max-w-7xl mx-auto px-4 md:px-6 py-16">
+    <div class="space-y-8">
+      <div class="flex justify-between items-end gap-4">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold mb-2">Featured Products</h2>
+          <p class="text-muted-foreground">Limited time offers on our bestsellers</p>
+        </div>
+        <button 
+          (click)="goToProducts()"
+          class="btn-outline whitespace-nowrap">
+          View All
+        </button>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let product of featuredProducts"
+          (click)="goToProduct(product.id)"
+          class="group cursor-pointer">
+          <div class="bg-secondary rounded-xl overflow-hidden border border-border transition-all duration-300 hover:shadow-lg hover:border-accent">
+            <!-- Product Image -->
+            <div class="relative h-48 md:h-56 overflow-hidden bg-muted">
+              <img [src]="product.image" 
+                [alt]="product.name"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+              
+              <!-- Badge -->
+              <div *ngIf="product.badge"
+                class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-lg text-xs font-bold">
+                {{ product.badge }}
+              </div>
+
+              <!-- Quick Add Button -->
+              <button class="absolute bottom-0 left-0 right-0 bg-accent text-accent-foreground py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-semibold">
+                Quick Add
+              </button>
+            </div>
+
+            <!-- Product Info -->
+            <div class="p-4 space-y-3">
+              <p class="text-sm text-muted-foreground line-clamp-2">{{ product.name }}</p>
+              
+              <!-- Rating -->
+              <div class="flex items-center gap-2">
+                <span class="text-yellow-500">★</span>
+                <span class="text-sm font-medium">{{ product.rating }}</span>
+                <span class="text-xs text-muted-foreground">({{ product.reviews }})</span>
+              </div>
+
+              <!-- Price -->
+              <div class="flex items-baseline gap-2">
+                <span class="text-lg font-bold text-accent">${{ product.price }}</span>
+                <span *ngIf="product.originalPrice" 
+                  class="text-sm text-muted-foreground line-through">${{ product.originalPrice }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promo Banner Section -->
+  <section class="max-w-7xl mx-auto px-4 md:px-6 py-16">
+    <div class="grid md:grid-cols-2 gap-6">
+      <div *ngFor="let promo of promoOffers"
+        [ngClass]="'bg-gradient-to-br ' + promo.gradient"
+        class="rounded-xl p-8 text-white space-y-4 relative overflow-hidden group cursor-pointer">
+        <div class="absolute top-0 right-0 text-6xl opacity-10 group-hover:opacity-20 transition-opacity">{{ promo.icon }}</div>
+        <h3 class="text-2xl font-bold relative z-10">{{ promo.title }}</h3>
+        <p [ngClass]="promo.gradient.includes('blue') ? 'text-blue-100' : 'text-pink-100'" class="relative z-10">
+          {{ promo.description }}
+        </p>
+        <button [ngClass]="'font-bold px-6 py-2 rounded-lg transition-colors w-fit relative z-10 ' + promo.buttonColor">
+          {{ promo.buttonText }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="bg-secondary border-y border-border py-16">
+    <div class="max-w-7xl mx-auto px-4 md:px-6">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div *ngFor="let feature of features" class="text-center space-y-3">
+          <div class="text-4xl mb-4">{{ feature.icon }}</div>
+          <h3 class="font-bold text-lg">{{ feature.title }}</h3>
+          <p class="text-muted-foreground text-sm">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="max-w-7xl mx-auto px-4 md:px-6 py-16">
+    <div class="bg-gradient-to-r from-accent/20 to-primary/20 rounded-2xl border border-border p-8 md:p-12 text-center space-y-6">
+      <h2 class="text-3xl md:text-4xl font-bold">Subscribe to Our Newsletter</h2>
+      <p class="text-muted-foreground max-w-lg mx-auto">
+        Get the latest news, exclusive offers, and special discounts delivered to your inbox
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+        <input 
+          type="email" 
+          placeholder="Enter your email"
+          class="flex-1 px-4 py-3 rounded-lg bg-card border border-border focus:border-accent focus:outline-none transition-colors">
+        <button class="btn-primary whitespace-nowrap">
+          Subscribe
+        </button>
+      </div>
+
+      <p class="text-xs text-muted-foreground">
+        We respect your privacy. Unsubscribe anytime.
+      </p>
+    </div>
+  </section>
+</div>

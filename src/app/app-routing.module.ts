@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/guards/auth.guard';
+import { HomeComponent } from './home/home.component';
 import { AllProductsComponent } from './products/components/all-products/all-products.component';
 import { ProductsDetailsComponent } from './products/components/products-details/products-details.component';
 import { CartComponent } from './carts/components/cart/cart.component';
@@ -11,7 +12,11 @@ import { UiNotFoundComponent } from './shared/ui/components/not-found/not-found.
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'products',
+    component: HomeComponent
+  },
+  {
+    path: 'home',
+    redirectTo: '',
     pathMatch: 'full'
   },
   {

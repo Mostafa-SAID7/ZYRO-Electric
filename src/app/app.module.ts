@@ -11,6 +11,7 @@ import { ProductsModule } from './products/products.module';
 import { SharedModule } from './shared/shared.module';
 import { CheckoutModule } from './checkout/checkout.module';
 import { OrdersModule } from './orders/orders.module';
+import { HomeModule } from './home/home.module';
 import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
 
 @NgModule({
@@ -27,6 +28,7 @@ import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
     CartsModule,
     CheckoutModule,
     OrdersModule,
+    HomeModule,
     SharedModule
   ],
   providers: [
