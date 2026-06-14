@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "dist/market/browser"
+  publish = "dist/market"
   functions = "netlify/functions"
 
 [build.environment]
