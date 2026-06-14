@@ -23,8 +23,9 @@
       <button 
         *ngIf="!addButton"
         (click)="addButton = true"
-        class="btn-primary px-4 py-2 text-xs">
-        Add to Cart
+        class="btn-primary px-4 py-2 text-xs flex items-center gap-1">
+        <lucide-icon name="shopping-cart" class="w-4 h-4"></lucide-icon>
+        Add
       </button>
     </div>
 
@@ -40,7 +41,8 @@
         placeholder="Qty">
       <button 
         (click)="add(); addButton = false"
-        class="btn-primary px-3 text-xs font-bold">
+        class="btn-primary px-3 text-xs font-bold flex items-center gap-1">
+        <lucide-icon name="check" class="w-4 h-4"></lucide-icon>
         Add
       </button>
     </div>

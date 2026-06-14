@@ -1,5 +1,8 @@
 <div class="card mx-auto max-w-6xl my-8 p-6">
-  <h1 class="text-3xl font-bold text-accent mb-6">🛒 Shopping Cart</h1>
+  <h1 class="text-3xl font-bold text-accent mb-6 flex items-center gap-3">
+    <lucide-icon name="shopping-cart" class="w-8 h-8"></lucide-icon>
+    Shopping Cart
+  </h1>
 
   <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
     <p class="text-lg text-foreground">
@@ -9,7 +12,8 @@
     </p>
     <button 
       (click)="clearCart()"
-      class="btn-outline px-4 py-2 text-sm font-semibold">
+      class="btn-outline px-4 py-2 text-sm font-semibold flex items-center gap-2">
+      <lucide-icon name="trash-2" class="w-4 h-4"></lucide-icon>
       Clear Cart
     </button>
   </div>
@@ -42,8 +46,8 @@
             <div class="quantity flex items-center gap-2">
               <button 
                 (click)="minsAmount(index)"
-                class="btn-outline px-2 py-1 text-xs font-bold">
-                −
+                class="btn-outline px-2 py-1 text-xs font-bold flex items-center justify-center">
+                <lucide-icon name="minus" class="w-4 h-4"></lucide-icon>
               </button>
               <input 
                 type="number" 
@@ -53,8 +57,8 @@
                 min="1">
               <button 
                 (click)="addAmount(index)"
-                class="btn-outline px-2 py-1 text-xs font-bold">
-                +
+                class="btn-outline px-2 py-1 text-xs font-bold flex items-center justify-center">
+                <lucide-icon name="plus" class="w-4 h-4"></lucide-icon>
               </button>
             </div>
           </td>
@@ -62,7 +66,8 @@
           <td class="p-3">
             <button 
               (click)="deleteProduct(index)"
-              class="btn-primary px-3 py-1 text-xs">
+              class="btn-primary px-3 py-1 text-xs flex items-center gap-1">
+              <lucide-icon name="delete" class="w-4 h-4"></lucide-icon>
               Delete
             </button>
           </td>
@@ -75,7 +80,8 @@
           <td class="p-3">
             <button 
               (click)="addCart()"
-              class="btn-primary px-4 py-2 w-full font-bold">
+              class="btn-primary px-4 py-2 w-full font-bold flex items-center justify-center gap-2">
+              <lucide-icon name="check-circle" class="w-5 h-5"></lucide-icon>
               Order Now
             </button>
           </td>
@@ -90,6 +96,9 @@
   *ngIf="success"
   class="fixed bottom-4 right-4 max-w-md bg-green-500 text-white rounded-lg p-4 shadow-lg animate-pulse-glow"
   role="alert">
-  <strong class="block">✓ Success!</strong>
+  <strong class="block flex items-center gap-2">
+    <lucide-icon name="check" class="w-5 h-5"></lucide-icon>
+    Success!
+  </strong>
   <span>Your order has been placed successfully</span>
 </div>

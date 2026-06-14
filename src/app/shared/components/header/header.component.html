@@ -2,8 +2,9 @@
   <nav class="max-w-7xl mx-auto">
     <div class="flex justify-between items-center px-4 py-4">
       <!-- Logo -->
-      <h1 class="text-2xl font-bold gradient-text cursor-pointer">
-        🛒 Market
+      <h1 class="text-2xl font-bold gradient-text cursor-pointer flex items-center gap-2">
+        <lucide-icon name="shopping-bag" class="w-8 h-8"></lucide-icon>
+        Market
       </h1>
 
       <!-- Navigation Links -->
@@ -12,7 +13,8 @@
           <a 
             routerLink="/products"
             routerLinkActive="!text-accent"
-            class="text-foreground font-semibold transition-colors">
+            class="text-foreground font-semibold transition-colors flex items-center gap-2">
+            <lucide-icon name="package" class="w-5 h-5"></lucide-icon>
             Products
           </a>
         </li>
@@ -20,8 +22,9 @@
           <a 
             routerLink="/cart"
             routerLinkActive="!text-accent"
-            class="text-foreground font-semibold transition-colors">
-            🛍️ Cart
+            class="text-foreground font-semibold transition-colors flex items-center gap-2">
+            <lucide-icon name="shopping-cart" class="w-5 h-5"></lucide-icon>
+            Cart
           </a>
         </li>
       </ul>
