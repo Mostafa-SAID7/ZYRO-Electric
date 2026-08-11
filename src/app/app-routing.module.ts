@@ -12,6 +12,12 @@ import { AboutComponent } from './pages/about/about.component';
 import { HelpComponent } from './pages/help/help.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { CareersComponent } from './pages/careers/careers.component';
+import { PrivacyComponent } from './pages/privacy/privacy.component';
+import { TermsComponent } from './pages/terms/terms.component';
+import { CookiesComponent } from './pages/cookies/cookies.component';
+import { ReturnsComponent } from './pages/returns/returns.component';
+import { ShippingComponent } from './pages/shipping/shipping.component';
+import { FAQComponent } from './pages/faq/faq.component';
 
 const routes: Routes = [
   {
@@ -61,6 +67,31 @@ const routes: Routes = [
   {
     path: 'careers',
     component: CareersComponent
+  },
+  // Policy & Info Pages
+  {
+    path: 'privacy',
+    component: PrivacyComponent
+  },
+  {
+    path: 'terms',
+    component: TermsComponent
+  },
+  {
+    path: 'cookies',
+    component: CookiesComponent
+  },
+  {
+    path: 'returns',
+    component: ReturnsComponent
+  },
+  {
+    path: 'shipping',
+    component: ShippingComponent
+  },
+  {
+    path: 'faq',
+    component: FAQComponent
   },
   {
     path: 'auth',

@@ -17,6 +17,12 @@ import { AboutModule } from './pages/about/about.module';
 import { HelpModule } from './pages/help/help.module';
 import { ContactModule } from './pages/contact/contact.module';
 import { CareersModule } from './pages/careers/careers.module';
+import { PrivacyModule } from './pages/privacy/privacy.module';
+import { TermsModule } from './pages/terms/terms.module';
+import { CookiesModule } from './pages/cookies/cookies.module';
+import { ReturnsModule } from './pages/returns/returns.module';
+import { ShippingModule } from './pages/shipping/shipping.module';
+import { FAQModule } from './pages/faq/faq.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +43,12 @@ import { CareersModule } from './pages/careers/careers.module';
     HelpModule,
     ContactModule,
     CareersModule,
+    PrivacyModule,
+    TermsModule,
+    CookiesModule,
+    ReturnsModule,
+    ShippingModule,
+    FAQModule,
     SharedModule
   ],
   providers: [
