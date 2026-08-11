@@ -1,12 +1,18 @@
-# Development Dockerfile — Hot reload with ng serve
+# ⚡ ZYRO - Tech Accessories Platform
+# Docker Development Image
+# Hot reload with ng serve for active development
+# Usage: docker-compose up (runs on port 4200)
+
 FROM node:20-alpine
 
-LABEL maintainer="Market Dev Team"
-LABEL description="Market - Angular E-Commerce App (Development)"
+LABEL maintainer="ZYRO Dev Team <dev@zyro.tech>"
+LABEL description="ZYRO - Tech Accessories Platform (Development with Hot Reload)"
+LABEL version="1.0.0"
+LABEL brand="ZYRO - Tech. Organized. Elevated."
 
 WORKDIR /app
 
-# Install Angular CLI globally
+# Install Angular CLI globally for development
 RUN npm install -g @angular/cli@18 --legacy-peer-deps
 
 # Copy dependency files
@@ -15,11 +21,17 @@ COPY package.json package-lock.json ./
 # Install all dependencies including devDependencies
 RUN npm ci --legacy-peer-deps
 
-# Copy source (will be overridden by volume mount in docker-compose)
+# Copy source code (will be overridden by volume mount in docker-compose)
 COPY . .
 
 # Expose Angular dev server port
 EXPOSE 4200
 
+# Environment variables for development
+ENV NODE_ENV=development
+ENV CHOKIDAR_USEPOLLING=true
+
 # Start Angular dev server — bind to all interfaces for Docker access
+# --poll enables file watching on filesystems that don't support inotify
+# --disable-host-check allows access from any host in Docker network
 CMD ["ng", "serve", "--host", "0.0.0.0", "--poll", "500", "--disable-host-check"]
