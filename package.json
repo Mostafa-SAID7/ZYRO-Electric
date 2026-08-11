@@ -1,5 +1,5 @@
 {
-  "name": "@mostafa-said7/zyro",
+  "name": "market",
   "version": "1.0.0",
   "description": "ZYRO - Tech Accessories E-Commerce Platform",
   "scripts": {
@@ -11,15 +11,11 @@
     "test": "ng test --watch=false",
     "lint": "ng lint"
   },
-  "private": false,
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
+  "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/Mostafa-SAID7/Market-User.git"
+    "url": "https://github.com/Mostafa-SAID7/ZYRO-Electric.git"
   },
-  "homepage": "https://github.com/Mostafa-SAID7/Market-User",
   "keywords": [
     "zyro",
     "tech-accessories",
