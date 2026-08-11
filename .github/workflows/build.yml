@@ -1,4 +1,4 @@
-name: Build & Test
+name: Build Application
 
 on:
   push:
@@ -25,8 +25,18 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Build application
+      - name: Build production bundle
         run: npm run build
+
+      - name: Verify build output
+        run: |
+          if [ -d "dist/market" ]; then
+            echo "✅ Build successful - dist/market exists"
+            ls -lah dist/market/
+          else
+            echo "❌ Build failed - dist/market not found"
+            exit 1
+          fi
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
