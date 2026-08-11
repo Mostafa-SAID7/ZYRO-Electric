@@ -49,7 +49,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.14.0",
     "autoprefixer": "^10.4.19",
-    "jasmine-core": "~5.1.0",
+    "jasmine-core": "~6.3.0",
     "karma": "^6.4.3",
     "karma-chrome-launcher": "^3.2.0",
     "karma-coverage": "^2.2.1",
