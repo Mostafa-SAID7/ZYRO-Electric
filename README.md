@@ -1,6 +1,8 @@
-# 🛒 Market — Modern E-Commerce Platform
+# ⚡ ZYRO — Premium Tech Accessories Platform
 
-> A full-featured, production-ready e-commerce frontend built with **Angular 18**, **Tailwind CSS**, and a rich component library. Deployable via **Netlify**, **Docker**, or any static host.
+> **ZYRO** is a full-featured, production-ready e-commerce platform specializing in technology accessories. Built with **Angular 18**, **Tailwind CSS**, and deployable via **Netlify**, **Docker**, or any static host.
+
+**Tagline**: *"Tech. Organized. Elevated."*
 
 [![Angular](https://img.shields.io/badge/Angular-18.2-DD0031?style=flat-square&logo=angular)](https://angular.io/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38BDF8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
@@ -8,12 +10,31 @@
 [![Node](https://img.shields.io/badge/Node-20.x-339933?style=flat-square&logo=nodedotjs)](https://nodejs.org/)
 [![Netlify](https://img.shields.io/badge/Deployed-Netlify-00C7B7?style=flat-square&logo=netlify)](https://netlify.com/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker)](https://www.docker.com/)
+[![Brand](https://img.shields.io/badge/Brand-ZYRO-007AFF?style=flat-square)](#-zyro--brand-guidelines)
 [![License](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
-[![CI](https://github.com/Mostafa-SAID7/Market-User/actions/workflows/build.yml/badge.svg)](https://github.com/Mostafa-SAID7/Market-User/actions)
 
 ---
 
-## ✨ Features
+## ⚡ ZYRO Technologies
+
+ZYRO specializes in **10 high-growth technology niches**:
+
+### Premium Accessory Categories
+
+| Category | Focus | Market |
+|----------|-------|--------|
+| 📱 **Smartphone Accessories** | Protection, charging, audio | $50B+ |
+| 💻 **Laptop Accessories** | Cases, docks, cooling, stands | $35B+ |
+| 🔌 **Cable Management** | Organization, storage, routing | $8B+ |
+| 🖥️ **Desk Tech** | Lighting, organizing, gadgets | $28B+ |
+| 🏠 **Smart Device Accessories** | IoT, wearables, hubs | $22B+ |
+| ⚡ **Charging Accessories** | Chargers, cables, power banks | $18B+ |
+| ✈️ **Travel Tech** | Organizers, adapters, gear | $16B+ |
+| 📷 **Photography Accessories** | Lenses, lighting, stabilizers | $8B+ |
+| 🎬 **Content Creator Equipment** | Cameras, mics, lights, streams | $32B+ |
+| 🗂️ **Electronics Organization** | Storage, display, management | $12B+ |
+
+**Combined Market Opportunity**: $240B+ | **Growth Rate**: 15-20% annually
 
 ### 🛍️ Shopping Experience
 - **Product Catalog** — Grid/list view with pagination and real-time filtering
