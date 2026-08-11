@@ -17,8 +17,8 @@ WORKDIR /app
 # Copy dependency files first for better layer caching
 COPY package.json package-lock.json ./
 
-# Install dependencies with legacy peer deps flag
-RUN npm install --legacy-peer-deps
+# Clean npm cache and install fresh dependencies
+RUN npm cache clean --force && npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
