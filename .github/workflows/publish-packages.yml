@@ -38,7 +38,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/zyro-electric:latest
+          tags: ghcr.io/mostafa-said7/zyro-electric:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
