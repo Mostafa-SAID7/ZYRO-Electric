@@ -16,10 +16,10 @@ WORKDIR /app
 
 # Copy dependency files first for better layer caching
 COPY package.json ./
-COPY package-lock.json* ./
 
-# Install dependencies (use npm ci if lock file exists, fallback to npm install)
-RUN if [ -f package-lock.json ]; then npm ci --legacy-peer-deps; else npm install --legacy-peer-deps; fi
+# Install dependencies - use npm install in Docker (CI environment will handle)
+# npm ci requires package-lock.json, but during build we use npm install
+RUN npm install --legacy-peer-deps --no-optional
 
 # Copy source code
 COPY . .
