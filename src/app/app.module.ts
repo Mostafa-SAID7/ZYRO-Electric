@@ -23,6 +23,8 @@ import { CookiesModule } from './pages/cookies/cookies.module';
 import { ReturnsModule } from './pages/returns/returns.module';
 import { ShippingModule } from './pages/shipping/shipping.module';
 import { FAQModule } from './pages/faq/faq.module';
+import { BlogModule } from './pages/blog/blog.module';
+import { PressModule } from './pages/press/press.module';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { FAQModule } from './pages/faq/faq.module';
     ReturnsModule,
     ShippingModule,
     FAQModule,
+    BlogModule,
+    PressModule,
     SharedModule
   ],
   providers: [

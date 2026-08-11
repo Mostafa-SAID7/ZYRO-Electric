@@ -18,6 +18,8 @@ import { CookiesComponent } from './pages/cookies/cookies.component';
 import { ReturnsComponent } from './pages/returns/returns.component';
 import { ShippingComponent } from './pages/shipping/shipping.component';
 import { FAQComponent } from './pages/faq/faq.component';
+import { BlogComponent } from './pages/blog/blog.component';
+import { PressComponent } from './pages/press/press.component';
 
 const routes: Routes = [
   {
@@ -92,6 +94,14 @@ const routes: Routes = [
   {
     path: 'faq',
     component: FAQComponent
+  },
+  {
+    path: 'blog',
+    component: BlogComponent
+  },
+  {
+    path: 'press',
+    component: PressComponent
   },
   {
     path: 'auth',
