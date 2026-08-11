@@ -1,23 +1,29 @@
-name: Build Application
+name: CI - Build
 
 on:
   push:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      - 'bugfix/**'
   pull_request:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [22.x]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
@@ -31,16 +37,17 @@ jobs:
       - name: Verify build output
         run: |
           if [ -d "dist/market" ]; then
-            echo "Build successful - dist/market exists"
+            echo "Build successful"
             ls -lah dist/market/
           else
-            echo "Build failed - dist/market not found"
+            echo "Build failed"
             exit 1
           fi
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
-        if: always()
+        if: success()
         with:
-          name: dist
+          name: build-${{ github.run_id }}
           path: dist/
+          retention-days: 5

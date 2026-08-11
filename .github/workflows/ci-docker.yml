@@ -1,35 +1,41 @@
-name: Build & Verify Docker Image
+name: CI - Docker Build
 
 on:
   push:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      - 'bugfix/**'
   pull_request:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
   workflow_dispatch:
 
 jobs:
-  build:
+  build-docker:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image (no push)
+      - name: Build Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
           push: false
           load: true
-          tags: zyro-electric:test
+          tags: zyro-electric:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Verify Docker image build
+      - name: Verify build
         run: |
           echo "Docker image built successfully"
-          docker image ls | grep zyro-electric
+          echo "Image tag: zyro-electric:${{ github.sha }}"

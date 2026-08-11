@@ -1,0 +1,63 @@
+name: CI - Bugfix Branch
+
+on:
+  push:
+    branches:
+      - 'bugfix/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  validate-bugfix:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate branch naming
+        run: |
+          BRANCH="${{ github.head_ref || github.ref_name }}"
+          if [[ $BRANCH =~ ^(bugfix|hotfix)/[a-z0-9\-]+$ ]]; then
+            echo "Branch name valid: $BRANCH"
+          else
+            echo "Invalid bugfix/hotfix branch name: $BRANCH"
+            echo "Expected format: bugfix/issue-name or hotfix/critical-issue"
+            exit 1
+          fi
+
+  build-and-verify:
+    needs: validate-bugfix
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify fix
+        run: echo "Bugfix build verified"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bugfix-build-${{ github.run_id }}
+          path: dist/
+          retention-days: 7

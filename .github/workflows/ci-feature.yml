@@ -1,0 +1,58 @@
+name: CI - Feature Branch
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+  pull_request:
+    branches:
+      - develop
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  validate-feature:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate branch naming
+        run: |
+          BRANCH="${{ github.head_ref || github.ref_name }}"
+          if [[ $BRANCH =~ ^feature/[a-z0-9\-]+$ ]]; then
+            echo "Branch name valid: $BRANCH"
+          else
+            echo "Invalid feature branch name: $BRANCH"
+            echo "Expected format: feature/feature-name"
+            exit 1
+          fi
+
+  build-and-test:
+    needs: validate-feature
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: feature-build-${{ github.run_id }}
+          path: dist/
+          retention-days: 7
