@@ -18,8 +18,8 @@ WORKDIR /app
 COPY package.json ./
 COPY package-lock.json* ./
 
-# Use npm ci for reproducible builds (respects package-lock.json exactly)
-RUN npm ci --legacy-peer-deps
+# Install dependencies (use npm ci if lock file exists, fallback to npm install)
+RUN if [ -f package-lock.json ]; then npm ci --legacy-peer-deps; else npm install --legacy-peer-deps; fi
 
 # Copy source code
 COPY . .
