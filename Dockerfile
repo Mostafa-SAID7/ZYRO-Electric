@@ -20,10 +20,10 @@ WORKDIR /app
 # Copy dependency files
 COPY package.json ./
 
-# Install dependencies with proper native module handling
-# Use --omit=optional (correct npm v7+ syntax) instead of deprecated --no-optional
-# This skips optional native dependencies that don't have Alpine prebuilts
-RUN npm install --legacy-peer-deps --omit=optional 2>&1 | grep -v "npm warn" || true
+# Install ALL dependencies (need devDependencies for build)
+# Use --omit=optional to skip optional deps that don't have Alpine prebuilts
+# Note: lmdb may try to install but will fail gracefully; continue anyway
+RUN npm install --legacy-peer-deps --omit=optional || npm install --legacy-peer-deps --ignore-scripts
 
 # Copy source code
 COPY . .

@@ -13,10 +13,17 @@
   "regions": ["iad1"],
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
   "github": {
     "enabled": true,
     "silent": false,
-    "autoAlias": true
+    "autoAlias": true,
+    "autoJobCancelPreviousOnPush": true
   },
   "headers": [
     {
@@ -33,6 +40,10 @@
         {
           "key": "X-Frame-Options",
           "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
         }
       ]
     }
