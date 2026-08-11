@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ProductComponent } from './product.component';
 
@@ -8,7 +9,8 @@ describe('ProductComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProductComponent ]
+      declarations: [ ProductComponent ],
+      imports: [ RouterTestingModule ]
     })
     .compileComponents();
   });
@@ -16,6 +18,11 @@ describe('ProductComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductComponent);
     component = fixture.componentInstance;
+    component.product = {
+      id: '1',
+      title: 'Test Product',
+      stock: 10
+    } as any;
     fixture.detectChanges();
   });
 
