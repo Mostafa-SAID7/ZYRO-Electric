@@ -30,7 +30,7 @@ jobs:
       run: npm test -- --watch=false --code-coverage
 
     - name: Upload coverage reports
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./coverage/market/lcov.info
         flags: unittests
@@ -38,14 +38,14 @@ jobs:
 
     - name: Archive test results
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: coverage/market/
 
     - name: Archive coverage report
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report
         path: coverage/market/index.html
