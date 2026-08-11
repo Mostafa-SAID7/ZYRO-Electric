@@ -3,7 +3,7 @@
 # Hot reload with ng serve for active development
 # Usage: docker-compose up (runs on port 4200)
 
-FROM node:20-alpine
+FROM node:22.22.3-alpine
 
 LABEL maintainer="ZYRO Dev Team <dev@zyro.tech>"
 LABEL description="ZYRO - Tech Accessories Platform (Development with Hot Reload)"

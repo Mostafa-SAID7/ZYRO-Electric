@@ -18,8 +18,8 @@ WORKDIR /app
 COPY package.json ./
 COPY package-lock.json* ./
 
-# Clean npm cache and install fresh dependencies
-RUN npm cache clean --force && npm install --legacy-peer-deps
+# Use npm ci for reproducible builds (respects package-lock.json exactly)
+RUN npm ci --legacy-peer-deps
 
 # Copy source code
 COPY . .
@@ -48,9 +48,8 @@ COPY --from=builder /app/dist/market /usr/share/nginx/html
 # Set permissions (nginx user already exists in nginx base image)
 RUN chown -R nginx:nginx /usr/share/nginx/html && chmod -R 755 /usr/share/nginx/html
 
-# Expose ports
+# Expose port 80 (Nginx listens on 80, docker-compose maps to 3030)
 EXPOSE 80
-EXPOSE 3030
 
 # Health check - verify Nginx is responding
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
