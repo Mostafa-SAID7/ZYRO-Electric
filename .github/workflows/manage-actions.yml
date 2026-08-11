@@ -1,0 +1,175 @@
+name: Manage GitHub Actions
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        type: choice
+        options:
+          - 'list-workflows'
+          - 'disable-all'
+          - 'enable-all'
+          - 'view-usage'
+
+jobs:
+  list-workflows:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.action == 'list-workflows' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: List all workflows
+        run: |
+          echo "GitHub Actions Workflows"
+          echo "======================="
+          echo ""
+          
+          WORKFLOW_DIR=".github/workflows"
+          COUNT=0
+          
+          echo "Active Workflows:"
+          echo ""
+          
+          for workflow in "$WORKFLOW_DIR"/*.yml; do
+            FILENAME=$(basename "$workflow")
+            NAME=$(grep "^name:" "$workflow" | cut -d':' -f2 | sed 's/^ *//')
+            
+            ((COUNT++))
+            echo "$COUNT. $FILENAME"
+            echo "   Name: $NAME"
+            
+            TRIGGERS=$(grep "^on:" "$workflow" -A 10 | grep -o "push\|pull_request\|schedule\|workflow_dispatch" | sort -u | tr '\n' ', ' | sed 's/,$//')
+            echo "   Triggers: $TRIGGERS"
+            echo ""
+          done
+          
+          echo "Total: $COUNT workflows"
+
+  view-usage:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.action == 'view-usage' }}
+    permissions:
+      actions: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Workflow usage statistics
+        run: |
+          echo "GitHub Actions Usage Statistics"
+          echo "================================"
+          echo ""
+          echo "Repository: ${{ github.repository }}"
+          echo "Workflows: .github/workflows/"
+          echo ""
+          
+          WORKFLOW_DIR=".github/workflows"
+          
+          echo "Workflow Statistics:"
+          echo ""
+          
+          echo "Build Workflows:"
+          find "$WORKFLOW_DIR" -name "build-*.yml" | wc -l | awk '{print "  Count: " $1}'
+          
+          echo ""
+          echo "Validation Workflows:"
+          find "$WORKFLOW_DIR" -name "validate-*.yml" | wc -l | awk '{print "  Count: " $1}'
+          
+          echo ""
+          echo "Check Workflows:"
+          find "$WORKFLOW_DIR" -name "check-*.yml" | wc -l | awk '{print "  Count: " $1}'
+          
+          echo ""
+          echo "Management Workflows:"
+          find "$WORKFLOW_DIR" -name "manage-*.yml" -o -name "review-*.yml" | wc -l | awk '{print "  Count: " $1}'
+          
+          echo ""
+          echo "Publish & Deploy Workflows:"
+          find "$WORKFLOW_DIR" -name "publish-*.yml" -o -name "deploy-*.yml" | wc -l | awk '{print "  Count: " $1}'
+          
+          echo ""
+          echo "Recommended Optimization:"
+          echo "  • Monitor workflow execution times"
+          echo "  • Review failed workflows for patterns"
+          echo "  • Cache dependencies aggressively"
+          echo "  • Use matrix builds for parallelization"
+
+  workflow-settings:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Workflow configuration
+        run: |
+          echo "GitHub Actions Configuration"
+          echo "============================"
+          echo ""
+          
+          echo "Recommended Settings:"
+          echo ""
+          
+          echo "1. Artifact Settings:"
+          echo "   • Retention: 30 days default"
+          echo "   • Max size: 400MB per artifact"
+          echo "   • Cleanup old artifacts regularly"
+          echo ""
+          
+          echo "2. Concurrency:"
+          echo "   • Limit parallel jobs per repo"
+          echo "   • Use concurrency groups to manage queue"
+          echo "   • Prevent duplicate workflow runs"
+          echo ""
+          
+          echo "3. Security:"
+          echo "   • Use GitHub tokens with minimal scopes"
+          echo "   • Rotate PAT tokens regularly"
+          echo "   • Audit secrets access"
+          echo "   • Enable branch protection"
+          echo ""
+          
+          echo "4. Optimization:"
+          echo "   • Cache npm/pip packages"
+          echo "   • Reuse Docker layers"
+          echo "   • Parallel job execution"
+          echo "   • Matrix builds for multiple versions"
+          echo ""
+          
+          echo "5. Monitoring:"
+          echo "   • Set up workflow notifications"
+          echo "   • Monitor execution times"
+          echo "   • Track failure rates"
+          echo "   • Review cost usage"
+
+  system-info:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: System information
+        run: |
+          echo "GitHub Actions System Info"
+          echo "=========================="
+          echo ""
+          
+          echo "Runner Environment:"
+          echo "  OS: ${{ runner.os }}"
+          echo "  Arch: ${{ runner.arch }}"
+          echo "  VM Image: ubuntu-latest"
+          echo ""
+          
+          echo "Available Tools:"
+          echo "  Node.js: $(node --version)"
+          echo "  npm: $(npm --version)"
+          echo "  Docker: $(docker --version)"
+          echo "  Git: $(git --version)"
+          echo ""
+          
+          echo "Disk Space:"
+          df -h / | tail -1 | awk '{print "  Total: " $2 ", Used: " $3 ", Available: " $4}'
+          echo ""
+          
+          echo "Memory:"
+          free -h | grep "^Mem:" | awk '{print "  Total: " $2 ", Available: " $7}'

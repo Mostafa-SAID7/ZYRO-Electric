@@ -1,0 +1,82 @@
+name: Manage Tags
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to tag (e.g., 1.0.5)'
+        required: true
+      message:
+        description: 'Release message'
+        required: false
+        default: 'Release'
+
+jobs:
+  validate-version:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      version: ${{ steps.tag.outputs.version }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate version format
+        id: tag
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid version format. Use semantic versioning (x.y.z)"
+            exit 1
+          fi
+          echo "tag=v${VERSION}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Valid version: $VERSION"
+
+      - name: Check tag doesn't exist
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists"
+            exit 1
+          fi
+          echo "Tag $TAG is available"
+
+  create-tag:
+    needs: validate-version
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create tag
+        run: |
+          TAG="${{ needs.validate-version.outputs.tag }}"
+          MESSAGE="${{ github.event.inputs.message }} - $TAG"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag -a "$TAG" -m "$MESSAGE"
+          echo "Created tag: $TAG"
+
+      - name: Push tag
+        run: |
+          TAG="${{ needs.validate-version.outputs.tag }}"
+          git push origin "$TAG"
+          echo "Pushed tag: $TAG"
+
+  notify-release:
+    needs: [validate-version, create-tag]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Release notification
+        run: |
+          TAG="${{ needs.validate-version.outputs.tag }}"
+          echo "Tag created: $TAG"
+          echo "Release workflows will automatically trigger:"
+          echo "  • publish-packages.yml (NPM + Docker)"
+          echo "  • deploy-netlify.yml (Netlify)"
+          echo ""
+          echo "Check Actions tab for progress"
