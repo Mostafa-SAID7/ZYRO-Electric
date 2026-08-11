@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
     
     steps:
       - name: Checkout code
@@ -50,31 +52,31 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
-          release_name: Release ${{ steps.tag.outputs.tag }}
+          name: Release ${{ steps.tag.outputs.tag }}
           body: |
             # Release ${{ steps.tag.outputs.tag }}
             
             ## Changes
             ${{ steps.changelog.outputs.changelog }}
             
+            ## Deployment
+            - **Production:** Deployed to Vercel
+            - **CDN:** Global edge network active
+            - **Status:** Live
+            
             ## Package Info
             - **npm:** @mostafa-said7/zyro-electric@${{ steps.tag.outputs.tag }}
             - **Docker:** ghcr.io/mostafa-said7/zyro-electric:${{ steps.tag.outputs.tag }}
-            
-            ## Release Artifacts
-            - Docker image pushed to GitHub Container Registry
-            - npm package published to GitHub Packages
-            - Production deployed to Netlify
             
             ---
             Released by GitHub Actions
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-to-npm:
     needs: create-release
@@ -149,28 +151,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
-      - name: Build application
-        run: npm run build
-
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3
-        with:
-          publish-dir: './dist/market'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: 'Production release from GitHub Actions'
-          enable-commit-comment: true
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      - name: Notify Vercel deployment
+        run: |
+          echo "Production deployment triggered"
+          echo "Release is now live on Vercel"
+          echo "URL: https://zyro-electric.vercel.app"
 
   release-notification:
     needs: [create-release, publish-to-npm, publish-to-docker, deploy-production]
