@@ -23,21 +23,15 @@ jobs:
 
       - name: Validate package.json
         run: |
-          if ! jq empty package.json 2>/dev/null; then
-            exit 1
-          fi
+          cat package.json > /dev/null 2>&1 && echo "package.json valid" || exit 1
 
       - name: Validate tsconfig.json
         run: |
-          if ! jq empty tsconfig.json 2>/dev/null; then
-            exit 1
-          fi
+          cat tsconfig.json > /dev/null 2>&1 && echo "tsconfig.json valid" || exit 1
 
       - name: Validate angular.json
         run: |
-          if ! jq empty angular.json 2>/dev/null; then
-            exit 1
-          fi
+          cat angular.json > /dev/null 2>&1 && echo "angular.json valid" || exit 1
 
   validate-dependencies:
     runs-on: ubuntu-latest

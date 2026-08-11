@@ -1,0 +1,131 @@
+name: Check Performance
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      - 'bugfix/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  bundle-size:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps --no-save
+
+      - name: Build application
+        run: npm run build
+
+      - name: Analyze bundle size
+        run: |
+          echo "Bundle Size Analysis"
+          echo "===================="
+          if [ -d "dist/market" ]; then
+            echo ""
+            echo "Distribution folder:"
+            du -sh dist/market/
+            echo ""
+            echo "Main files:"
+            find dist/market -maxdepth 1 -type f -exec du -sh {} \; | sort -hr | head -10
+            echo ""
+            echo "Performance targets:"
+            echo "  Main bundle: < 500KB (gzipped)"
+            echo "  Total size: < 2MB"
+          fi
+
+  build-time:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps --no-save
+
+      - name: Measure build time
+        run: |
+          echo "Build Time Analysis"
+          echo "==================="
+          START_TIME=$(date +%s%N | cut -b1-13)
+          npm run build > /dev/null 2>&1
+          END_TIME=$(date +%s%N | cut -b1-13)
+          BUILD_TIME=$((($END_TIME - $START_TIME) / 1000))
+          echo "Build time: ${BUILD_TIME}ms"
+          echo ""
+          if [ $BUILD_TIME -gt 180000 ]; then
+            echo "Warning: Build time exceeds 3 minutes"
+          fi
+
+  dependency-size:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps --no-save
+
+      - name: Analyze dependencies
+        run: |
+          echo "Dependency Analysis"
+          echo "==================="
+          echo ""
+          echo "Node modules size:"
+          du -sh node_modules/
+          echo ""
+          echo "Top 10 largest dependencies:"
+          du -sh node_modules/*/ | sort -rh | head -10
+          echo ""
+          echo "Package count:"
+          npm ls --depth=0 2>/dev/null | wc -l
