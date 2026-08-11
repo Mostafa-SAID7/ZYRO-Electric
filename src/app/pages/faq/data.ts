@@ -22,11 +22,11 @@ export const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: 'What\'s your return policy?',
-    answer: '30-day returns for unopened, unused items in original packaging. Free returns for defective/wrong items. Easy process!'
+    answer: 'Enjoy 30-day returns for unopened, unused items in original packaging. Free returns for defective/wrong items. Easy process!'
   },
   {
     question: 'How long until I get my refund?',
-    answer: '10-21 business days from delivery: inspection (2-3 days), approval (1 day), processing (5-7 days), account appearance (3-5 days).'
+    answer: 'Typically 10-21 business days from delivery: inspection (2-3 days), approval (1 day), processing (5-7 days), account appearance (3-5 days).'
   },
   {
     question: 'Can I track my order?',
