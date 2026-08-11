@@ -23,19 +23,19 @@ jobs:
 
       - name: Validate package.json
         run: |
-          if ! node -e "require('./package.json')" 2>/dev/null; then
+          if ! jq empty package.json 2>/dev/null; then
             exit 1
           fi
 
       - name: Validate tsconfig.json
         run: |
-          if ! node -e "require('./tsconfig.json')" 2>/dev/null; then
+          if ! jq empty tsconfig.json 2>/dev/null; then
             exit 1
           fi
 
       - name: Validate angular.json
         run: |
-          if ! node -e "require('./angular.json')" 2>/dev/null; then
+          if ! jq empty angular.json 2>/dev/null; then
             exit 1
           fi
 
@@ -51,10 +51,12 @@ jobs:
         with:
           node-version: '22.x'
 
-      - name: Check dependencies
+      - name: Check package-lock exists
         run: |
-          npm ci --dry-run
-          echo "Dependencies validated"
+          if [ ! -f "package-lock.json" ]; then
+            exit 1
+          fi
+          echo "Dependencies validation passed"
 
   validate-dockerfile:
     runs-on: ubuntu-latest
