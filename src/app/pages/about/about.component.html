@@ -1,0 +1,134 @@
+<!-- Hero Section -->
+<section class="bg-gradient-to-br from-background to-secondary py-20 md:py-32">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <div class="text-center">
+      <h1 class="text-hero-xl gradient-text mb-6">About ZYRO</h1>
+      <p class="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+        Elevating Your Tech Lifestyle with carefully curated products and exceptional service since 2024.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Mission Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-section-xl mb-6">Our Mission</h2>
+        <p class="text-lg text-muted-foreground mb-6 leading-relaxed">
+          At ZYRO, we believe technology should enhance every aspect of your life. Our mission is to curate and deliver the finest tech accessories—from smartphone cases to professional photography gear—making quality products accessible to everyone.
+        </p>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <span class="text-accent text-2xl">✓</span>
+            <p class="text-foreground"><strong>Quality First:</strong> Every product thoroughly tested</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-accent text-2xl">✓</span>
+            <p class="text-foreground"><strong>Customer Centric:</strong> Your satisfaction is our priority</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <span class="text-accent text-2xl">✓</span>
+            <p class="text-foreground"><strong>Innovation:</strong> Latest tech trends and products</p>
+          </div>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="bg-card border border-border rounded-2xl p-8 accent-glow">
+          <div class="text-6xl mb-4">🚀</div>
+          <h3 class="text-2xl font-bold text-accent mb-4">Started in 2024</h3>
+          <p class="text-muted-foreground mb-6">
+            From a simple observation that finding the right tech accessories was frustrating, ZYRO was born with a mission to change that.
+          </p>
+          <p class="text-sm text-muted-foreground">
+            Today, we serve thousands of customers worldwide with quality products and exceptional service across 9 curated tech niches.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values Section -->
+<section class="py-16 md:py-24 bg-secondary">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">Our Values</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let value of values" class="glass-card p-8 rounded-xl hover:border-accent transition-colors">
+        <div class="text-5xl mb-4">{{ value.icon }}</div>
+        <h3 class="text-xl font-bold text-accent mb-3">{{ value.title }}</h3>
+        <p class="text-muted-foreground">{{ value.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">By The Numbers</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div *ngFor="let stat of stats" class="text-center">
+        <div class="text-4xl md:text-5xl font-bold gradient-text mb-3">
+          {{ stat.value }}
+        </div>
+        <p class="text-muted-foreground">{{ stat.label }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-16 md:py-24 bg-secondary">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-16">What Our Customers Say</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div *ngFor="let testimonial of testimonials" class="glass-card p-8 rounded-xl">
+        <div class="flex gap-1 mb-4">
+          <span *ngFor="let i of [1,2,3,4,5]" class="text-accent text-lg">⭐</span>
+        </div>
+        <p class="text-muted-foreground mb-6 italic">
+          "{{ testimonial.text }}"
+        </p>
+        <p class="font-semibold text-foreground">— {{ testimonial.name }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
+    <div class="glass-card-strong border-2 border-accent p-12 md:p-16 rounded-2xl text-center accent-glow">
+      <h2 class="text-section-xl mb-6">Ready to Elevate Your Tech?</h2>
+      <p class="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+        Explore our carefully curated collection of premium tech accessories across 9 niches.
+      </p>
+      <button class="btn-primary text-lg px-8 py-3">
+        Shop Now
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer Info -->
+<section class="py-16 md:py-24 bg-secondary">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-section-xl text-center mb-12">Learn More</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <a routerLink="/help" class="glass-card p-8 rounded-xl hover:border-accent transition-all hover:translate-y-[-4px] cursor-pointer">
+        <h3 class="text-xl font-bold text-accent mb-3">Help Center</h3>
+        <p class="text-muted-foreground">Find answers to common questions and get support.</p>
+      </a>
+      <a routerLink="/contact" class="glass-card p-8 rounded-xl hover:border-accent transition-all hover:translate-y-[-4px] cursor-pointer">
+        <h3 class="text-xl font-bold text-accent mb-3">Contact Us</h3>
+        <p class="text-muted-foreground">Get in touch with our support team.</p>
+      </a>
+      <a routerLink="/careers" class="glass-card p-8 rounded-xl hover:border-accent transition-all hover:translate-y-[-4px] cursor-pointer">
+        <h3 class="text-xl font-bold text-accent mb-3">Careers</h3>
+        <p class="text-muted-foreground">Join our growing team and make an impact.</p>
+      </a>
+    </div>
+  </div>
+</section>

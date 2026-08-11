@@ -8,6 +8,10 @@ import { CartComponent } from './carts/components/cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { TrackingComponent } from './orders/components/tracking/tracking.component';
 import { UiNotFoundComponent } from './shared/ui/components/not-found/not-found.component';
+import { AboutComponent } from './pages/about/about.component';
+import { HelpComponent } from './pages/help/help.component';
+import { ContactComponent } from './pages/contact/contact.component';
+import { CareersComponent } from './pages/careers/careers.component';
 
 const routes: Routes = [
   {
@@ -40,6 +44,23 @@ const routes: Routes = [
     path: 'orders/tracking/:id',
     component: TrackingComponent,
     canActivate: [AuthGuard]
+  },
+  // Footer Pages
+  {
+    path: 'about',
+    component: AboutComponent
+  },
+  {
+    path: 'help',
+    component: HelpComponent
+  },
+  {
+    path: 'contact',
+    component: ContactComponent
+  },
+  {
+    path: 'careers',
+    component: CareersComponent
   },
   {
     path: 'auth',

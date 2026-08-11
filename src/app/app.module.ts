@@ -13,6 +13,10 @@ import { CheckoutModule } from './checkout/checkout.module';
 import { OrdersModule } from './orders/orders.module';
 import { HomeModule } from './home/home.module';
 import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
+import { AboutModule } from './pages/about/about.module';
+import { HelpModule } from './pages/help/help.module';
+import { ContactModule } from './pages/contact/contact.module';
+import { CareersModule } from './pages/careers/careers.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +33,10 @@ import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
     CheckoutModule,
     OrdersModule,
     HomeModule,
+    AboutModule,
+    HelpModule,
+    ContactModule,
+    CareersModule,
     SharedModule
   ],
   providers: [
