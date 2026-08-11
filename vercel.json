@@ -4,7 +4,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist/market",
   "framework": "angular",
-  "nodeVersion": "22.x",
   "env": {
     "NODE_ENV": "production",
     "CI": "true"
