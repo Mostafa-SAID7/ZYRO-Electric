@@ -1,4 +1,4 @@
-name: CI - Bugfix Branch
+name: Validate Bugfix Branch
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
       - synchronize
 
 jobs:
-  validate-bugfix:
+  validate-branch-name:
     runs-on: ubuntu-latest
     
     steps:
@@ -34,7 +34,7 @@ jobs:
           fi
 
   build-and-verify:
-    needs: validate-bugfix
+    needs: validate-branch-name
     runs-on: ubuntu-latest
     
     steps:

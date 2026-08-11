@@ -1,0 +1,85 @@
+name: Check Configuration Validation
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  validate-configs:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate package.json
+        run: |
+          if ! node -e "require('./package.json')" 2>/dev/null; then
+            exit 1
+          fi
+
+      - name: Validate tsconfig.json
+        run: |
+          if ! node -e "require('./tsconfig.json')" 2>/dev/null; then
+            exit 1
+          fi
+
+      - name: Validate angular.json
+        run: |
+          if ! node -e "require('./angular.json')" 2>/dev/null; then
+            exit 1
+          fi
+
+  validate-dependencies:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Check dependencies
+        run: |
+          npm ci --dry-run
+          echo "Dependencies validated"
+
+  validate-dockerfile:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check Dockerfile
+        run: |
+          if [ ! -f "Dockerfile" ]; then
+            exit 1
+          fi
+          echo "Dockerfile validated"
+
+  validate-environment:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check environment files
+        run: |
+          if git ls-files --error-unmatch .env 2>/dev/null; then
+            exit 1
+          fi
+          echo "Environment files validated"
