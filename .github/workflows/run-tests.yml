@@ -15,10 +15,10 @@ jobs:
         node-version: ['22.23.1']
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.1.7
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v4.0.3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
@@ -32,7 +32,7 @@ jobs:
         CI: true
 
     - name: Upload coverage reports
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v4.4.1
       with:
         file: ./coverage/market/lcov.info
         flags: unittests
@@ -40,14 +40,14 @@ jobs:
 
     - name: Archive test results
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.3.1
       with:
         name: test-results
         path: coverage/market/
 
     - name: Archive coverage report
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.3.1
       with:
         name: coverage-report
         path: coverage/market/index.html
