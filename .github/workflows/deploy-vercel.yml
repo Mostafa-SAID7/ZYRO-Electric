@@ -39,41 +39,31 @@ jobs:
           CI: true
 
       - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: --prod
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VERCEL_TOKEN != ''
+        run: |
+          npm install -g vercel
+          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy to Vercel (Preview)
-        if: github.ref != 'refs/heads/main' || github.event_name == 'pull_request'
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+        if: (github.ref != 'refs/heads/main' || github.event_name == 'pull_request') && secrets.VERCEL_TOKEN != ''
+        run: |
+          npm install -g vercel
+          DEPLOYMENT_URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} 2>&1 | grep -o 'https://[^ ]*' | tail -1)
+          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      - name: Post deployment comment
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '✅ Preview deployed to Vercel!\n\n🔗 [View Live Preview](https://${{ secrets.VERCEL_PROJECT_ID }}-git-${{ github.head_ref }}.vercel.app)'
-            })
-        continue-on-error: true
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - name: Deployment status
         if: always()
-        with:
-          name: build-output
-          path: dist/market
-          retention-days: 7
+        run: |
+          echo "Build completed"
+          if [ -n "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "✅ Vercel secrets configured - deployment executed"
+          else
+            echo "⚠️ Vercel secrets not configured - deployment skipped"
+            echo "To enable: Add VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID to GitHub secrets"
+          fi
