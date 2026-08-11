@@ -18,7 +18,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies with legacy peer deps flag
-RUN npm ci --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
