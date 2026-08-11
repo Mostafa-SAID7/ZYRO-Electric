@@ -76,6 +76,12 @@ describe('ContactComponent', () => {
     expect(subjectControl?.hasError('minlength')).toBeTruthy();
   });
 
+  it('should validate form - message required and min length 10', () => {
+    const messageControl = component.contactForm.get('message');
+    messageControl?.setValue('short');
+    expect(messageControl?.hasError('minlength')).toBeTruthy();
+  });
+
   it('should set submitted true on submit attempt', () => {
     component.onSubmit();
     expect(component.submitted).toBeTruthy();

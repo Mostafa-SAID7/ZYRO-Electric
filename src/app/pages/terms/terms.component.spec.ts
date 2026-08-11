@@ -42,10 +42,9 @@ describe('TermsComponent', () => {
   });
 
   it('should have sections with emoji icons', () => {
-    component.sections.forEach(section => {
-      expect(section.icon.length).toBeGreaterThan(0);
-      // Check that it contains emoji or special characters
-      expect(section.icon).toMatch(/[✓📋⚠️🛡️✔️👤💰🛒📦↩️]/);
+    const expectedIcons = ['✓', '📋', '⚠️', '🛡️', '✔️', '👤', '💰', '🛒', '📦', '↩️'];
+    component.sections.forEach((section, index) => {
+      expect(section.icon).toBe(expectedIcons[index]);
     });
   });
 
