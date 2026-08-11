@@ -45,12 +45,16 @@ jobs:
         with:
           node-version: '22.x'
 
-      - name: Check package-lock exists
+      - name: Check package.json exists
         run: |
-          if [ ! -f "package-lock.json" ]; then
+          if [ ! -f "package.json" ]; then
             exit 1
           fi
-          echo "Dependencies validation passed"
+          echo "Package.json validation passed"
+
+      - name: Verify dependencies can install
+        run: |
+          npm install --dry-run --silent > /dev/null 2>&1 && echo "Dependencies validation passed" || exit 1
 
   validate-dockerfile:
     runs-on: ubuntu-latest
