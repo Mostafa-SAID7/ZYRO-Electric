@@ -1,6 +1,7 @@
 {
-  "name": "market",
+  "name": "@mostafa-said7/zyro",
   "version": "1.0.0",
+  "description": "ZYRO - Tech Accessories E-Commerce Platform",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
@@ -10,7 +11,22 @@
     "test": "ng test --watch=false",
     "lint": "ng lint"
   },
-  "private": true,
+  "private": false,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mostafa-SAID7/Market-User.git"
+  },
+  "homepage": "https://github.com/Mostafa-SAID7/Market-User",
+  "keywords": [
+    "zyro",
+    "tech-accessories",
+    "e-commerce",
+    "angular",
+    "docker"
+  ],
   "dependencies": {
     "@angular/animations": "^18.2.0",
     "@angular/common": "^18.2.0",
