@@ -48,7 +48,7 @@
     "@tailwindcss/typography": "^0.5.13",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.14.0",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.5.4",
     "jasmine-core": "~5.1.0",
     "karma": "^6.4.3",
     "karma-chrome-launcher": "^3.2.0",
