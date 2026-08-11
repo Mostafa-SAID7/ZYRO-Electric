@@ -31,5 +31,5 @@ jobs:
 
       - name: Verify Docker image build
         run: |
-          echo "✅ Docker image built successfully"
+          echo "Docker image built successfully"
           docker image ls | grep zyro-electric

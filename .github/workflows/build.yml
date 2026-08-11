@@ -31,10 +31,10 @@ jobs:
       - name: Verify build output
         run: |
           if [ -d "dist/market" ]; then
-            echo "✅ Build successful - dist/market exists"
+            echo "Build successful - dist/market exists"
             ls -lah dist/market/
           else
-            echo "❌ Build failed - dist/market not found"
+            echo "Build failed - dist/market not found"
             exit 1
           fi
 
