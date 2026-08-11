@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Renderer2 } from '@angular/core';
+import { Renderer2, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { HeaderComponent } from './header.component';
 import { CartsService } from '../../../carts/services/carts.service';
@@ -26,7 +26,8 @@ describe('HeaderComponent', () => {
         AuthService,
         ProductsService,
         Renderer2
-      ]
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   });
