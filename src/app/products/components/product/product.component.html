@@ -22,27 +22,27 @@
 
     <!-- Discount Badge -->
     <div *ngIf="product.discount"
-      class="absolute top-3 left-3 bg-accent text-accent-foreground px-2.5 py-1 rounded-full text-[11px] font-black tracking-wider shadow-md">
+      class="absolute top-3 left-3 bg-accent text-accent-foreground px-2.5 py-1 rounded-lg text-[11px] font-black tracking-wider shadow-md">
       -{{ product.discount }}%
     </div>
 
     <!-- Featured Badge -->
     <div *ngIf="product.isFeatured"
-      class="absolute top-3 right-3 bg-secondary/80 backdrop-blur-sm text-foreground px-2 py-1 rounded-full text-[10px] font-bold border border-border">
+      class="absolute top-3 right-3 bg-secondary/80 text-foreground px-2 py-1 rounded-lg text-[10px] font-bold border border-border">
       ★ Featured
     </div>
 
     <!-- Out of Stock overlay -->
     <div *ngIf="product.stock === 0"
       class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-      <span class="text-white font-black text-sm tracking-widest uppercase bg-red-500/80 px-4 py-2 rounded-full">Out of Stock</span>
+      <span class="text-white font-black text-sm tracking-widest uppercase bg-red-500/80 px-4 py-2 rounded-xl">Out of Stock</span>
     </div>
   </div>
 
   <!-- Product Details -->
   <div class="p-4 flex flex-col flex-1">
     <!-- Category pill -->
-    <span class="text-[10px] text-accent font-black tracking-widest uppercase mb-2">{{ product.category }}</span>
+    <span class="text-[10px] text-accent font-black tracking-widest uppercase mb-2">{{ formatCategory(product.category) }}</span>
 
     <!-- Title -->
     <h3 class="font-bold text-foreground mb-1 line-clamp-2 cursor-pointer hover:text-accent transition-colors text-sm leading-snug"
@@ -65,9 +65,9 @@
 
     <!-- Price -->
     <div class="flex items-baseline gap-2 mb-3">
-      <span class="text-lg font-black text-accent">{{ product.price | number:'1.2-2' }} L.E</span>
+      <span class="text-lg font-black text-accent">${{ product.price | number:'1.2-2' }}</span>
       <span *ngIf="product.originalPrice" class="text-xs text-muted-foreground line-through">
-        {{ product.originalPrice | number:'1.2-2' }}
+        ${{ product.originalPrice | number:'1.2-2' }}
       </span>
     </div>
 
@@ -82,14 +82,14 @@
     <div class="flex gap-2 mt-auto">
       <button
         (click)="viewDetails()"
-        class="btn-outline flex-1 py-2 flex items-center justify-center gap-1.5 text-xs">
+        class="btn-outline rounded-xl flex-1 py-2 flex items-center justify-center gap-1.5 text-xs">
         <lucide-icon name="eye" class="w-3.5 h-3.5"></lucide-icon>
         View
       </button>
       <button
         (click)="addCart()"
         [disabled]="product.stock === 0"
-        class="btn-primary flex-1 py-2 flex items-center justify-center gap-1.5 text-xs">
+        class="btn-primary rounded-xl flex-1 py-2 flex items-center justify-center gap-1.5 text-xs">
         <lucide-icon name="shopping-cart" class="w-3.5 h-3.5"></lucide-icon>
         Add
       </button>

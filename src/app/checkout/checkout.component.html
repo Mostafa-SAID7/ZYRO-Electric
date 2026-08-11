@@ -1,8 +1,21 @@
 <div class="min-h-screen bg-background text-foreground">
   <!-- Header -->
-  <div class="bg-card border-b border-border p-4">
-    <div class="max-w-6xl mx-auto">
-      <h1 class="text-2xl font-bold gradient-text">Checkout</h1>
+  <div class="max-w-6xl mx-auto px-4 md:px-6 pt-6 pb-2">
+    <div class="relative overflow-hidden bg-card border border-border p-8 rounded-[2rem] shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 group">
+      <div class="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div class="relative flex items-center gap-4 z-10">
+        <div class="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20">
+          <lucide-icon name="credit-card" class="w-7 h-7 text-accent"></lucide-icon>
+        </div>
+        <div>
+          <h1 class="text-3xl md:text-4xl font-black gradient-text tracking-tight mb-1">Checkout</h1>
+          <p class="text-sm text-muted-foreground font-medium">Complete your ZYRO-Electric order securely</p>
+        </div>
+      </div>
+      <div class="relative z-10 flex items-center gap-2 bg-secondary/50 px-4 py-2 rounded-xl border border-border/50">
+        <lucide-icon name="lock" class="w-4 h-4 text-accent"></lucide-icon>
+        <span class="text-sm font-bold text-foreground">Secure Checkout</span>
+      </div>
     </div>
   </div>
 
@@ -124,8 +137,9 @@
           <button
             type="submit"
             [disabled]="!checkoutForm.valid || isProcessing"
-            class="btn-primary w-full py-3 text-lg flex items-center justify-center gap-2">
-            <lucide-icon *ngIf="!isProcessing" name="check-circle" class="w-5 h-5"></lucide-icon>
+            class="btn-primary w-full rounded-xl py-4 text-lg font-black flex items-center justify-center gap-3 shadow-lg shadow-accent/20 group">
+            <lucide-icon *ngIf="!isProcessing" name="check-circle" class="w-5 h-5 group-hover:scale-110 transition-transform"></lucide-icon>
+            <lucide-icon *ngIf="isProcessing" name="loader-2" class="w-5 h-5 animate-spin"></lucide-icon>
             <span *ngIf="isProcessing">Processing...</span>
             <span *ngIf="!isProcessing">Complete Order</span>
           </button>
@@ -149,7 +163,7 @@
                 <p class="font-semibold text-sm">{{ item.title }}</p>
                 <p class="text-xs text-muted-foreground">Qty: {{ item.quantity }}</p>
               </div>
-              <p class="font-semibold whitespace-nowrap">{{ item.price * item.quantity | number:'1.2-2' }} L.E</p>
+              <p class="font-semibold whitespace-nowrap">${{ item.price * item.quantity | number:'1.2-2' }}</p>
             </div>
           </div>
 
@@ -157,7 +171,7 @@
           <div class="space-y-2 pt-4 border-t border-border">
             <div class="flex justify-between text-sm">
               <span>Subtotal:</span>
-              <span>{{ subtotal | number:'1.2-2' }} L.E</span>
+              <span>${{ subtotal | number:'1.2-2' }}</span>
             </div>
             <div class="flex justify-between text-sm">
               <span>Shipping:</span>
@@ -165,11 +179,11 @@
             </div>
             <div class="flex justify-between text-sm">
               <span>Tax (10%):</span>
-              <span>{{ subtotal * 0.1 | number:'1.2-2' }} L.E</span>
+              <span>${{ subtotal * 0.1 | number:'1.2-2' }}</span>
             </div>
             <div class="flex justify-between text-lg font-bold text-accent pt-2 border-t border-border">
               <span>Total:</span>
-              <span>{{ total | number:'1.2-2' }} L.E</span>
+              <span>${{ total | number:'1.2-2' }}</span>
             </div>
           </div>
         </app-ui-card>

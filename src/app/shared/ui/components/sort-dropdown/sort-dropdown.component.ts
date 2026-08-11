@@ -15,14 +15,14 @@ export interface SortOption {
       <!-- Custom Dropdown Button -->
       <button 
         (click)="toggleDropdown()"
-        class="flex items-center justify-between gap-3 bg-secondary/30 hover:bg-secondary/60 border border-border/50 px-4 py-2.5 rounded-full transition-all duration-200 min-w-[160px] group text-sm font-medium">
+        class="flex items-center justify-between gap-3 bg-secondary/30 hover:bg-secondary/60 border border-border/50 px-4 py-2.5 rounded-xl transition-all duration-200 min-w-[160px] group text-sm font-medium">
         <span class="text-foreground">{{ getSelectedLabel() }}</span>
         <lucide-icon name="chevron-down" class="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-transform duration-200" [class.rotate-180]="isOpen"></lucide-icon>
       </button>
 
       <!-- Dropdown Menu -->
       <div *ngIf="isOpen" 
-        class="absolute top-full right-0 mt-2 w-48 bg-card/95 dark:bg-black/95 backdrop-blur-xl border border-border/50 shadow-2xl rounded-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+        class="absolute top-full right-0 mt-2 w-48 bg-card border border-border shadow-2xl rounded-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200 p-1.5">
         <div class="p-1.5 flex flex-col gap-0.5">
           <button *ngFor="let option of options"
             (click)="selectOption(option.value)"

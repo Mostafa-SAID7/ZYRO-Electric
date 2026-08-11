@@ -20,7 +20,7 @@
   --border: #222222;
   --input: #1A1A1A;
   --ring: #E8C547;
-  --radius: 1.5rem;
+  --radius: 1rem;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
   --font-arabic: 'Tajawal', sans-serif;
 }
@@ -110,29 +110,25 @@
     color: var(--muted-foreground);
   }
 
-  /* Glass Morphism */
+  /* Glass Morphism - Converted to clean solid backgrounds */
   .glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--card);
+    border: 1px solid var(--border);
   }
 
   .light .glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: var(--card);
+    border: 1px solid var(--border);
   }
 
   .glass-card-strong {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--card);
+    border: 1px solid var(--border);
   }
 
   .light .glass-card-strong {
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: var(--card);
+    border: 1px solid var(--border);
   }
 
   /* Glow Effects */
@@ -269,7 +265,7 @@
     align-items: center;
     gap: 0.375rem;
     padding: 0.375rem 0.875rem;
-    border-radius: 9999px;
+    border-radius: var(--radius);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -355,7 +351,7 @@
   /* Filter Button */
   .filter-btn {
     padding: 0.5rem 1.25rem;
-    border-radius: 9999px;
+    border-radius: var(--radius);
     font-size: 0.7rem;
     font-weight: 800;
     letter-spacing: 0.1em;
@@ -392,7 +388,7 @@
     padding: 0.25rem 0.75rem;
     background: var(--accent);
     color: var(--accent-foreground);
-    border-radius: 9999px;
+    border-radius: var(--radius);
     font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.05em;
@@ -436,7 +432,7 @@
     padding: 0.75rem 1.5rem;
     background: var(--accent);
     color: var(--accent-foreground);
-    border-radius: 9999px;
+    border-radius: var(--radius);
     font-weight: 800;
     font-size: 0.875rem;
     border: none;
@@ -462,7 +458,7 @@
     padding: 0.75rem 1.5rem;
     background: transparent;
     color: var(--foreground);
-    border-radius: 9999px;
+    border-radius: var(--radius);
     font-weight: 700;
     font-size: 0.875rem;
     border: 1px solid var(--border);

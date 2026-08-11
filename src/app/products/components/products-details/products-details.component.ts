@@ -15,6 +15,7 @@ export class ProductsDetailsComponent implements OnInit {
   product: Product | null = null;
   reviews: Review[] = [];
   isLoading = false;
+  imgError = false;
   quantity = 1;
   Math = Math;
 
@@ -88,6 +89,13 @@ export class ProductsDetailsComponent implements OnInit {
         this.showToast('Error', 'Failed to add item to cart', 'error');
       }
     });
+  }
+
+  formatCategory(slug: string): string {
+    return slug
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 
   goBack(): void {

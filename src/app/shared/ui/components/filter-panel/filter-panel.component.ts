@@ -86,7 +86,7 @@ export interface FilterGroup {
             </div>
             <button
               (click)="onPriceRangeChange(group.id)"
-              class="btn-primary w-full py-2.5 text-sm rounded-full font-bold shadow-md shadow-accent/10 hover:scale-[1.02] transition-transform duration-200">
+              class="btn-primary w-full py-2.5 text-sm rounded-xl font-bold shadow-md shadow-accent/10 hover:scale-[1.02] transition-transform duration-200">
               Apply Price
             </button>
           </div>
@@ -129,16 +129,16 @@ export interface FilterGroup {
           <!-- Custom Select Trigger -->
           <button 
             (click)="toggleSelectDropdown(group.id)"
-            class="flex items-center justify-between gap-3 bg-secondary/30 hover:bg-secondary/60 border border-border/50 px-4 py-3 rounded-2xl transition-all duration-200 w-full group text-sm font-semibold text-left z-10 relative">
+            class="flex items-center justify-between gap-3 bg-secondary/30 hover:bg-secondary/60 border border-border/50 px-4 py-3 rounded-xl transition-all duration-200 w-full group text-sm font-semibold text-left z-10 relative">
             <span class="text-foreground">{{ getSelectSelectedLabel(group) }}</span>
             <lucide-icon name="chevron-down" class="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-transform duration-200" [class.rotate-180]="isSelectOpen(group.id)"></lucide-icon>
           </button>
 
           <!-- Custom Select Options Menu -->
           <div *ngIf="isSelectOpen(group.id)" 
-            class="absolute top-full left-0 mt-2 w-full bg-card/95 dark:bg-black/95 backdrop-blur-xl border border-border/50 shadow-2xl rounded-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-            <div class="max-h-60 overflow-y-auto scrollbar-custom">
-              <div class="p-1.5 pr-3 flex flex-col gap-0.5">
+            class="absolute top-full left-0 mt-2 w-full bg-card border border-border shadow-2xl rounded-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+            <div class="max-h-60 overflow-y-auto scrollbar-custom p-1.5">
+              <div class="flex flex-col gap-0.5">
                 <button 
                   (click)="selectGroupOption(group, '')"
                   class="flex items-center justify-between w-full px-3 py-2.5 text-left text-sm rounded-xl transition-colors duration-150"

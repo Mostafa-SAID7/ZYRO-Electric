@@ -22,6 +22,7 @@ export interface PromoOffer {
   description: string;
   icon: string;
   gradient: string;
+  bannerImage?: string;
   buttonText: string;
   buttonColor: string;
 }

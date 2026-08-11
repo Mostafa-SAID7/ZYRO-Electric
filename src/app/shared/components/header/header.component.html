@@ -1,5 +1,5 @@
 <header class="sticky top-4 z-40 mx-4 md:mx-auto max-w-6xl transition-all duration-300">
-  <div class="bg-card/80 backdrop-blur-xl border border-border/50 shadow-lg rounded-[2rem] px-4 py-2">
+  <div class="bg-card border border-border shadow-lg rounded-2xl px-4 py-2">
     <nav class="flex items-center justify-between gap-4">
       
       <!-- Left: Brand Logo & Name -->
@@ -10,28 +10,27 @@
           <div class="bg-accent/10 p-2 rounded-xl">
             <lucide-icon name="shopping-basket" class="w-6 h-6 text-accent"></lucide-icon>
           </div>
-          <span class="hidden sm:inline tracking-tight">Market</span>
+          <span class="hidden sm:inline tracking-tight">ZYRO-Electric</span>
         </h1>
       </div>
 
       <!-- Center: Main Navigation -->
       <div class="flex-1 flex justify-center hidden md:flex">
-        <div class="bg-secondary/50 p-1 rounded-full flex gap-1 border border-border/50">
+        <div class="bg-secondary/50 p-1 rounded-xl flex gap-1 border border-border/50">
           <a 
             routerLink="/"
             routerLinkActive="bg-background text-foreground shadow-sm"
             [routerLinkActiveOptions]="{ exact: true }"
-            class="text-muted-foreground font-bold text-sm px-5 py-2 rounded-full hover:text-foreground transition-all flex items-center gap-2">
+            class="text-muted-foreground font-bold text-sm px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
             <lucide-icon name="home" class="w-4 h-4"></lucide-icon>
             Home
           </a>
           <a 
             routerLink="/products"
             routerLinkActive="bg-background text-foreground shadow-sm"
-            [routerLinkActiveOptions]="{ exact: true }"
-            class="text-muted-foreground font-bold text-sm px-5 py-2 rounded-full hover:text-foreground transition-all flex items-center gap-2">
-            <lucide-icon name="store" class="w-4 h-4"></lucide-icon>
-            Shop
+            class="text-muted-foreground font-bold text-sm px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
+            <lucide-icon name="grid" class="w-4 h-4"></lucide-icon>
+            Products
           </a>
         </div>
       </div>
@@ -96,7 +95,7 @@
       <p class="text-sm text-muted-foreground font-medium mb-8">Add items to get started</p>
       <button
         (click)="goToProducts(); closeCartDrawer()"
-        class="btn-primary rounded-full px-7 py-3 font-bold shadow-md shadow-accent/20">
+        class="btn-primary rounded-xl px-6 py-2.5 font-bold shadow-md shadow-accent/20">
         Browse Products
       </button>
     </div>
@@ -190,7 +189,7 @@
 </app-ui-drawer>
 
 <!-- Auth Modal -->
-<div *ngIf="isAuthModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md transition-opacity">
+<div *ngIf="isAuthModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 transition-opacity">
   <div class="w-full max-w-md bg-card rounded-[2rem] shadow-2xl border border-border overflow-hidden relative glass-card">
     <!-- Close button -->
     <button (click)="closeAuthModal()" class="absolute top-6 right-6 p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full transition-colors z-10">
@@ -204,7 +203,7 @@
           <lucide-icon [name]="authModalMode === 'login' ? 'lock' : 'user-plus'" class="w-8 h-8 text-accent"></lucide-icon>
         </div>
         <h2 class="text-2xl font-bold gradient-text mb-2">{{ authModalMode === 'login' ? 'Welcome Back' : 'Create Account' }}</h2>
-        <p class="text-sm text-muted-foreground">{{ authModalMode === 'login' ? 'Sign in to your account' : 'Join our marketplace today' }}</p>
+        <p class="text-sm text-muted-foreground">{{ authModalMode === 'login' ? 'Sign in to your ZYRO-Electric account' : 'Join ZYRO-Electric today' }}</p>
       </div>
 
       <!-- Login Form -->

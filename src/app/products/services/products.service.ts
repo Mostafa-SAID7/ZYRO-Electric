@@ -10,7 +10,7 @@ import {
   Review,
   ProductRating
 } from '../models';
-import { MOCK_PRODUCTS } from '../data/mock-products';
+import { MOCK_PRODUCTS_NICHES } from '../data/mock-products-niches';
 
 @Injectable({
   providedIn: 'root'
@@ -266,40 +266,64 @@ export class ProductsService {
   // ============ Mock Data Generators ============
 
   private generateMockProducts(): Product[] {
-    return MOCK_PRODUCTS;
+    return MOCK_PRODUCTS_NICHES;
   }
 
   private generateMockCategories(): Category[] {
     return [
       {
-        id: 'cat-1',
-        name: 'Electronics',
-        description: 'Latest gadgets, smartphones, keyboards, monitors and audio equipment',
-        productCount: 8
-      },
-      {
-        id: 'cat-2',
-        name: 'Fashion',
-        description: 'Trendy clothing, accessories, shoes and watches',
+        id: 'smartphone-accessories',
+        name: 'Smartphone Accessories',
+        description: 'Phone cases, screen protectors, and mobile device accessories',
         productCount: 5
       },
       {
-        id: 'cat-3',
-        name: 'Books',
-        description: 'Wide selection of books and learning materials',
-        productCount: 4
+        id: 'laptop-accessories',
+        name: 'Laptop Accessories',
+        description: 'Laptop stands, cooling pads, docking stations and more',
+        productCount: 5
       },
       {
-        id: 'cat-4',
-        name: 'Home',
-        description: 'Home improvement, furniture, and living essentials',
-        productCount: 6
+        id: 'cable-management',
+        name: 'Cable Management',
+        description: 'Cable organizers, clips, and wire management solutions',
+        productCount: 5
       },
       {
-        id: 'cat-5',
-        name: 'Sports',
-        description: 'Sports equipment and fitness gear',
-        productCount: 12
+        id: 'desk-tech',
+        name: 'Desk Tech',
+        description: 'Keyboards, monitors, lamps, mice and desk accessories',
+        productCount: 5
+      },
+      {
+        id: 'smart-device-accessories',
+        name: 'Smart Device Accessories',
+        description: 'Smart speakers, hubs, plugs and IoT device accessories',
+        productCount: 5
+      },
+      {
+        id: 'charging-accessories',
+        name: 'Charging Accessories',
+        description: 'Chargers, power banks, and charging solutions',
+        productCount: 5
+      },
+      {
+        id: 'photography-accessories',
+        name: 'Photography Accessories',
+        description: 'Tripods, lighting, filters and photography equipment',
+        productCount: 5
+      },
+      {
+        id: 'content-creator-equipment',
+        name: 'Content Creator Equipment',
+        description: 'Microphones, webcams, screens and streaming equipment',
+        productCount: 5
+      },
+      {
+        id: 'electronics-organization',
+        name: 'Electronics Organization',
+        description: 'Storage boxes, trays, holders and organization solutions',
+        productCount: 5
       }
     ];
   }
