@@ -1,27 +1,66 @@
 ---
-name: Feature Request
-about: Suggest an idea for this project
-title: '[FEATURE] '
-labels: enhancement
+name: ✨ Feature Request
+about: Suggest a new feature or improvement
+title: "[FEATURE] "
+labels: 'enhancement, feature-request'
 assignees: ''
-
 ---
 
-## Description
-Is your feature request related to a problem? Please describe:
-A clear and concise description of what the problem is.
+## 💡 Feature Description
+<!-- Clearly describe the feature you'd like to see. What problem does it solve? -->
 
-## Proposed Solution
-Describe the solution you'd like. A clear and concise description of what you want to happen.
+## 🎯 Motivation & Use Case
+<!-- Why is this feature needed? What problem does it solve? How will it benefit users? -->
 
-## Alternative Solutions
-Describe any alternative solutions or features you've considered.
+## 📋 Proposed Solution
+<!-- Describe how you envision this feature working. What would the user experience look like? -->
 
-## Use Cases
-Describe specific use cases where this feature would be valuable.
+### Expected Behavior
+<!-- What should happen when this feature is used? -->
 
-## Examples
-Provide examples or mockups if applicable.
+### Example Usage
+```
+<!-- Show an example of how the feature would be used -->
+```
 
-## Additional Context
-Add any other context or screenshots about the feature request here.
+## 🔄 Alternative Solutions
+<!-- Have you considered any other approaches? Why is your solution better? -->
+
+## 📊 Impact Analysis
+- **Scope**: <!-- Frontend / Backend / DevOps / Database / Other -->
+- **Complexity**: 
+  - [ ] Simple (< 2 hours)
+  - [ ] Medium (2-8 hours)
+  - [ ] Complex (> 8 hours)
+- **Breaking Changes**: 
+  - [ ] Yes
+  - [ ] No
+- **Affects**: <!-- e.g., API, UI, Performance, Security, etc. -->
+
+## 🎨 Design Mockups/Screenshots
+<!-- If applicable, provide mockups or wireframes -->
+
+## 🗂️ Related Issues
+<!-- Link to related issues using #issue_number -->
+- Related to: 
+- Depends on:
+
+## 📚 Additional Context
+<!-- Add any other context about the feature request here -->
+
+### Dependencies
+<!-- What other features or libraries might be needed? -->
+
+### Performance Considerations
+<!-- Any performance implications? -->
+
+### Security Considerations
+<!-- Any security implications? -->
+
+## ✅ Checklist
+- [ ] I've checked if this feature already exists
+- [ ] I've checked if there's a related issue
+- [ ] I've provided clear motivation for this feature
+- [ ] I've described the proposed solution
+- [ ] I understand the scope and complexity
+- [ ] I'm open to discussion and feedback

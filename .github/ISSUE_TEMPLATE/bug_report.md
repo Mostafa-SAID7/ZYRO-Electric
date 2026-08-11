@@ -1,36 +1,71 @@
 ---
-name: Bug Report
-about: Create a report to help us improve
-title: '[BUG] '
-labels: bug
+name: 🐛 Bug Report
+about: Report a bug or issue found in the application
+title: "[BUG] "
+labels: 'bug, needs-investigation'
 assignees: ''
-
 ---
 
-## Description
-A clear and concise description of what the bug is.
+## 🐛 Bug Description
+<!-- Clearly describe the bug. What did you expect to happen? What actually happened? -->
 
-## Steps to Reproduce
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## 📍 Steps to Reproduce
+<!-- How can someone reproduce this issue? Please provide as much detail as possible -->
 
-## Expected Behavior
-A clear and concise description of what you expected to happen.
+1. 
+2. 
+3. 
 
-## Actual Behavior
-What actually happens.
+## 🖼️ Expected Behavior
+<!-- What should happen? -->
 
-## Screenshots
-If applicable, add screenshots to help explain your problem.
+## ⚠️ Actual Behavior
+<!-- What actually happens? -->
 
-## Environment
-- OS: [e.g. Windows, macOS, Linux]
-- Node Version: [e.g. 20.x]
-- npm Version: [e.g. 10.x]
-- Browser: [e.g. Chrome, Firefox]
+## 📸 Screenshots/Videos
+<!-- If applicable, add screenshots or screen recordings showing the bug -->
 
-## Additional Context
-Add any other context about the problem here.
+## 🌐 Environment
+- **OS**: <!-- e.g., Windows 11, macOS 14.0, Ubuntu 22.04 -->
+- **Browser**: <!-- e.g., Chrome 120, Firefox 121, Safari 17 -->
+- **Browser Version**: 
+- **App Version**: <!-- e.g., 1.0.6, or commit hash if on development -->
+- **Node.js Version**: <!-- e.g., 22.x -->
+
+## 📱 Device Type
+- [ ] Desktop
+- [ ] Tablet
+- [ ] Mobile
+- [ ] Other
+
+## 🔍 Severity
+- [ ] Critical (app crashes/unusable)
+- [ ] High (major feature broken)
+- [ ] Medium (some feature broken/degraded)
+- [ ] Low (minor issue/cosmetic)
+
+## 📊 Additional Context
+<!-- Add any other context about the bug here. Logs, API responses, etc. -->
+
+### Error Messages
+```
+<!-- Paste any error messages or stack traces here -->
+```
+
+### Console Logs
+```
+<!-- Paste relevant console errors/warnings here -->
+```
+
+### Network Requests
+<!-- If applicable, describe API calls that were made -->
+
+## 💡 Possible Cause
+<!-- If you have an idea what's causing this, share it here -->
+
+## ✅ Checklist
+- [ ] I've verified this bug exists in the latest version
+- [ ] I've checked if this issue already exists
+- [ ] I've provided steps to reproduce
+- [ ] I've included relevant screenshots/logs
+- [ ] I'm using a supported browser/OS
