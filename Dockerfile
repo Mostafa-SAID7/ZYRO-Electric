@@ -15,7 +15,8 @@ LABEL brand="ZYRO - Tech. Organized. Elevated."
 WORKDIR /app
 
 # Copy dependency files first for better layer caching
-COPY package.json package-lock.json ./
+COPY package.json ./
+COPY package-lock.json* ./
 
 # Clean npm cache and install fresh dependencies
 RUN npm cache clean --force && npm install --legacy-peer-deps
