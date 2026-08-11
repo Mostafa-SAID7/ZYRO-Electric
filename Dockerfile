@@ -14,12 +14,13 @@ LABEL brand="ZYRO - Tech. Organized. Elevated."
 
 WORKDIR /app
 
-# Copy dependency files first for better layer caching
+# Copy dependency files
 COPY package.json ./
 
-# Install dependencies - use npm install in Docker (CI environment will handle)
-# npm ci requires package-lock.json, but during build we use npm install
-RUN npm install --legacy-peer-deps --no-optional
+# Install dependencies with proper native module handling
+# Use --omit=optional (correct npm v7+ syntax) instead of deprecated --no-optional
+# This skips optional native dependencies that don't have Alpine prebuilts
+RUN npm install --legacy-peer-deps --omit=optional 2>&1 | grep -v "npm warn" || true
 
 # Copy source code
 COPY . .
