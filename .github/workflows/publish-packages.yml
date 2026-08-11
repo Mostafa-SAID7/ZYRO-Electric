@@ -74,7 +74,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
+          password: ${{ secrets.GH_PAT }}
 
       - name: Extract version and owner
         id: meta
