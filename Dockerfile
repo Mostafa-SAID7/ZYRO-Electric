@@ -12,6 +12,9 @@ LABEL description="ZYRO - Premium Tech Accessories E-Commerce Platform (Producti
 LABEL version="1.0.0"
 LABEL brand="ZYRO - Tech. Organized. Elevated."
 
+# Set shell for Alpine to enable pipefail
+SHELL ["/bin/ash", "-o", "pipefail", "-c"]
+
 WORKDIR /app
 
 # Copy dependency files
