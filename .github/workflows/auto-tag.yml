@@ -51,11 +51,7 @@ jobs:
           TAG="v${{ steps.version.outputs.version }}"
           echo "Creating tag: $TAG"
           
-          git tag -a "$TAG" -m "Release $TAG
-          
-Version: ${{ steps.version.outputs.version }}
-Commit: $(git rev-parse --short HEAD)
-Date: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          git tag -a "$TAG" -m "Release $TAG - Version: ${{ steps.version.outputs.version }} - Commit: $(git rev-parse --short HEAD) - Date: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
           
           git push origin "$TAG"
           echo "✅ Tag $TAG created and pushed"
