@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TERMS_SECTIONS, TERMS_LAST_UPDATED, TermsSection } from './data';
 
 @Component({
   selector: 'app-terms',
@@ -6,18 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./terms.component.scss']
 })
 export class TermsComponent {
-  lastUpdated = 'August 11, 2026';
-
-  sections = [
-    { title: 'Agreement to Terms', icon: '✓' },
-    { title: 'Use License', icon: '📋' },
-    { title: 'Disclaimer of Warranties', icon: '⚠️' },
-    { title: 'Limitation of Liability', icon: '🛡️' },
-    { title: 'Accuracy of Materials', icon: '✔️' },
-    { title: 'User Accounts', icon: '👤' },
-    { title: 'Products & Pricing', icon: '💰' },
-    { title: 'Orders & Purchases', icon: '🛒' },
-    { title: 'Shipping & Delivery', icon: '📦' },
-    { title: 'Returns & Refunds', icon: '↩️' }
-  ];
+  lastUpdated = TERMS_LAST_UPDATED;
+  sections: TermsSection[] = TERMS_SECTIONS;
 }

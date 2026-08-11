@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CONTACT_METHODS, ContactMethod } from './data';
 
 @Component({
   selector: 'app-contact',
@@ -9,33 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ContactComponent {
   contactForm: FormGroup;
   submitted = false;
-
-  contactMethods = [
-    {
-      title: 'Email',
-      icon: '📧',
-      primary: 'support@zyro-electric.com',
-      secondary: 'Response time: 24-48 hours'
-    },
-    {
-      title: 'Phone',
-      icon: '📞',
-      primary: '1-800-ZYRO-HELP',
-      secondary: 'Mon-Fri, 9 AM - 5 PM EST'
-    },
-    {
-      title: 'Live Chat',
-      icon: '💬',
-      primary: 'Available on website',
-      secondary: 'Mon-Fri, 9 AM - 5 PM EST'
-    },
-    {
-      title: 'Social Media',
-      icon: '📱',
-      primary: '@zyro-electric',
-      secondary: 'Response time: 24-48 hours'
-    }
-  ];
+  contactMethods: ContactMethod[] = CONTACT_METHODS;
 
   constructor(private fb: FormBuilder) {
     this.contactForm = this.fb.group({
