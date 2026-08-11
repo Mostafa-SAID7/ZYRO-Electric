@@ -39,7 +39,7 @@ jobs:
           CI: true
 
       - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VERCEL_TOKEN != ''
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           npm install -g vercel
           vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy to Vercel (Preview)
-        if: (github.ref != 'refs/heads/main' || github.event_name == 'pull_request') && secrets.VERCEL_TOKEN != ''
+        if: github.ref != 'refs/heads/main' || github.event_name == 'pull_request'
         run: |
           npm install -g vercel
           DEPLOYMENT_URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} 2>&1 | grep -o 'https://[^ ]*' | tail -1)

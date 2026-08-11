@@ -1,18 +1,18 @@
 name: Auto Version Bump
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
     paths:
       - 'src/**'
-      - 'package.json'
+      - 'Dockerfile'
       - 'angular.json'
-      - '.github/workflows/**'
     ignore-paths:
+      - '**.md'
       - 'docs/**'
-      - 'CHANGELOG.md'
-      - '*.md'
+      - '.github/ISSUE_TEMPLATE/**'
 
 jobs:
   bump-version:
