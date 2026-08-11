@@ -45,8 +45,7 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-          production: true
+          vercel-args: --prod
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to Vercel (Preview)
@@ -56,7 +55,6 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Post deployment comment
