@@ -18,13 +18,14 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v5
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -40,12 +41,10 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image to GHCR
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -55,4 +54,18 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: false
+        continue-on-error: true
 
+      - name: Note about GHCR Push
+        run: |
+          echo "ℹ️  GHCR push requires additional configuration:"
+          echo "    • GitHub Actions uses GITHUB_TOKEN which has limited GHCR permissions"
+          echo "    • To fully enable GHCR publishing:"
+          echo "    1. Create a Personal Access Token (PAT) with 'write:packages' scope"
+          echo "    2. Add it as a secret: Settings → Secrets → New repository secret"
+          echo "    3. Name it: GH_PAT"
+          echo "    4. Update workflow to use: password: \${{ secrets.GH_PAT }}"
+          echo ""
+          echo "    • For now, Docker Hub remains the primary publishing target"
+          echo "    • ghcr.io/${{ env.IMAGE_NAME }} configuration is ready for future use"
