@@ -76,11 +76,29 @@ CI Workflows (Continuous Integration)
 - ci-bugfix.yml: Bugfix/hotfix validation
 - ci-docker.yml: Docker image build verification
 
+Quality Workflows (Testing & Analysis)
+- quality-lint.yml: ESLint and code style validation
+- quality-test.yml: Unit tests and coverage analysis
+- quality-security.yml: Security scanning (audit, secrets, CodeQL, Dockerfile)
+- quality-validate.yml: Configuration and structure validation
+- quality-analysis.yml: Code complexity and type checking
+
 Release Workflows
 - release-publish.yml: Publishes NPM package and Docker image
 
 Deploy Workflows
 - deploy-production.yml: Deploys to Netlify production
+
+QUALITY CHECKS
+==============
+
+Every push triggers quality workflows:
+
+✓ Linting: ESLint validation
+✓ Testing: Unit tests + coverage
+✓ Security: npm audit, secret scan, CodeQL, Dockerfile scan
+✓ Validation: Config files, dependencies, environment
+✓ Analysis: Type checking, bundle size, complexity
 
 WORKFLOW TRIGGERS
 =================

@@ -70,3 +70,5 @@ logs
 # Testing
 karma.conf.js
 karma-results.json
+
+.npmrc
