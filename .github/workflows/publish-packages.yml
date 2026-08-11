@@ -76,14 +76,17 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_PAT }}
 
-      - name: Extract version
-        id: version
+      - name: Extract version and owner
+        id: meta
         run: |
           VERSION="${{ github.ref_name }}"
           if [[ $VERSION == v* ]]; then
             VERSION=${VERSION#v}
           fi
+          OWNER="${{ github.repository_owner }}"
+          OWNER_LOWER=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "owner=$OWNER_LOWER" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -92,7 +95,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ github.repository_owner | lower }}/zyro-electric:latest
-            ${{ env.REGISTRY }}/${{ github.repository_owner | lower }}/zyro-electric:${{ steps.version.outputs.version }}
+            ${{ env.REGISTRY }}/${{ steps.meta.outputs.owner }}/zyro-electric:latest
+            ${{ env.REGISTRY }}/${{ steps.meta.outputs.owner }}/zyro-electric:${{ steps.meta.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
