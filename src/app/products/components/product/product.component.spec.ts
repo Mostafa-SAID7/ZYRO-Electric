@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -10,7 +11,8 @@ describe('ProductComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ ProductComponent ],
-      imports: [ RouterTestingModule ]
+      imports: [ RouterTestingModule ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   });
@@ -21,7 +23,10 @@ describe('ProductComponent', () => {
     component.product = {
       id: '1',
       title: 'Test Product',
-      stock: 10
+      stock: 10,
+      price: 99.99,
+      category: 'electronics',
+      rating: { average: 4.5, count: 20 }
     } as any;
     fixture.detectChanges();
   });

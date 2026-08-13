@@ -56,11 +56,11 @@
         <lucide-icon
           *ngFor="let i of [1,2,3,4,5]"
           name="star"
-          [class]="i <= Math.floor(product.rating.average) ? 'fill-accent text-accent' : 'text-muted-foreground'"
+          [class]="i <= Math.floor(product.rating?.average || 0) ? 'fill-accent text-accent' : 'text-muted-foreground'"
           class="w-3.5 h-3.5">
         </lucide-icon>
       </div>
-      <span class="text-[11px] text-muted-foreground font-semibold">({{ product.rating.count | number }})</span>
+      <span class="text-[11px] text-muted-foreground font-semibold">({{ (product.rating?.count || 0) | number }})</span>
     </div>
 
     <!-- Price -->
