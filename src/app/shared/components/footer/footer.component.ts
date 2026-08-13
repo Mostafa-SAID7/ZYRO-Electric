@@ -12,6 +12,7 @@ export class FooterComponent {
   footerLinks = {
     company: [
       { label: 'About Us', route: '/about' },
+      { label: 'Our Branches', route: '/branches' },
       { label: 'Careers', route: '/careers' },
       { label: 'Blog', route: '/blog' },
       { label: 'Press', route: '/press' }

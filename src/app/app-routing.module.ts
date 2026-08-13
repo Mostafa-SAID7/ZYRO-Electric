@@ -104,6 +104,10 @@ const routes: Routes = [
     component: PressComponent
   },
   {
+    path: 'branches',
+    loadChildren: () => import('./pages/branches/branches.module').then(m => m.BranchesModule)
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
