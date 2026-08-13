@@ -42,7 +42,7 @@ WORKDIR /etc/nginx
 RUN rm -f /etc/nginx/conf.d/default.conf
 
 # Copy custom Nginx config (optimized for SPA routing)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built assets from builder stage
 COPY --from=builder /app/dist/market /usr/share/nginx/html

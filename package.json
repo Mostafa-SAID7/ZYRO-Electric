@@ -9,7 +9,9 @@
     "preview": "ng serve --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch=false",
-    "lint": "ng lint"
+    "test:log": "powershell -NoProfile -Command \"npm test -- --watch=false --code-coverage 2>&1 | Out-File -FilePath ./test-log/$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').log\"",
+    "lint": "ng lint",
+    "docs": "npx compodoc -p tsconfig.json -d docs"
   },
   "private": false,
   "publishConfig": {
@@ -62,6 +64,7 @@
     "postcss": "^8.4.38",
     "postcss-preset-env": "^9.5.14",
     "typescript": "~5.4.5"
+    "@compodoc/compodoc": "^1.0.0",
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.18.0"
