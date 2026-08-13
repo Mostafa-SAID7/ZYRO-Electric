@@ -7,32 +7,35 @@ import { Component, Input } from '@angular/core';
       <table class="w-full text-sm border-collapse">
         <thead class="border-b-2 border-border bg-muted">
           <tr>
-            <th 
-              *ngFor="let column of columns"
-              class="text-left p-3 font-bold text-accent">
-              {{ column }}
-            </th>
+            @for (column of columns; track column) {
+              <th
+                class="text-left p-3 font-bold text-accent">
+                {{ column }}
+              </th>
+            }
           </tr>
         </thead>
         <tbody>
-          <tr 
-            *ngFor="let row of rows"
-            class="border-b border-border hover:bg-muted transition-colors">
-            <td 
-              *ngFor="let column of columns"
-              class="p-3">
-              <ng-container *ngIf="row[column] | async as data">
-                {{ data }}
-              </ng-container>
-              <ng-container *ngIf="!(row[column] | async)">
-                {{ row[column] }}
-              </ng-container>
-            </td>
-          </tr>
+          @for (row of rows; track row) {
+            <tr
+              class="border-b border-border hover:bg-muted transition-colors">
+              @for (column of columns; track column) {
+                <td
+                  class="p-3">
+                  @if (row[column] | async; as data) {
+                    {{ data }}
+                  }
+                  @if (!(row[column] | async)) {
+                    {{ row[column] }}
+                  }
+                </td>
+              }
+            </tr>
+          }
         </tbody>
       </table>
     </div>
-  `,
+    `,
   styles: []
 })
 export class UiTableComponent {

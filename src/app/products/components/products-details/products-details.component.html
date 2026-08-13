@@ -13,201 +13,208 @@
 
   <div class="max-w-7xl mx-auto px-4 md:px-6 py-12">
     <!-- Loading -->
-    <div *ngIf="isLoading" class="text-center py-20">
-      <lucide-icon name="loader-2" class="w-12 h-12 animate-spin text-accent mx-auto"></lucide-icon>
-    </div>
+    @if (isLoading) {
+      <div class="text-center py-20">
+        <lucide-icon name="loader-2" class="w-12 h-12 animate-spin text-accent mx-auto"></lucide-icon>
+      </div>
+    }
 
     <!-- Product Details -->
-    <div *ngIf="!isLoading && product" class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-16">
-        
-        <!-- Product Image -->
-        <div class="relative group">
-          <div class="absolute inset-0 bg-gradient-to-tr from-accent/20 to-primary/10 rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-500"></div>
-          <div class="relative w-full h-[500px] lg:h-[600px] bg-card rounded-2xl border border-border overflow-hidden shadow-2xl flex items-center justify-center p-2">
-            <img *ngIf="product.image && !imgError"
-                 [src]="product.image" 
-                 [alt]="product.title"
-                 (error)="imgError = true"
-                 class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-700 ease-out">
-            <div *ngIf="!product.image || imgError" class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-muted to-secondary gap-3 rounded-xl">
-              <lucide-icon name="image" class="w-24 h-24 text-muted-foreground/30"></lucide-icon>
-              <span class="text-sm font-semibold text-muted-foreground">Product image unavailable</span>
-            </div>
-            
-            <!-- Badges overlay -->
-            <div *ngIf="product.discount" class="absolute top-6 right-6 bg-red-500 text-white font-black px-3.5 py-1.5 rounded-xl shadow-lg rotate-6 text-sm">
-              -{{ product.discount }}% OFF
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Info -->
-        <div class="flex flex-col justify-center">
-          <!-- Title & Category -->
-          <div class="inline-flex items-center px-4 py-1.5 rounded-xl bg-accent/10 border border-accent/20 text-accent font-bold text-sm mb-6 w-fit uppercase tracking-wider">
-            {{ formatCategory(product.category) }}
-          </div>
-          <h1 class="text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight">{{ product.title }}</h1>
-          
-          <!-- Rating & Count -->
-          <div class="flex items-center gap-4 mb-8 bg-secondary/30 w-fit px-4 py-2 rounded-xl border border-border/50">
-            <div class="flex items-center gap-1">
-              <lucide-icon
-                *ngFor="let i of [1,2,3,4,5]"
-                name="star"
-                [class]="i <= Math.floor(product.rating.average) ? 'fill-accent text-accent' : 'text-muted'"
-                class="w-5 h-5"></lucide-icon>
-            </div>
-            <div class="h-4 w-px bg-border"></div>
-            <span class="text-lg font-bold">{{ product.rating.average }}</span>
-            <span class="text-muted-foreground font-semibold">({{ product.rating.count }} reviews)</span>
-          </div>
-
-          <!-- Price -->
-          <div class="mb-8">
-            <div class="flex items-baseline gap-4">
-              <span class="text-5xl font-black text-accent">${{ product.price | number:'1.2-2' }}</span>
-              <span *ngIf="product.originalPrice" class="text-2xl text-muted-foreground font-bold line-through">
-                ${{ product.originalPrice | number:'1.2-2' }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Description -->
-          <p class="text-lg text-muted-foreground leading-relaxed mb-10 font-medium">
-            {{ product.description }}
-          </p>
-
-          <!-- Stock & SKU -->
-          <div class="grid grid-cols-2 gap-4 mb-10">
-            <div class="bg-card border border-border p-4 rounded-xl">
-              <p class="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-1">Availability</p>
-              <p class="text-lg font-black text-accent flex items-center gap-2">
-                <lucide-icon name="check-circle" class="w-5 h-5"></lucide-icon>
-                {{ product.stock }} in stock
-              </p>
-            </div>
-            <div class="bg-card border border-border p-4 rounded-xl">
-              <p class="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-1">SKU</p>
-              <p class="text-lg font-mono font-bold">{{ product.sku }}</p>
-            </div>
-          </div>
-
-          <!-- Quantity & Add to Cart Actions -->
-          <div class="flex flex-col sm:flex-row gap-4 mb-10 bg-card p-2 rounded-2xl border border-border/50">
-            <!-- Quantity Selector -->
-            <div class="flex items-center justify-between bg-background rounded-xl px-2 py-2 w-full sm:w-auto">
-              <button
-                (click)="decrementQuantity()"
-                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-secondary transition-colors text-foreground">
-                <lucide-icon name="minus" class="w-4 h-4"></lucide-icon>
-              </button>
-              <span class="text-xl font-bold px-6">{{ quantity }}</span>
-              <button
-                (click)="incrementQuantity()"
-                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-secondary transition-colors text-foreground">
-                <lucide-icon name="plus" class="w-4 h-4"></lucide-icon>
-              </button>
-            </div>
-
-            <!-- Add to Cart Button -->
-            <button
-              (click)="addToCart()"
-              [disabled]="product.stock === 0"
-              class="btn-primary flex-1 rounded-xl py-4 flex items-center justify-center gap-3 text-lg font-bold shadow-lg shadow-accent/20 group">
-              <lucide-icon name="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></lucide-icon>
-              {{ product.stock === 0 ? 'Out of Stock' : 'Add to Cart' }}
-            </button>
-          </div>
-
-          <!-- Features list -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="flex items-center gap-3 text-muted-foreground font-semibold">
-              <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <lucide-icon name="truck" class="w-5 h-5 text-foreground"></lucide-icon>
-              </div>
-              Free Shipping
-            </div>
-            <div class="flex items-center gap-3 text-muted-foreground font-semibold">
-              <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <lucide-icon name="rotate-ccw" class="w-5 h-5 text-foreground"></lucide-icon>
-              </div>
-              30-Day Returns
-            </div>
-            <div class="flex items-center gap-3 text-muted-foreground font-semibold">
-              <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <lucide-icon name="lock" class="w-5 h-5 text-foreground"></lucide-icon>
-              </div>
-              Secure Checkout
-            </div>
-            <div class="flex items-center gap-3 text-muted-foreground font-semibold">
-              <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <lucide-icon name="check-circle" class="w-5 h-5 text-foreground"></lucide-icon>
-              </div>
-              Top Quality
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Reviews Section -->
-      <div class="mt-16">
-        <div class="bg-card border border-border rounded-2xl p-8 md:p-12 shadow-xl">
-          <div class="flex items-center justify-between mb-10">
-            <h2 class="text-3xl font-black flex items-center gap-3">
-              <div class="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20">
-                <lucide-icon name="message-square" class="w-6 h-6 text-accent"></lucide-icon>
-              </div>
-              Customer Reviews
-              <span class="text-muted-foreground text-xl font-semibold">({{ reviews.length }})</span>
-            </h2>
-            <button class="btn-outline rounded-xl px-5 py-2.5 font-bold text-sm">Write Review</button>
-          </div>
-
-          <div class="space-y-6">
-            <div *ngFor="let review of reviews" class="bg-background rounded-[2rem] p-8 border border-border/50 shadow-sm transition-all hover:shadow-md">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center font-bold text-lg">
-                    {{ review.userName.charAt(0) }}
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-lg">{{ review.userName }}</h4>
-                    <p class="text-sm text-muted-foreground font-medium">{{ review.createdAt | date:'mediumDate' }}</p>
-                  </div>
+    @if (!isLoading && product) {
+      <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-16">
+          <!-- Product Image -->
+          <div class="relative group">
+            <div class="absolute inset-0 bg-gradient-to-tr from-accent/20 to-primary/10 rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-500"></div>
+            <div class="relative w-full h-[500px] lg:h-[600px] bg-card rounded-2xl border border-border overflow-hidden shadow-2xl flex items-center justify-center p-2">
+              @if (product.image && !imgError) {
+                <img
+                  [src]="product.image"
+                  [alt]="product.title"
+                  (error)="imgError = true"
+                  class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-700 ease-out">
+              }
+              @if (!product.image || imgError) {
+                <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-muted to-secondary gap-3 rounded-xl">
+                  <lucide-icon name="image" class="w-24 h-24 text-muted-foreground/30"></lucide-icon>
+                  <span class="text-sm font-semibold text-muted-foreground">Product image unavailable</span>
                 </div>
-                <div class="flex items-center gap-1 bg-secondary/50 px-3 py-1.5 rounded-xl border border-border/50">
+              }
+              <!-- Badges overlay -->
+              @if (product.discount) {
+                <div class="absolute top-6 right-6 bg-red-500 text-white font-black px-3.5 py-1.5 rounded-xl shadow-lg rotate-6 text-sm">
+                  -{{ product.discount }}% OFF
+                </div>
+              }
+            </div>
+          </div>
+          <!-- Product Info -->
+          <div class="flex flex-col justify-center">
+            <!-- Title & Category -->
+            <div class="inline-flex items-center px-4 py-1.5 rounded-xl bg-accent/10 border border-accent/20 text-accent font-bold text-sm mb-6 w-fit uppercase tracking-wider">
+              {{ formatCategory(product.category) }}
+            </div>
+            <h1 class="text-4xl md:text-5xl font-black mb-4 leading-tight tracking-tight">{{ product.title }}</h1>
+            <!-- Rating & Count -->
+            <div class="flex items-center gap-4 mb-8 bg-secondary/30 w-fit px-4 py-2 rounded-xl border border-border/50">
+              <div class="flex items-center gap-1">
+                @for (i of [1,2,3,4,5]; track i) {
                   <lucide-icon
-                    *ngFor="let i of [1,2,3,4,5]"
                     name="star"
-                    [class]="i <= review.rating ? 'fill-accent text-accent' : 'text-muted'"
-                    class="w-4 h-4"></lucide-icon>
-                </div>
+                    [class]="i <= Math.floor(product.rating.average) ? 'fill-accent text-accent' : 'text-muted'"
+                  class="w-5 h-5"></lucide-icon>
+                }
               </div>
-              <h5 class="font-bold text-xl mb-3">{{ review.title }}</h5>
-              <p class="text-muted-foreground leading-relaxed mb-6 font-medium text-lg">{{ review.comment }}</p>
-              <button class="inline-flex items-center gap-2 px-4 py-2 bg-secondary rounded-xl text-sm font-bold hover:text-accent transition-colors">
-                <lucide-icon name="thumbs-up" class="w-4 h-4"></lucide-icon>
-                Helpful ({{ review.helpful }})
+              <div class="h-4 w-px bg-border"></div>
+              <span class="text-lg font-bold">{{ product.rating.average }}</span>
+              <span class="text-muted-foreground font-semibold">({{ product.rating.count }} reviews)</span>
+            </div>
+            <!-- Price -->
+            <div class="mb-8">
+              <div class="flex items-baseline gap-4">
+                <span class="text-5xl font-black text-accent">${{ product.price | number:'1.2-2' }}</span>
+                @if (product.originalPrice) {
+                  <span class="text-2xl text-muted-foreground font-bold line-through">
+                    ${{ product.originalPrice | number:'1.2-2' }}
+                  </span>
+                }
+              </div>
+            </div>
+            <!-- Description -->
+            <p class="text-lg text-muted-foreground leading-relaxed mb-10 font-medium">
+              {{ product.description }}
+            </p>
+            <!-- Stock & SKU -->
+            <div class="grid grid-cols-2 gap-4 mb-10">
+              <div class="bg-card border border-border p-4 rounded-xl">
+                <p class="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-1">Availability</p>
+                <p class="text-lg font-black text-accent flex items-center gap-2">
+                  <lucide-icon name="check-circle" class="w-5 h-5"></lucide-icon>
+                  {{ product.stock }} in stock
+                </p>
+              </div>
+              <div class="bg-card border border-border p-4 rounded-xl">
+                <p class="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-1">SKU</p>
+                <p class="text-lg font-mono font-bold">{{ product.sku }}</p>
+              </div>
+            </div>
+            <!-- Quantity & Add to Cart Actions -->
+            <div class="flex flex-col sm:flex-row gap-4 mb-10 bg-card p-2 rounded-2xl border border-border/50">
+              <!-- Quantity Selector -->
+              <div class="flex items-center justify-between bg-background rounded-xl px-2 py-2 w-full sm:w-auto">
+                <button
+                  (click)="decrementQuantity()"
+                  class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-secondary transition-colors text-foreground">
+                  <lucide-icon name="minus" class="w-4 h-4"></lucide-icon>
+                </button>
+                <span class="text-xl font-bold px-6">{{ quantity }}</span>
+                <button
+                  (click)="incrementQuantity()"
+                  class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-secondary transition-colors text-foreground">
+                  <lucide-icon name="plus" class="w-4 h-4"></lucide-icon>
+                </button>
+              </div>
+              <!-- Add to Cart Button -->
+              <button
+                (click)="addToCart()"
+                [disabled]="product.stock === 0"
+                class="btn-primary flex-1 rounded-xl py-4 flex items-center justify-center gap-3 text-lg font-bold shadow-lg shadow-accent/20 group">
+                <lucide-icon name="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></lucide-icon>
+                {{ product.stock === 0 ? 'Out of Stock' : 'Add to Cart' }}
               </button>
             </div>
+            <!-- Features list -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex items-center gap-3 text-muted-foreground font-semibold">
+                <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                  <lucide-icon name="truck" class="w-5 h-5 text-foreground"></lucide-icon>
+                </div>
+                Free Shipping
+              </div>
+              <div class="flex items-center gap-3 text-muted-foreground font-semibold">
+                <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                  <lucide-icon name="rotate-ccw" class="w-5 h-5 text-foreground"></lucide-icon>
+                </div>
+                30-Day Returns
+              </div>
+              <div class="flex items-center gap-3 text-muted-foreground font-semibold">
+                <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                  <lucide-icon name="lock" class="w-5 h-5 text-foreground"></lucide-icon>
+                </div>
+                Secure Checkout
+              </div>
+              <div class="flex items-center gap-3 text-muted-foreground font-semibold">
+                <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                  <lucide-icon name="check-circle" class="w-5 h-5 text-foreground"></lucide-icon>
+                </div>
+                Top Quality
+              </div>
+            </div>
           </div>
-
-          <!-- No Reviews -->
-          <div *ngIf="reviews.length === 0" class="text-center py-16 bg-background rounded-[2rem] border border-border/50 border-dashed">
-            <lucide-icon name="message-square" class="w-16 h-16 text-muted-foreground/30 mx-auto mb-4"></lucide-icon>
-            <h3 class="text-xl font-bold mb-2">No reviews yet</h3>
-            <p class="text-muted-foreground font-medium">Be the first to review this product!</p>
+        </div>
+        <!-- Reviews Section -->
+        <div class="mt-16">
+          <div class="bg-card border border-border rounded-2xl p-8 md:p-12 shadow-xl">
+            <div class="flex items-center justify-between mb-10">
+              <h2 class="text-3xl font-black flex items-center gap-3">
+                <div class="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center border border-accent/20">
+                  <lucide-icon name="message-square" class="w-6 h-6 text-accent"></lucide-icon>
+                </div>
+                Customer Reviews
+                <span class="text-muted-foreground text-xl font-semibold">({{ reviews.length }})</span>
+              </h2>
+              <button class="btn-outline rounded-xl px-5 py-2.5 font-bold text-sm">Write Review</button>
+            </div>
+            <div class="space-y-6">
+              @for (review of reviews; track review) {
+                <div class="bg-background rounded-[2rem] p-8 border border-border/50 shadow-sm transition-all hover:shadow-md">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center font-bold text-lg">
+                        {{ review.userName.charAt(0) }}
+                      </div>
+                      <div>
+                        <h4 class="font-bold text-lg">{{ review.userName }}</h4>
+                        <p class="text-sm text-muted-foreground font-medium">{{ review.createdAt | date:'mediumDate' }}</p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-1 bg-secondary/50 px-3 py-1.5 rounded-xl border border-border/50">
+                      @for (i of [1,2,3,4,5]; track i) {
+                        <lucide-icon
+                          name="star"
+                          [class]="i <= review.rating ? 'fill-accent text-accent' : 'text-muted'"
+                        class="w-4 h-4"></lucide-icon>
+                      }
+                    </div>
+                  </div>
+                  <h5 class="font-bold text-xl mb-3">{{ review.title }}</h5>
+                  <p class="text-muted-foreground leading-relaxed mb-6 font-medium text-lg">{{ review.comment }}</p>
+                  <button class="inline-flex items-center gap-2 px-4 py-2 bg-secondary rounded-xl text-sm font-bold hover:text-accent transition-colors">
+                    <lucide-icon name="thumbs-up" class="w-4 h-4"></lucide-icon>
+                    Helpful ({{ review.helpful }})
+                  </button>
+                </div>
+              }
+            </div>
+            <!-- No Reviews -->
+            @if (reviews.length === 0) {
+              <div class="text-center py-16 bg-background rounded-[2rem] border border-border/50 border-dashed">
+                <lucide-icon name="message-square" class="w-16 h-16 text-muted-foreground/30 mx-auto mb-4"></lucide-icon>
+                <h3 class="text-xl font-bold mb-2">No reviews yet</h3>
+                <p class="text-muted-foreground font-medium">Be the first to review this product!</p>
+              </div>
+            }
           </div>
         </div>
       </div>
-    </div>
+    }
 
     <!-- Not Found -->
-    <div *ngIf="!isLoading && !product" class="text-center py-24">
-      <app-ui-not-found></app-ui-not-found>
-    </div>
+    @if (!isLoading && !product) {
+      <div class="text-center py-24">
+        <app-ui-not-found></app-ui-not-found>
+      </div>
+    }
   </div>
 
   <!-- Toast -->

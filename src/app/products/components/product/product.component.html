@@ -2,41 +2,51 @@
   <!-- Product Image -->
   <div class="relative overflow-hidden bg-muted cursor-pointer" style="height: 220px;" (click)="viewDetails()">
     <!-- Real product image -->
-    <img *ngIf="product.image"
-      [src]="product.image"
-      [alt]="product.title"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-      loading="lazy"
-      (error)="imgError = true"
-      [style.display]="imgError ? 'none' : 'block'">
+    @if (product.image) {
+      <img
+        [src]="product.image"
+        [alt]="product.title"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+        (error)="imgError = true"
+        [style.display]="imgError ? 'none' : 'block'">
+    }
 
     <!-- Fallback placeholder if no image or load error -->
-    <div *ngIf="!product.image || imgError"
-      class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-muted to-secondary gap-2">
-      <lucide-icon name="image" class="w-14 h-14 text-muted-foreground opacity-40"></lucide-icon>
-      <span class="text-xs text-muted-foreground">No image</span>
-    </div>
+    @if (!product.image || imgError) {
+      <div
+        class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-muted to-secondary gap-2">
+        <lucide-icon name="image" class="w-14 h-14 text-muted-foreground opacity-40"></lucide-icon>
+        <span class="text-xs text-muted-foreground">No image</span>
+      </div>
+    }
 
     <!-- Hover overlay -->
     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
     <!-- Discount Badge -->
-    <div *ngIf="product.discount"
-      class="absolute top-3 left-3 bg-accent text-accent-foreground px-2.5 py-1 rounded-lg text-[11px] font-black tracking-wider shadow-md">
-      -{{ product.discount }}%
-    </div>
+    @if (product.discount) {
+      <div
+        class="absolute top-3 left-3 bg-accent text-accent-foreground px-2.5 py-1 rounded-lg text-[11px] font-black tracking-wider shadow-md">
+        -{{ product.discount }}%
+      </div>
+    }
 
     <!-- Featured Badge -->
-    <div *ngIf="product.isFeatured"
-      class="absolute top-3 right-3 bg-secondary/80 text-foreground px-2 py-1 rounded-lg text-[10px] font-bold border border-border">
-      ★ Featured
-    </div>
+    @if (product.isFeatured) {
+      <div
+        class="absolute top-3 right-3 bg-secondary/80 text-foreground px-2 py-1 rounded-lg text-[10px] font-bold border border-border">
+        ★ Featured
+      </div>
+    }
 
     <!-- Out of Stock overlay -->
-    <div *ngIf="product.stock === 0"
-      class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-      <span class="text-white font-black text-sm tracking-widest uppercase bg-red-500/80 px-4 py-2 rounded-xl">Out of Stock</span>
-    </div>
+    @if (product.stock === 0) {
+      <div
+        class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+        <span class="text-white font-black text-sm tracking-widest uppercase bg-red-500/80 px-4 py-2 rounded-xl">Out of Stock</span>
+      </div>
+    }
   </div>
 
   <!-- Product Details -->
@@ -53,12 +63,13 @@
     <!-- Rating -->
     <div class="flex items-center gap-1.5 mb-3">
       <div class="flex items-center gap-0.5">
-        <lucide-icon
-          *ngFor="let i of [1,2,3,4,5]"
-          name="star"
-          [class]="i <= Math.floor(product.rating?.average || 0) ? 'fill-accent text-accent' : 'text-muted-foreground'"
-          class="w-3.5 h-3.5">
-        </lucide-icon>
+        @for (i of [1,2,3,4,5]; track i) {
+          <lucide-icon
+            name="star"
+            [class]="i <= Math.floor(product.rating?.average || 0) ? 'fill-accent text-accent' : 'text-muted-foreground'"
+            class="w-3.5 h-3.5">
+          </lucide-icon>
+        }
       </div>
       <span class="text-[11px] text-muted-foreground font-semibold">({{ (product.rating?.count || 0) | number }})</span>
     </div>
@@ -66,16 +77,24 @@
     <!-- Price -->
     <div class="flex items-baseline gap-2 mb-3">
       <span class="text-lg font-black text-accent">${{ product.price | number:'1.2-2' }}</span>
-      <span *ngIf="product.originalPrice" class="text-xs text-muted-foreground line-through">
-        ${{ product.originalPrice | number:'1.2-2' }}
-      </span>
+      @if (product.originalPrice) {
+        <span class="text-xs text-muted-foreground line-through">
+          ${{ product.originalPrice | number:'1.2-2' }}
+        </span>
+      }
     </div>
 
     <!-- Stock Info -->
     <p class="text-[11px] font-semibold mb-4 flex-1">
-      <span *ngIf="product.stock > 10" class="text-green-500">✓ {{ product.stock }} in stock</span>
-      <span *ngIf="product.stock > 0 && product.stock <= 10" class="text-orange-400">⚡ Only {{ product.stock }} left!</span>
-      <span *ngIf="product.stock === 0" class="text-red-500">✗ Out of stock</span>
+      @if (product.stock > 10) {
+        <span class="text-green-500">✓ {{ product.stock }} in stock</span>
+      }
+      @if (product.stock > 0 && product.stock <= 10) {
+        <span class="text-orange-400">⚡ Only {{ product.stock }} left!</span>
+      }
+      @if (product.stock === 0) {
+        <span class="text-red-500">✗ Out of stock</span>
+      }
     </p>
 
     <!-- Action Buttons -->

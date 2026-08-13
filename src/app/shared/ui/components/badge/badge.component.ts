@@ -4,10 +4,12 @@ import { Component, Input } from '@angular/core';
   selector: 'app-ui-badge',
   template: `
     <span [class]="getBadgeClasses()">
-      <lucide-icon *ngIf="icon" [name]="icon" class="w-3 h-3"></lucide-icon>
+      @if (icon) {
+        <lucide-icon [name]="icon" class="w-3 h-3"></lucide-icon>
+      }
       {{ label }}
     </span>
-  `,
+    `,
   styles: []
 })
 export class UiBadgeComponent {

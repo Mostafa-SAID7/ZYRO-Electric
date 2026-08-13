@@ -15,59 +15,62 @@
 
     <!-- Product Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div *ngFor="let product of featuredProducts"
-        (click)="goToProduct(product.id)"
-        class="group cursor-pointer">
-        <div class="bg-card rounded-[2rem] overflow-hidden border border-border/50 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 flex flex-col h-full">
-          <!-- Product Image -->
-          <div class="relative h-60 overflow-hidden bg-muted">
-            <!-- Featured products are below fold, keep lazy loading -->
-            <img *ngIf="!product.hasError"
-              [src]="product.image"
-              [alt]="product.name"
-              loading="lazy"
-              (error)="product.hasError = true"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-
-            <!-- Fallback UI for broken images -->
-            <div *ngIf="product.hasError" class="w-full h-full flex flex-col items-center justify-center bg-card">
-              <lucide-icon name="image" class="w-12 h-12 text-muted-foreground/30 mb-2"></lucide-icon>
-              <span class="text-xs text-muted-foreground font-medium">Product image unavailable</span>
+      @for (product of featuredProducts; track product) {
+        <div
+          (click)="goToProduct(product.id)"
+          class="group cursor-pointer">
+          <div class="bg-card rounded-[2rem] overflow-hidden border border-border/50 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 flex flex-col h-full">
+            <!-- Product Image -->
+            <div class="relative h-60 overflow-hidden bg-muted">
+              <!-- Featured products are below fold, keep lazy loading -->
+              @if (!product.hasError) {
+                <img
+                  [src]="product.image"
+                  [alt]="product.name"
+                  loading="lazy"
+                  (error)="product.hasError = true"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              }
+              <!-- Fallback UI for broken images -->
+              @if (product.hasError) {
+                <div class="w-full h-full flex flex-col items-center justify-center bg-card">
+                  <lucide-icon name="image" class="w-12 h-12 text-muted-foreground/30 mb-2"></lucide-icon>
+                  <span class="text-xs text-muted-foreground font-medium">Product image unavailable</span>
+                </div>
+              }
+              <!-- Badge -->
+              @if (product.discount) {
+                <span
+                  class="absolute top-4 left-4 bg-red-500 text-white px-4 py-1.5 rounded-xl text-xs font-black tracking-wider uppercase shadow-md">
+                  {{ product.badge }}
+                </span>
+              }
+              <!-- Quick Add Button -->
+              <button class="absolute bottom-4 left-4 right-4 bg-card/90 backdrop-blur-md text-foreground py-3 rounded-xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 font-bold border border-border/50 hover:bg-accent hover:text-accent-foreground hover:border-accent">
+                Quick Add
+              </button>
             </div>
-
-            <!-- Badge -->
-            <span
-                *ngIf="product.discount"
-                class="absolute top-4 left-4 bg-red-500 text-white px-4 py-1.5 rounded-xl text-xs font-black tracking-wider uppercase shadow-md">
-              {{ product.badge }}
-            </span>
-
-            <!-- Quick Add Button -->
-            <button class="absolute bottom-4 left-4 right-4 bg-card/90 backdrop-blur-md text-foreground py-3 rounded-xl opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 font-bold border border-border/50 hover:bg-accent hover:text-accent-foreground hover:border-accent">
-              Quick Add
-            </button>
-          </div>
-
-          <!-- Product Info -->
-          <div class="p-6 space-y-4 flex-1 flex flex-col">
-            <p class="text-base font-bold line-clamp-2">{{ product.name }}</p>
-
-            <!-- Rating -->
-            <div class="flex items-center gap-2 mt-auto">
-              <lucide-icon name="star" class="w-4 h-4 fill-yellow-500 text-yellow-500"></lucide-icon>
-              <span class="text-sm font-bold">{{ product.rating }}</span>
-              <span class="text-xs text-muted-foreground font-semibold">({{ product.reviews | number }})</span>
-            </div>
-
-            <!-- Price -->
-            <div class="flex items-baseline gap-3 pt-2">
-              <span class="text-2xl font-black text-accent">${{ product.price }}</span>
-              <span *ngIf="product.originalPrice"
-                class="text-sm text-muted-foreground font-bold line-through">${{ product.originalPrice }}</span>
+            <!-- Product Info -->
+            <div class="p-6 space-y-4 flex-1 flex flex-col">
+              <p class="text-base font-bold line-clamp-2">{{ product.name }}</p>
+              <!-- Rating -->
+              <div class="flex items-center gap-2 mt-auto">
+                <lucide-icon name="star" class="w-4 h-4 fill-yellow-500 text-yellow-500"></lucide-icon>
+                <span class="text-sm font-bold">{{ product.rating }}</span>
+                <span class="text-xs text-muted-foreground font-semibold">({{ product.reviews | number }})</span>
+              </div>
+              <!-- Price -->
+              <div class="flex items-baseline gap-3 pt-2">
+                <span class="text-2xl font-black text-accent">${{ product.price }}</span>
+                @if (product.originalPrice) {
+                  <span
+                  class="text-sm text-muted-foreground font-bold line-through">${{ product.originalPrice }}</span>
+                }
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 </section>

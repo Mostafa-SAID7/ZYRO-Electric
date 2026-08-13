@@ -4,18 +4,20 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
   selector: 'app-ui-drawer',
   template: `
     <!-- Backdrop Overlay -->
-    <div *ngIf="isOpen"
-      class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm transition-opacity duration-300"
-      (click)="close()">
-    </div>
-
+    @if (isOpen) {
+      <div
+        class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm transition-opacity duration-300"
+        (click)="close()">
+      </div>
+    }
+    
     <!-- Drawer Panel -->
     <div [ngClass]="getTranslationClass()"
       [class]="getDrawerClasses()">
-
+    
       <!-- Gradient top accent bar -->
       <div class="h-1 w-full bg-gradient-to-r from-accent via-yellow-300 to-accent flex-shrink-0"></div>
-
+    
       <!-- Drawer Header -->
       <div class="flex items-center justify-between px-6 py-5 border-b border-border/50 bg-card/80 backdrop-blur-md flex-shrink-0">
         <div class="flex items-center gap-3">
@@ -24,7 +26,9 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
           </div>
           <div>
             <h2 class="text-base font-black tracking-tight">{{ title }}</h2>
-            <app-ui-badge *ngIf="badge" [label]="badge + ' items'" variant="accent"></app-ui-badge>
+            @if (badge) {
+              <app-ui-badge [label]="badge + ' items'" variant="accent"></app-ui-badge>
+            }
           </div>
         </div>
         <button
@@ -36,18 +40,18 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
           </svg>
         </button>
       </div>
-
+    
       <!-- Drawer Content (scrollable) -->
       <div class="flex-1 overflow-y-auto px-5 py-5" style="scrollbar-width: thin;">
         <ng-content select="[drawer-content]"></ng-content>
       </div>
-
+    
       <!-- Drawer Footer -->
       <div class="border-t border-border/50 px-5 py-5 bg-card/80 backdrop-blur-md flex-shrink-0">
         <ng-content select="[drawer-footer]"></ng-content>
       </div>
     </div>
-  `,
+    `,
   styles: [`
     :host {
       display: contents;

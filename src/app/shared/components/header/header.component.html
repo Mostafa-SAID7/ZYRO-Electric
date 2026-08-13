@@ -1,7 +1,7 @@
 <header class="sticky top-4 z-40 mx-4 md:mx-auto max-w-6xl transition-all duration-300">
   <div class="bg-card border border-border shadow-lg rounded-2xl px-4 py-2">
     <nav class="flex items-center justify-between gap-4">
-      
+
       <!-- Left: Brand Logo & Name -->
       <div class="flex items-center flex-shrink-0">
         <h1 class="text-xl md:text-2xl font-black gradient-text cursor-pointer flex items-center gap-2 px-2"
@@ -17,7 +17,7 @@
       <!-- Center: Main Navigation -->
       <div class="flex-1 flex justify-center">
         <div class="bg-secondary/50 p-1 rounded-xl flex gap-1 border border-border/50">
-          <a 
+          <a
             routerLink="/"
             routerLinkActive="bg-background text-foreground shadow-sm"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -26,7 +26,7 @@
             <span class="hidden sm:inline">Home</span>
             <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-foreground text-background font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded-lg opacity-0 sm:hidden group-hover:opacity-100 group-focus:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-lg">Home</span>
           </a>
-          <a 
+          <a
             routerLink="/products"
             routerLinkActive="bg-background text-foreground shadow-sm"
             class="group relative text-muted-foreground font-bold text-sm px-3 md:px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
@@ -34,7 +34,7 @@
             <span class="hidden sm:inline">Products</span>
             <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-foreground text-background font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded-lg opacity-0 sm:hidden group-hover:opacity-100 group-focus:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-lg">Products</span>
           </a>
-          <a 
+          <a
             routerLink="/about"
             routerLinkActive="bg-background text-foreground shadow-sm"
             class="group relative text-muted-foreground font-bold text-sm px-3 md:px-4 lg:px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
@@ -42,7 +42,7 @@
             <span class="hidden sm:inline">About</span>
             <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-foreground text-background font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded-lg opacity-0 sm:hidden group-hover:opacity-100 group-focus:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-lg">About</span>
           </a>
-          <a 
+          <a
             routerLink="/contact"
             routerLinkActive="bg-background text-foreground shadow-sm"
             class="group relative text-muted-foreground font-bold text-sm px-3 md:px-4 lg:px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
@@ -55,35 +55,45 @@
 
       <!-- Right: Actions -->
       <div class="flex items-center gap-1.5 flex-shrink-0">
-        
+
         <!-- Theme Toggle -->
-        <button 
+        <button
           (click)="toggleTheme()"
           class="p-2.5 hover:bg-secondary rounded-full transition-colors duration-200 group"
           [title]="isDarkMode ? 'Light Mode' : 'Dark Mode'">
-          <lucide-icon *ngIf="isDarkMode" name="sun" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
-          <lucide-icon *ngIf="!isDarkMode" name="moon" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+          @if (isDarkMode) {
+            <lucide-icon name="sun" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+          }
+          @if (!isDarkMode) {
+            <lucide-icon name="moon" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+          }
         </button>
 
         <!-- Cart Icon -->
-        <button 
+        <button
           (click)="toggleCartDrawer()"
           class="relative p-2.5 hover:bg-secondary rounded-full transition-colors duration-200 group"
           title="Open shopping cart">
           <lucide-icon name="shopping-bag" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
-          <span *ngIf="cartItemCount > 0" 
-            class="absolute top-0.5 right-0.5 flex items-center justify-center w-4 h-4 text-[10px] font-black text-white bg-red-500 rounded-full border-2 border-card shadow-sm">
-            {{ cartItemCount }}
-          </span>
+          @if (cartItemCount > 0) {
+            <span
+              class="absolute top-0.5 right-0.5 flex items-center justify-center w-4 h-4 text-[10px] font-black text-white bg-red-500 rounded-full border-2 border-card shadow-sm">
+              {{ cartItemCount }}
+            </span>
+          }
         </button>
 
         <!-- User Icon -->
-        <button 
+        <button
           (click)="isLoggedIn ? logout() : goToAuth()"
           class="p-2.5 hover:bg-secondary rounded-full transition-colors duration-200 group ml-1"
           [title]="isLoggedIn ? 'Logout' : 'Login'">
-          <lucide-icon *ngIf="!isLoggedIn" name="user" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
-          <lucide-icon *ngIf="isLoggedIn" name="log-out" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+          @if (!isLoggedIn) {
+            <lucide-icon name="user" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+          }
+          @if (isLoggedIn) {
+            <lucide-icon name="log-out" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+          }
         </button>
       </div>
     </nav>
@@ -105,197 +115,218 @@
   <!-- Drawer Content -->
   <div drawer-content>
     <!-- Empty State -->
-    <div *ngIf="cartItems.length === 0" class="flex flex-col items-center justify-center h-full text-center py-20">
-      <div class="w-24 h-24 bg-secondary rounded-[2rem] flex items-center justify-center mb-6 border border-border/50">
-        <lucide-icon name="shopping-cart" class="w-12 h-12 text-muted-foreground/30"></lucide-icon>
-      </div>
-      <p class="font-black text-xl mb-2">Your cart is empty</p>
-      <p class="text-sm text-muted-foreground font-medium mb-8">Add items to get started</p>
-      <button
-        (click)="goToProducts(); closeCartDrawer()"
-        class="btn-primary rounded-xl px-6 py-2.5 font-bold shadow-md shadow-accent/20">
-        Browse Products
-      </button>
-    </div>
-
-    <!-- Cart Items List -->
-    <div *ngIf="cartItems.length > 0" class="space-y-3">
-      <div *ngFor="let item of cartItems"
-        class="flex items-center gap-3 bg-secondary/30 rounded-2xl p-3 border border-border/30 transition-all hover:border-border/60 group">
-
-        <!-- Product Image -->
-        <div class="w-16 h-16 rounded-xl bg-muted flex-shrink-0 overflow-hidden border border-border/50">
-          <img *ngIf="item.product?.image && !item.hasError"
-            [src]="item.product.image"
-            [alt]="item.product?.title"
-            (error)="item.hasError = true"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-          <div *ngIf="!item.product?.image || item.hasError" class="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-secondary">
-            <lucide-icon name="image" class="w-6 h-6 text-muted-foreground/40"></lucide-icon>
-          </div>
+    @if (cartItems.length === 0) {
+      <div class="flex flex-col items-center justify-center h-full text-center py-20">
+        <div class="w-24 h-24 bg-secondary rounded-[2rem] flex items-center justify-center mb-6 border border-border/50">
+          <lucide-icon name="shopping-cart" class="w-12 h-12 text-muted-foreground/30"></lucide-icon>
         </div>
-
-        <!-- Product Info -->
-        <div class="flex-1 min-w-0">
-          <h3 class="font-bold text-sm truncate mb-0.5">{{ item.product?.title || 'Product' }}</h3>
-          <p class="text-accent font-black text-sm">{{ item.product?.price | currency }}</p>
-
-          <!-- Quantity Controls -->
-          <div class="flex items-center gap-2 mt-2 bg-background/60 rounded-full w-fit px-1.5 py-1 border border-border/50">
-            <button
-              (click)="updateQuantity(item.productId, item.quantity - 1)"
-              class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-secondary transition-colors">
-              <lucide-icon name="minus" class="w-3 h-3"></lucide-icon>
-            </button>
-            <span class="text-xs font-black w-5 text-center">{{ item.quantity }}</span>
-            <button
-              (click)="updateQuantity(item.productId, item.quantity + 1)"
-              class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-secondary transition-colors">
-              <lucide-icon name="plus" class="w-3 h-3"></lucide-icon>
-            </button>
-          </div>
-        </div>
-
-        <!-- Remove Button -->
+        <p class="font-black text-xl mb-2">Your cart is empty</p>
+        <p class="text-sm text-muted-foreground font-medium mb-8">Add items to get started</p>
         <button
-          (click)="removeFromCart(item.productId)"
-          class="w-8 h-8 flex items-center justify-center rounded-full text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-all flex-shrink-0 border border-transparent hover:border-red-500/20"
-          title="Remove item">
-          <lucide-icon name="trash-2" class="w-3.5 h-3.5"></lucide-icon>
+          (click)="goToProducts(); closeCartDrawer()"
+          class="btn-primary rounded-xl px-6 py-2.5 font-bold shadow-md shadow-accent/20">
+          Browse Products
         </button>
       </div>
+    }
 
-      <!-- Cart Summary -->
-      <div class="mt-6 pt-4">
-        <div class="flex justify-between items-center bg-gradient-to-r from-accent/10 to-transparent p-4 rounded-2xl border border-accent/20">
-          <div>
-            <p class="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-0.5">Total</p>
-            <p class="font-black text-2xl text-accent">{{ cartTotal | currency }}</p>
+    <!-- Cart Items List -->
+    @if (cartItems.length > 0) {
+      <div class="space-y-3">
+        @for (item of cartItems; track item) {
+          <div
+            class="flex items-center gap-3 bg-secondary/30 rounded-2xl p-3 border border-border/30 transition-all hover:border-border/60 group">
+            <!-- Product Image -->
+            <div class="w-16 h-16 rounded-xl bg-muted flex-shrink-0 overflow-hidden border border-border/50">
+              @if (item.product?.image && !item.hasError) {
+                <img
+                  [src]="item.product.image"
+                  [alt]="item.product?.title"
+                  (error)="item.hasError = true"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              }
+              @if (!item.product?.image || item.hasError) {
+                <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-secondary">
+                  <lucide-icon name="image" class="w-6 h-6 text-muted-foreground/40"></lucide-icon>
+                </div>
+              }
+            </div>
+            <!-- Product Info -->
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-sm truncate mb-0.5">{{ item.product?.title || 'Product' }}</h3>
+              <p class="text-accent font-black text-sm">{{ item.product?.price | currency }}</p>
+              <!-- Quantity Controls -->
+              <div class="flex items-center gap-2 mt-2 bg-background/60 rounded-full w-fit px-1.5 py-1 border border-border/50">
+                <button
+                  (click)="updateQuantity(item.productId, item.quantity - 1)"
+                  class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-secondary transition-colors">
+                  <lucide-icon name="minus" class="w-3 h-3"></lucide-icon>
+                </button>
+                <span class="text-xs font-black w-5 text-center">{{ item.quantity }}</span>
+                <button
+                  (click)="updateQuantity(item.productId, item.quantity + 1)"
+                  class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-secondary transition-colors">
+                  <lucide-icon name="plus" class="w-3 h-3"></lucide-icon>
+                </button>
+              </div>
+            </div>
+            <!-- Remove Button -->
+            <button
+              (click)="removeFromCart(item.productId)"
+              class="w-8 h-8 flex items-center justify-center rounded-full text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-all flex-shrink-0 border border-transparent hover:border-red-500/20"
+              title="Remove item">
+              <lucide-icon name="trash-2" class="w-3.5 h-3.5"></lucide-icon>
+            </button>
           </div>
-          <div class="text-right">
-            <p class="text-xs text-muted-foreground font-semibold">{{ cartItemCount }} item{{ cartItemCount !== 1 ? 's' : '' }}</p>
-            <p class="text-xs text-accent font-bold">Free shipping!</p>
+        }
+        <!-- Cart Summary -->
+        <div class="mt-6 pt-4">
+          <div class="flex justify-between items-center bg-gradient-to-r from-accent/10 to-transparent p-4 rounded-2xl border border-accent/20">
+            <div>
+              <p class="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-0.5">Total</p>
+              <p class="font-black text-2xl text-accent">{{ cartTotal | currency }}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-xs text-muted-foreground font-semibold">{{ cartItemCount }} item{{ cartItemCount !== 1 ? 's' : '' }}</p>
+              <p class="text-xs text-accent font-bold">Free shipping!</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    }
   </div>
 
   <!-- Drawer Footer -->
   <div drawer-footer class="space-y-3">
-    <button
-      *ngIf="cartItems.length > 0"
-      (click)="goToCart()"
-      class="w-full btn-primary rounded-full py-3.5 font-black flex items-center justify-center gap-2 shadow-lg shadow-accent/20 group">
-      <lucide-icon name="shopping-bag" class="w-4 h-4 group-hover:scale-110 transition-transform"></lucide-icon>
-      View Full Cart
-    </button>
-    <button
-      *ngIf="cartItems.length > 0"
-      (click)="goToProducts(); closeCartDrawer()"
-      class="w-full btn-outline rounded-full py-3 font-bold">
-      Continue Shopping
-    </button>
-    <button
-      *ngIf="cartItems.length === 0"
-      (click)="goToProducts(); closeCartDrawer()"
-      class="w-full btn-primary rounded-full py-3.5 font-black shadow-lg shadow-accent/20">
-      Start Shopping
-    </button>
+    @if (cartItems.length > 0) {
+      <button
+        (click)="goToCart()"
+        class="w-full btn-primary rounded-full py-3.5 font-black flex items-center justify-center gap-2 shadow-lg shadow-accent/20 group">
+        <lucide-icon name="shopping-bag" class="w-4 h-4 group-hover:scale-110 transition-transform"></lucide-icon>
+        View Full Cart
+      </button>
+    }
+    @if (cartItems.length > 0) {
+      <button
+        (click)="goToProducts(); closeCartDrawer()"
+        class="w-full btn-outline rounded-full py-3 font-bold">
+        Continue Shopping
+      </button>
+    }
+    @if (cartItems.length === 0) {
+      <button
+        (click)="goToProducts(); closeCartDrawer()"
+        class="w-full btn-primary rounded-full py-3.5 font-black shadow-lg shadow-accent/20">
+        Start Shopping
+      </button>
+    }
   </div>
 
 </app-ui-drawer>
 
 <!-- Auth Modal -->
-<div *ngIf="isAuthModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 transition-opacity">
-  <div class="w-full max-w-md bg-card rounded-[2rem] shadow-2xl border border-border overflow-hidden relative glass-card">
-    <!-- Close button -->
-    <button (click)="closeAuthModal()" class="absolute top-6 right-6 p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full transition-colors z-10">
-      <lucide-icon name="x" class="w-5 h-5"></lucide-icon>
-    </button>
-    
-    <div class="p-8 sm:p-10">
-      <!-- Header -->
-      <div class="text-center mb-8 relative">
-        <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <lucide-icon [name]="authModalMode === 'login' ? 'lock' : 'user-plus'" class="w-8 h-8 text-accent"></lucide-icon>
-        </div>
-        <h2 class="text-2xl font-bold gradient-text mb-2">{{ authModalMode === 'login' ? 'Welcome Back' : 'Create Account' }}</h2>
-        <p class="text-sm text-muted-foreground">{{ authModalMode === 'login' ? 'Sign in to your ZYRO-Electric account' : 'Join ZYRO-Electric today' }}</p>
-      </div>
-
-      <!-- Login Form -->
-      <form *ngIf="authModalMode === 'login'" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" class="space-y-5">
-        <div>
-          <label class="section-label ml-1">Email</label>
-          <input type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('email')">
-        </div>
-        <div>
-          <label class="section-label ml-1">Password</label>
-          <input type="password" formControlName="password" placeholder="Enter password" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('password')">
-        </div>
-        <button type="submit" [disabled]="!loginForm.valid || isAuthLoading" class="btn-primary w-full py-3.5 rounded-xl mt-6 font-bold tracking-wider shadow-lg shadow-accent/20">
-          <span *ngIf="isAuthLoading" class="flex items-center gap-2"><lucide-icon name="loader-2" class="w-4 h-4 animate-spin"></lucide-icon> Signing in...</span>
-          <span *ngIf="!isAuthLoading">Sign In</span>
-        </button>
-      </form>
-
-      <!-- Register Form -->
-      <form *ngIf="authModalMode === 'register'" [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()" class="space-y-4">
-        <div>
-          <label class="section-label ml-1">Name</label>
-          <input type="text" formControlName="name" placeholder="John Doe" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('name')">
-        </div>
-        <div>
-          <label class="section-label ml-1">Email</label>
-          <input type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('email')">
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="section-label ml-1">Phone</label>
-            <input type="tel" formControlName="phone" placeholder="+1..." class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('phone')">
+@if (isAuthModalOpen) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 transition-opacity">
+    <div class="w-full max-w-md bg-card rounded-[2rem] shadow-2xl border border-border overflow-hidden relative glass-card">
+      <!-- Close button -->
+      <button (click)="closeAuthModal()" class="absolute top-6 right-6 p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full transition-colors z-10">
+        <lucide-icon name="x" class="w-5 h-5"></lucide-icon>
+      </button>
+      <div class="p-8 sm:p-10">
+        <!-- Header -->
+        <div class="text-center mb-8 relative">
+          <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <lucide-icon [name]="authModalMode === 'login' ? 'lock' : 'user-plus'" class="w-8 h-8 text-accent"></lucide-icon>
           </div>
-          <div>
-            <label class="section-label ml-1">Address</label>
-            <input type="text" formControlName="address" placeholder="City" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('address')">
-          </div>
+          <h2 class="text-2xl font-bold gradient-text mb-2">{{ authModalMode === 'login' ? 'Welcome Back' : 'Create Account' }}</h2>
+          <p class="text-sm text-muted-foreground">{{ authModalMode === 'login' ? 'Sign in to your ZYRO-Electric account' : 'Join ZYRO-Electric today' }}</p>
         </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="section-label ml-1">Password</label>
-            <input type="password" formControlName="password" placeholder="Min 8 chars" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('password')">
-          </div>
-          <div>
-            <label class="section-label ml-1">Confirm</label>
-            <input type="password" formControlName="confirmPassword" placeholder="Confirm" class="form-input w-full mt-1.5 rounded-xl" [class.error]="registerForm.errors?.['passwordMismatch']">
-          </div>
+        <!-- Login Form -->
+        @if (authModalMode === 'login') {
+          <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" class="space-y-5">
+            <div>
+              <label class="section-label ml-1">Email</label>
+              <input type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('email')">
+            </div>
+            <div>
+              <label class="section-label ml-1">Password</label>
+              <input type="password" formControlName="password" placeholder="Enter password" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('password')">
+            </div>
+            <button type="submit" [disabled]="!loginForm.valid || isAuthLoading" class="btn-primary w-full py-3.5 rounded-xl mt-6 font-bold tracking-wider shadow-lg shadow-accent/20">
+              @if (isAuthLoading) {
+                <span class="flex items-center gap-2"><lucide-icon name="loader-2" class="w-4 h-4 animate-spin"></lucide-icon> Signing in...</span>
+              }
+              @if (!isAuthLoading) {
+                <span>Sign In</span>
+              }
+            </button>
+          </form>
+        }
+        <!-- Register Form -->
+        @if (authModalMode === 'register') {
+          <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()" class="space-y-4">
+            <div>
+              <label class="section-label ml-1">Name</label>
+              <input type="text" formControlName="name" placeholder="John Doe" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('name')">
+            </div>
+            <div>
+              <label class="section-label ml-1">Email</label>
+              <input type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('email')">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="section-label ml-1">Phone</label>
+                <input type="tel" formControlName="phone" placeholder="+1..." class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('phone')">
+              </div>
+              <div>
+                <label class="section-label ml-1">Address</label>
+                <input type="text" formControlName="address" placeholder="City" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('address')">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="section-label ml-1">Password</label>
+                <input type="password" formControlName="password" placeholder="Min 8 chars" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('password')">
+              </div>
+              <div>
+                <label class="section-label ml-1">Confirm</label>
+                <input type="password" formControlName="confirmPassword" placeholder="Confirm" class="form-input w-full mt-1.5 rounded-xl" [class.error]="registerForm.errors?.['passwordMismatch']">
+              </div>
+            </div>
+            <!-- Terms checkbox -->
+            <div class="flex items-center gap-2 mt-2">
+              <input type="checkbox" id="modal-terms" formControlName="terms" class="w-4 h-4 rounded text-accent focus:ring-accent bg-input border-border">
+              <label for="modal-terms" class="text-xs text-muted-foreground cursor-pointer">I agree to Terms & Conditions</label>
+            </div>
+            <button type="submit" [disabled]="!registerForm.valid || isAuthLoading" class="btn-primary w-full py-3.5 rounded-xl mt-6 font-bold tracking-wider shadow-lg shadow-accent/20">
+              @if (isAuthLoading) {
+                <span class="flex items-center gap-2"><lucide-icon name="loader-2" class="w-4 h-4 animate-spin"></lucide-icon> Creating...</span>
+              }
+              @if (!isAuthLoading) {
+                <span>Create Account</span>
+              }
+            </button>
+          </form>
+        }
+        <!-- Toggle Mode -->
+        <div class="mt-8 text-center text-sm text-muted-foreground">
+          @if (authModalMode === 'login') {
+            <p>
+              Don't have an account?
+              <button type="button" (click)="switchAuthMode('register')" class="text-accent font-bold hover:underline ml-1">Sign up</button>
+            </p>
+          }
+          @if (authModalMode === 'register') {
+            <p>
+              Already have an account?
+              <button type="button" (click)="switchAuthMode('login')" class="text-accent font-bold hover:underline ml-1">Sign in</button>
+            </p>
+          }
         </div>
-        <!-- Terms checkbox -->
-        <div class="flex items-center gap-2 mt-2">
-          <input type="checkbox" id="modal-terms" formControlName="terms" class="w-4 h-4 rounded text-accent focus:ring-accent bg-input border-border">
-          <label for="modal-terms" class="text-xs text-muted-foreground cursor-pointer">I agree to Terms & Conditions</label>
-        </div>
-        
-        <button type="submit" [disabled]="!registerForm.valid || isAuthLoading" class="btn-primary w-full py-3.5 rounded-xl mt-6 font-bold tracking-wider shadow-lg shadow-accent/20">
-          <span *ngIf="isAuthLoading" class="flex items-center gap-2"><lucide-icon name="loader-2" class="w-4 h-4 animate-spin"></lucide-icon> Creating...</span>
-          <span *ngIf="!isAuthLoading">Create Account</span>
-        </button>
-      </form>
-
-      <!-- Toggle Mode -->
-      <div class="mt-8 text-center text-sm text-muted-foreground">
-        <p *ngIf="authModalMode === 'login'">
-          Don't have an account? 
-          <button type="button" (click)="switchAuthMode('register')" class="text-accent font-bold hover:underline ml-1">Sign up</button>
-        </p>
-        <p *ngIf="authModalMode === 'register'">
-          Already have an account? 
-          <button type="button" (click)="switchAuthMode('login')" class="text-accent font-bold hover:underline ml-1">Sign in</button>
-        </p>
       </div>
     </div>
   </div>
-</div>
+}
 
 <!-- Toast -->
 <app-ui-toast #toast></app-ui-toast>
