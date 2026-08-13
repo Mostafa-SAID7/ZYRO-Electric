@@ -63,8 +63,8 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "postcss": "^8.4.38",
     "postcss-preset-env": "^9.5.14",
-    "typescript": "~5.4.5"
-    "@compodoc/compodoc": "^1.0.0",
+    "typescript": "~5.4.5",
+    "@compodoc/compodoc": "^1.0.0"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.18.0"
