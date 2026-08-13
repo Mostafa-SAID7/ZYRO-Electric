@@ -21,9 +21,7 @@ WORKDIR /app
 COPY package.json ./
 
 # Install ALL dependencies (need devDependencies for build)
-# Use --omit=optional to skip optional deps that don't have Alpine prebuilts
-# Note: lmdb may try to install but will fail gracefully; continue anyway
-RUN npm install --legacy-peer-deps --omit=optional || npm install --legacy-peer-deps --ignore-scripts
+RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
