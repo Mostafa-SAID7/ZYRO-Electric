@@ -15,30 +15,26 @@
       </div>
 
       <!-- Center: Main Navigation -->
-      <div class="flex-1 flex justify-center hidden md:flex">
+      <div class="flex-1 flex justify-center">
         <div class="bg-secondary/50 p-1 rounded-xl flex gap-1 border border-border/50">
           <a 
             routerLink="/"
             routerLinkActive="bg-background text-foreground shadow-sm"
             [routerLinkActiveOptions]="{ exact: true }"
-            class="text-muted-foreground font-bold text-sm px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
+            class="group relative text-muted-foreground font-bold text-sm px-3 md:px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
             <lucide-icon name="home" class="w-4 h-4"></lucide-icon>
-            Home
+            <span class="hidden sm:inline">Home</span>
+            <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-foreground text-background font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded-lg opacity-0 sm:hidden group-hover:opacity-100 group-focus:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-lg">Home</span>
           </a>
           <a 
             routerLink="/products"
             routerLinkActive="bg-background text-foreground shadow-sm"
-            class="text-muted-foreground font-bold text-sm px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
-            <lucide-icon name="grid" class="w-4 h-4"></lucide-icon>
-            Products
+            class="group relative text-muted-foreground font-bold text-sm px-3 md:px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
+            <lucide-icon name="package" class="w-4 h-4"></lucide-icon>
+            <span class="hidden sm:inline">Products</span>
+            <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-foreground text-background font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded-lg opacity-0 sm:hidden group-hover:opacity-100 group-focus:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-lg">Products</span>
           </a>
-          <a 
-            routerLink="/branches"
-            routerLinkActive="bg-background text-foreground shadow-sm"
-            class="text-muted-foreground font-bold text-sm px-5 py-2 rounded-xl hover:text-foreground transition-all flex items-center gap-2">
-            <lucide-icon name="map-pin" class="w-4 h-4"></lucide-icon>
-            Branches
-          </a>
+          <!-- Branches removed -->
         </div>
       </div>
 
