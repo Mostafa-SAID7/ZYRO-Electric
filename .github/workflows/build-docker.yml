@@ -12,6 +12,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -27,15 +29,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log in to Docker Hub (if token available)
-        if: env.DOCKERHUB_TOKEN != ''
-        env:
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME || 'msaid356' }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Extract metadata & tags
         id: meta
         env:
@@ -48,11 +41,7 @@ jobs:
           # Base GHCR tags (always built and pushed to GitHub Packages)
           TAGS="ghcr.io/${OWNER_LOWER}/zyro-electric:latest,ghcr.io/${OWNER_LOWER}/zyro-electric:${{ github.sha }}"
           
-          # Append Docker Hub tags if Docker Hub login token exists
-          if [ -n "$DOCKERHUB_TOKEN" ]; then
-            TAGS="${TAGS},msaid356/zyro-electric:latest,msaid356/zyro-electric:${{ github.sha }}"
-          fi
-          
+
           echo "tags=${TAGS}" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image

@@ -10,7 +10,7 @@
 <section class="py-16 md:py-24">
   <div class="max-w-4xl mx-auto px-4 md:px-6">
     <h2 class="text-section-xl mb-8">Return Eligibility</h2>
-    
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div>
         <h3 class="text-2xl font-bold text-accent mb-4">✓ Returnable Items</h3>
@@ -33,7 +33,7 @@
           </li>
         </ul>
       </div>
-      
+
       <div>
         <h3 class="text-2xl font-bold text-accent mb-4">✗ Non-Returnable Items</h3>
         <ul class="space-y-3">
@@ -63,16 +63,18 @@
 <section class="py-16 md:py-24">
   <div class="max-w-4xl mx-auto px-4 md:px-6">
     <h2 class="text-section-xl mb-8">Free Return Shipping</h2>
-    
+
     <div class="glass-card p-8 rounded-lg border-2 border-accent accent-glow">
       <p class="text-muted-foreground mb-6">We cover return shipping when:</p>
       <div class="space-y-3">
-        <div *ngFor="let condition of freeReturnConditions" class="flex gap-3">
-          <svg class="w-6 h-6 text-accent flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-          </svg>
-          <span class="text-foreground">{{ condition }}</span>
-        </div>
+        @for (condition of freeReturnConditions; track condition) {
+          <div class="flex gap-3">
+            <svg class="w-6 h-6 text-accent flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-foreground">{{ condition }}</span>
+          </div>
+        }
       </div>
     </div>
   </div>
@@ -82,19 +84,21 @@
 <section class="py-16 md:py-24">
   <div class="max-w-4xl mx-auto px-4 md:px-6">
     <h2 class="text-section-xl mb-12">Return Process</h2>
-    
+
     <div class="space-y-6">
-      <div *ngFor="let item of processSteps" class="glass-card p-6 rounded-lg hover:border-accent transition-colors">
-        <div class="flex gap-6">
-          <div class="w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-bold flex-shrink-0">
-            {{ item.step }}
-          </div>
-          <div>
-            <h3 class="text-lg font-bold text-accent mb-2">{{ item.title }}</h3>
-            <p class="text-muted-foreground">{{ item.description }}</p>
+      @for (item of processSteps; track item) {
+        <div class="glass-card p-6 rounded-lg hover:border-accent transition-colors">
+          <div class="flex gap-6">
+            <div class="w-12 h-12 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-bold flex-shrink-0">
+              {{ item.step }}
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-accent mb-2">{{ item.title }}</h3>
+              <p class="text-muted-foreground">{{ item.description }}</p>
+            </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 </section>
@@ -103,7 +107,7 @@
 <section class="py-16 md:py-24">
   <div class="max-w-4xl mx-auto px-4 md:px-6">
     <h2 class="text-section-xl mb-8">Refund Timeline</h2>
-    
+
     <div class="glass-card p-8 rounded-lg border border-border">
       <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-center">
         <div>

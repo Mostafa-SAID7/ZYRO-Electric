@@ -3,14 +3,16 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-ui-button',
   template: `
-    <button 
+    <button
       [class]="getButtonClasses()"
       [disabled]="disabled"
       (click)="onClick()">
-      <lucide-icon *ngIf="icon" [name]="icon" class="w-4 h-4"></lucide-icon>
+      @if (icon) {
+        <lucide-icon [name]="icon" class="w-4 h-4"></lucide-icon>
+      }
       <span>{{ label }}</span>
     </button>
-  `,
+    `,
   styles: []
 })
 export class UiButtonComponent {

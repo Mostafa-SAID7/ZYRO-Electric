@@ -2,7 +2,7 @@
   <!-- Hero/Header Section -->
   <div class="max-w-7xl mx-auto px-4 pt-6 pb-2">
     <div class="relative overflow-hidden bg-card border border-border p-8 rounded-2xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 group">
-      
+
       <!-- Subtle gradient background effect -->
       <div class="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
 
@@ -29,7 +29,7 @@
       <!-- Filters Sidebar - Using Reusable Component -->
       <div class="lg:col-span-1">
         <div class="bg-card border border-border rounded-2xl shadow-lg overflow-hidden sticky top-24">
-          <app-ui-filter-panel 
+          <app-ui-filter-panel
             [filterGroups]="filterGroups"
             (filterChange)="onFilterChange($event)"
             (reset)="resetFilters()">
@@ -50,40 +50,50 @@
         </div>
 
         <!-- Loading -->
-        <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <app-ui-skeleton *ngFor="let i of [1,2,3,4,5,6]"></app-ui-skeleton>
-        </div>
+        @if (isLoading) {
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (i of [1,2,3,4,5,6]; track i) {
+              <app-ui-skeleton></app-ui-skeleton>
+            }
+          </div>
+        }
 
         <!-- Products Grid -->
-        <div *ngIf="!isLoading && products.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <app-product
-            *ngFor="let product of products"
-            [product]="product"
-            (addToCart)="addToCart($event)">
-          </app-product>
-        </div>
+        @if (!isLoading && products.length > 0) {
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (product of products; track product) {
+              <app-product
+                [product]="product"
+                (addToCart)="addToCart($event)">
+              </app-product>
+            }
+          </div>
+        }
 
         <!-- No Products -->
-        <div *ngIf="!isLoading && products.length === 0" class="text-center py-12">
-          <lucide-icon name="inbox" class="w-16 h-16 text-muted-foreground mx-auto mb-4"></lucide-icon>
-          <h3 class="text-lg font-bold mb-2">No products found</h3>
-          <p class="text-muted-foreground mb-6">Try adjusting your filters</p>
-          <button
-            (click)="resetFilters()"
-            class="btn-primary px-6 py-2 inline-flex items-center gap-2">
-            <lucide-icon name="rotate-ccw" class="w-4 h-4"></lucide-icon>
-            Reset Filters
-          </button>
-        </div>
+        @if (!isLoading && products.length === 0) {
+          <div class="text-center py-12">
+            <lucide-icon name="inbox" class="w-16 h-16 text-muted-foreground mx-auto mb-4"></lucide-icon>
+            <h3 class="text-lg font-bold mb-2">No products found</h3>
+            <p class="text-muted-foreground mb-6">Try adjusting your filters</p>
+            <button
+              (click)="resetFilters()"
+              class="btn-primary px-6 py-2 inline-flex items-center gap-2">
+              <lucide-icon name="rotate-ccw" class="w-4 h-4"></lucide-icon>
+              Reset Filters
+            </button>
+          </div>
+        }
 
         <!-- Pagination - Using Reusable Component -->
-        <app-ui-pagination
-          *ngIf="!isLoading && totalPages > 1"
-          [currentPage]="currentPage"
-          [totalPages]="totalPages"
-          [totalItems]="totalProducts"
-          (pageChange)="onPageChange($event)">
-        </app-ui-pagination>
+        @if (!isLoading && totalPages > 1) {
+          <app-ui-pagination
+            [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            [totalItems]="totalProducts"
+            (pageChange)="onPageChange($event)">
+          </app-ui-pagination>
+        }
       </div>
     </div>
   </div>

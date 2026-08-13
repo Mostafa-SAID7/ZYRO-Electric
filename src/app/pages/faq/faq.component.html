@@ -10,37 +10,40 @@
 <section class="py-16 md:py-24">
   <div class="max-w-4xl mx-auto px-4 md:px-6">
     <div class="space-y-4">
-      <div *ngFor="let faq of faqs; let i = index" 
-        (click)="toggleFAQ('faq-' + i)"
-        class="glass-card rounded-lg overflow-hidden border border-border cursor-pointer hover:border-accent transition-colors"
-      >
-        <button class="w-full p-6 flex items-center justify-between hover:bg-secondary transition-colors">
-          <span class="text-left font-semibold text-foreground pr-4">
-            {{ faq.question }}
-          </span>
-          <svg 
-            class="w-6 h-6 text-accent flex-shrink-0 transition-transform"
-            [class.rotate-180]="expandedId === ('faq-' + i)"
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
+      @for (faq of faqs; track faq; let i = $index) {
+        <div
+          (click)="toggleFAQ('faq-' + i)"
+          class="glass-card rounded-lg overflow-hidden border border-border cursor-pointer hover:border-accent transition-colors"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-          </svg>
-        </button>
-        
-        <div *ngIf="expandedId === ('faq-' + i)" class="px-6 pb-6 pt-0 border-t border-border">
-          <p class="text-muted-foreground leading-relaxed">
-            {{ faq.answer }}
-          </p>
+          <button class="w-full p-6 flex items-center justify-between hover:bg-secondary transition-colors">
+            <span class="text-left font-semibold text-foreground pr-4">
+              {{ faq.question }}
+            </span>
+            <svg
+              class="w-6 h-6 text-accent flex-shrink-0 transition-transform"
+              [class.rotate-180]="expandedId === ('faq-' + i)"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+          </button>
+          @if (expandedId === ('faq-' + i)) {
+            <div class="px-6 pb-6 pt-0 border-t border-border">
+              <p class="text-muted-foreground leading-relaxed">
+                {{ faq.answer }}
+              </p>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
   </div>
 </section>
 
 <!-- Still Need Help -->
-<section class="py-16 md:py-24">>
+<section class="py-16 md:py-24">
   <div class="max-w-4xl mx-auto px-4 md:px-6">
     <div class="glass-card-strong border-2 border-accent p-12 rounded-2xl text-center accent-glow">
       <h2 class="text-2xl font-bold text-accent mb-4">Still have questions?</h2>

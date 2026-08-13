@@ -12,42 +12,49 @@ import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from
         [class.opacity-50]="currentPage === 1">
         <lucide-icon name="chevron-left" class="w-4 h-4"></lucide-icon>
       </button>
-
+    
       <!-- Page Numbers -->
       <div class="flex items-center gap-1">
         <!-- First Page -->
-        <button
-          *ngIf="pages[0] > 1"
-          (click)="onPageChange(1)"
-          class="px-3 py-2 rounded btn-outline">
-          1
-        </button>
-
+        @if (pages[0] > 1) {
+          <button
+            (click)="onPageChange(1)"
+            class="px-3 py-2 rounded btn-outline">
+            1
+          </button>
+        }
+    
         <!-- Ellipsis Before -->
-        <span *ngIf="pages[0] > 2" class="px-2">...</span>
-
+        @if (pages[0] > 2) {
+          <span class="px-2">...</span>
+        }
+    
         <!-- Page Range -->
-        <button
-          *ngFor="let page of pages"
-          (click)="onPageChange(page)"
-          [class.btn-primary]="page === currentPage"
-          [class.btn-outline]="page !== currentPage"
-          class="px-3 py-2 rounded">
-          {{ page }}
-        </button>
-
+        @for (page of pages; track page) {
+          <button
+            (click)="onPageChange(page)"
+            [class.btn-primary]="page === currentPage"
+            [class.btn-outline]="page !== currentPage"
+            class="px-3 py-2 rounded">
+            {{ page }}
+          </button>
+        }
+    
         <!-- Ellipsis After -->
-        <span *ngIf="pages[pages.length - 1] < totalPages - 1" class="px-2">...</span>
-
+        @if (pages[pages.length - 1] < totalPages - 1) {
+          <span class="px-2">...</span>
+        }
+    
         <!-- Last Page -->
-        <button
-          *ngIf="pages[pages.length - 1] < totalPages"
-          (click)="onPageChange(totalPages)"
-          class="px-3 py-2 rounded btn-outline">
-          {{ totalPages }}
-        </button>
+        @if (pages[pages.length - 1] < totalPages) {
+          <button
+            (click)="onPageChange(totalPages)"
+            class="px-3 py-2 rounded btn-outline">
+            {{ totalPages }}
+          </button>
+        }
       </div>
-
+    
       <!-- Next Button -->
       <button
         (click)="onNext()"
@@ -57,12 +64,14 @@ import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from
         <lucide-icon name="chevron-right" class="w-4 h-4"></lucide-icon>
       </button>
     </div>
-
+    
     <!-- Page Info -->
-    <div class="text-center text-sm text-muted-foreground mt-4" *ngIf="showPageInfo">
-      Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} items)
-    </div>
-  `,
+    @if (showPageInfo) {
+      <div class="text-center text-sm text-muted-foreground mt-4">
+        Page {{ currentPage }} of {{ totalPages }} ({{ totalItems }} items)
+      </div>
+    }
+    `,
   styles: []
 })
 export class PaginationComponent implements OnChanges {

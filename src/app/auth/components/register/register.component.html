@@ -18,111 +18,121 @@
             placeholder="John Doe"
             class="form-input w-full mt-2"
             [class.error]="isFieldInvalid('name')">
-        </div>
+          </div>
 
-        <!-- Email -->
-        <div>
-          <label class="section-label">Email</label>
-          <input
-            type="email"
-            formControlName="email"
-            placeholder="you@example.com"
-            class="form-input w-full mt-2"
-            [class.error]="isFieldInvalid('email')">
-        </div>
+          <!-- Email -->
+          <div>
+            <label class="section-label">Email</label>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="you@example.com"
+              class="form-input w-full mt-2"
+              [class.error]="isFieldInvalid('email')">
+            </div>
 
-        <!-- Phone -->
-        <div>
-          <label class="section-label">Phone</label>
-          <input
-            type="tel"
-            formControlName="phone"
-            placeholder="+1 (555) 123-4567"
-            class="form-input w-full mt-2"
-            [class.error]="isFieldInvalid('phone')">
-        </div>
+            <!-- Phone -->
+            <div>
+              <label class="section-label">Phone</label>
+              <input
+                type="tel"
+                formControlName="phone"
+                placeholder="+1 (555) 123-4567"
+                class="form-input w-full mt-2"
+                [class.error]="isFieldInvalid('phone')">
+              </div>
 
-        <!-- Address -->
-        <div>
-          <label class="section-label">Address</label>
-          <input
-            type="text"
-            formControlName="address"
-            placeholder="123 Main St, City, State"
-            class="form-input w-full mt-2"
-            [class.error]="isFieldInvalid('address')">
-        </div>
+              <!-- Address -->
+              <div>
+                <label class="section-label">Address</label>
+                <input
+                  type="text"
+                  formControlName="address"
+                  placeholder="123 Main St, City, State"
+                  class="form-input w-full mt-2"
+                  [class.error]="isFieldInvalid('address')">
+                </div>
 
-        <!-- Password -->
-        <div>
-          <label class="section-label">Password</label>
-          <input
-            type="password"
-            formControlName="password"
-            placeholder="At least 8 characters"
-            class="form-input w-full mt-2"
-            [class.error]="isFieldInvalid('password')">
-          <span *ngIf="isFieldInvalid('password')" class="text-xs text-red-500">
-            Password must be at least 8 characters
-          </span>
-        </div>
+                <!-- Password -->
+                <div>
+                  <label class="section-label">Password</label>
+                  <input
+                    type="password"
+                    formControlName="password"
+                    placeholder="At least 8 characters"
+                    class="form-input w-full mt-2"
+                    [class.error]="isFieldInvalid('password')">
+                    @if (isFieldInvalid('password')) {
+                      <span class="text-xs text-red-500">
+                        Password must be at least 8 characters
+                      </span>
+                    }
+                  </div>
 
-        <!-- Confirm Password -->
-        <div>
-          <label class="section-label">Confirm Password</label>
-          <input
-            type="password"
-            formControlName="confirmPassword"
-            placeholder="Re-enter password"
-            class="form-input w-full mt-2"
-            [class.error]="registerForm.errors?.['passwordMismatch']">
-          <span *ngIf="registerForm.errors?.['passwordMismatch']" class="text-xs text-red-500">
-            Passwords do not match
-          </span>
-        </div>
+                  <!-- Confirm Password -->
+                  <div>
+                    <label class="section-label">Confirm Password</label>
+                    <input
+                      type="password"
+                      formControlName="confirmPassword"
+                      placeholder="Re-enter password"
+                      class="form-input w-full mt-2"
+                      [class.error]="registerForm.errors?.['passwordMismatch']">
+                      @if (registerForm.errors?.['passwordMismatch']) {
+                        <span class="text-xs text-red-500">
+                          Passwords do not match
+                        </span>
+                      }
+                    </div>
 
-        <!-- Terms -->
-        <div class="flex items-start gap-2">
-          <input
-            type="checkbox"
-            id="terms"
-            formControlName="terms"
-            class="w-4 h-4 rounded mt-1">
-          <label for="terms" class="text-sm text-muted-foreground cursor-pointer">
-            I agree to the Terms and Conditions
-          </label>
-        </div>
+                    <!-- Terms -->
+                    <div class="flex items-start gap-2">
+                      <input
+                        type="checkbox"
+                        id="terms"
+                        formControlName="terms"
+                        class="w-4 h-4 rounded mt-1">
+                        <label for="terms" class="text-sm text-muted-foreground cursor-pointer">
+                          I agree to the Terms and Conditions
+                        </label>
+                      </div>
 
-        <!-- Submit Button -->
-        <button
-          type="submit"
-          [disabled]="!registerForm.valid || isLoading"
-          class="btn-primary w-full py-2 flex items-center justify-center gap-2">
-          <lucide-icon *ngIf="!isLoading" name="user-plus" class="w-4 h-4"></lucide-icon>
-          <span *ngIf="isLoading">Creating account...</span>
-          <span *ngIf="!isLoading">Create Account</span>
-        </button>
-      </form>
+                      <!-- Submit Button -->
+                      <button
+                        type="submit"
+                        [disabled]="!registerForm.valid || isLoading"
+                        class="btn-primary w-full py-2 flex items-center justify-center gap-2">
+                        @if (!isLoading) {
+                          <lucide-icon name="user-plus" class="w-4 h-4"></lucide-icon>
+                        }
+                        @if (isLoading) {
+                          <span>Creating account...</span>
+                        }
+                        @if (!isLoading) {
+                          <span>Create Account</span>
+                        }
+                      </button>
+                    </form>
 
-      <!-- Divider -->
-      <div class="flex items-center gap-4 my-6">
-        <div class="flex-1 h-px bg-border"></div>
-        <span class="text-xs text-muted-foreground">or</span>
-        <div class="flex-1 h-px bg-border"></div>
-      </div>
+                    <!-- Divider -->
+                    <div class="flex items-center gap-4 my-6">
+                      <div class="flex-1 h-px bg-border"></div>
+                      <span class="text-xs text-muted-foreground">or</span>
+                      <div class="flex-1 h-px bg-border"></div>
+                    </div>
 
-      <!-- Login Link -->
-      <div class="text-center">
-        <p class="text-muted-foreground">
-          Already have an account?
-          <a routerLink="/auth/login" class="text-accent font-semibold hover:underline">
-            Sign in here
-          </a>
-        </p>
-      </div>
-    </app-ui-card>
-  </div>
+                    <!-- Login Link -->
+                    <div class="text-center">
+                      <p class="text-muted-foreground">
+                        Already have an account?
+                        <a routerLink="/auth/login" class="text-accent font-semibold hover:underline">
+                          Sign in here
+                        </a>
+                      </p>
+                    </div>
+                  </app-ui-card>
+                </div>
 
-  <!-- Toast -->
-  <app-ui-toast #toast></app-ui-toast>
-</div>
+                <!-- Toast -->
+                <app-ui-toast #toast></app-ui-toast>
+              </div>

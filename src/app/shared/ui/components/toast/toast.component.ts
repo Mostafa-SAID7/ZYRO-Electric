@@ -5,27 +5,28 @@ export type ToastType = 'success' | 'error' | 'warning' | 'info';
 @Component({
   selector: 'app-ui-toast',
   template: `
-    <div 
-      *ngIf="isVisible"
-      [class]="getToastClasses()"
-      role="alert">
-      <div class="flex items-start gap-3">
-        <lucide-icon 
-          [name]="getIconName()" 
-          class="w-5 h-5 flex-shrink-0 mt-0.5">
-        </lucide-icon>
-        <div class="flex-1">
-          <h3 class="font-bold">{{ title }}</h3>
-          <p class="text-sm opacity-90">{{ message }}</p>
+    @if (isVisible) {
+      <div
+        [class]="getToastClasses()"
+        role="alert">
+        <div class="flex items-start gap-3">
+          <lucide-icon
+            [name]="getIconName()"
+            class="w-5 h-5 flex-shrink-0 mt-0.5">
+          </lucide-icon>
+          <div class="flex-1">
+            <h3 class="font-bold">{{ title }}</h3>
+            <p class="text-sm opacity-90">{{ message }}</p>
+          </div>
+          <button
+            (click)="close()"
+            class="flex-shrink-0 hover:opacity-70">
+            <lucide-icon name="x" class="w-5 h-5"></lucide-icon>
+          </button>
         </div>
-        <button 
-          (click)="close()"
-          class="flex-shrink-0 hover:opacity-70">
-          <lucide-icon name="x" class="w-5 h-5"></lucide-icon>
-        </button>
       </div>
-    </div>
-  `,
+    }
+    `,
   styles: []
 })
 export class UiToastComponent {

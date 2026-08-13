@@ -17,6 +17,9 @@ yarn-error.log
 .project
 .classpath
 .c9/
+
+# Vercel
+.vercel
 *.launch
 .settings/
 *.sublime-workspace
@@ -76,3 +79,4 @@ karma-results.json
 # Vercel
 .vercel
 
+.env*

@@ -46,41 +46,36 @@ jobs:
             COMMITS=$(git log --oneline $PREV_TAG..$TAG --pretty=format:"* %h - %s (%an)")
           fi
           
-          # Create changelog safely using heredoc
-          cat << EOF > /tmp/changelog.md
-## What's Changed
-
-### Commits
-$COMMITS
-
-### Release Info
-- **Version**: ${{ steps.tag_info.outputs.version }}
-- **Tag**: $TAG
-- **Date**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
-- **Commit**: $(git rev-parse --short HEAD)
-
-### Features & Fixes
-See commits above for detailed changes.
-
-### Installation
-\`\`\`bash
-npm install @mostafa-said7/zyro-electric@${{ steps.tag_info.outputs.version }}
-\`\`\`
-
-### Docker
-\`\`\`bash
-docker pull ghcr.io/mostafa-said7/zyro-electric:${{ steps.tag_info.outputs.version }}
-\`\`\`
-
----
-**Auto-generated release** | [View on GitHub](https://github.com/Mostafa-SAID7/ZYRO-Electric/releases/tag/$TAG)
-EOF
-          
           # Output for GitHub using dynamic EOF
           EOF_DELIMITER=$(openssl rand -hex 8)
           {
             echo "changelog<<$EOF_DELIMITER"
-            cat /tmp/changelog.md
+            echo "## What's Changed"
+            echo ""
+            echo "### Commits"
+            echo "$COMMITS"
+            echo ""
+            echo "### Release Info"
+            echo "- **Version**: ${{ steps.tag_info.outputs.version }}"
+            echo "- **Tag**: $TAG"
+            echo "- **Date**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            echo "- **Commit**: $(git rev-parse --short HEAD)"
+            echo ""
+            echo "### Features & Fixes"
+            echo "See commits above for detailed changes."
+            echo ""
+            echo "### Installation"
+            echo "\`\`\`bash"
+            echo "npm install @mostafa-said7/zyro-electric@${{ steps.tag_info.outputs.version }}"
+            echo "\`\`\`"
+            echo ""
+            echo "### Docker"
+            echo "\`\`\`bash"
+            echo "docker pull ghcr.io/mostafa-said7/zyro-electric:${{ steps.tag_info.outputs.version }}"
+            echo "\`\`\`"
+            echo ""
+            echo "---"
+            echo "**Auto-generated release** | [View on GitHub](https://github.com/Mostafa-SAID7/ZYRO-Electric/releases/tag/$TAG)"
             echo "$EOF_DELIMITER"
           } >> $GITHUB_OUTPUT
 

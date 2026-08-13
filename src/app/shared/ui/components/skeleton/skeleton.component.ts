@@ -30,14 +30,15 @@ export class UiSkeletonComponent {
   selector: 'app-ui-skeleton-group',
   template: `
     <div [class]="'space-y-' + (gap === 'sm' ? '2' : gap === 'md' ? '4' : '6')">
-      <app-ui-skeleton 
-        *ngFor="let item of skeletons"
-        [variant]="item.variant"
-        [width]="item.width"
-        [height]="item.height">
-      </app-ui-skeleton>
+      @for (item of skeletons; track item) {
+        <app-ui-skeleton
+          [variant]="item.variant"
+          [width]="item.width"
+          [height]="item.height">
+        </app-ui-skeleton>
+      }
     </div>
-  `,
+    `,
   styles: []
 })
 export class UiSkeletonGroupComponent {

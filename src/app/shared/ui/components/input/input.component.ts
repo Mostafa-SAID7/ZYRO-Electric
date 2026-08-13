@@ -4,7 +4,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   selector: 'app-ui-input',
   template: `
     <div class="flex flex-col gap-2">
-      <label *ngIf="label" class="section-label">{{ label }}</label>
+      @if (label) {
+        <label class="section-label">{{ label }}</label>
+      }
       <input
         [type]="type"
         [value]="value"
@@ -13,9 +15,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
         [class]="getInputClasses()"
         (input)="onInput($event)"
         (change)="onChange($event)">
-      <span *ngIf="error" class="text-xs text-red-500">{{ error }}</span>
-    </div>
-  `,
+        @if (error) {
+          <span class="text-xs text-red-500">{{ error }}</span>
+        }
+      </div>
+    `,
   styles: []
 })
 export class UiInputComponent {

@@ -11,37 +11,45 @@ export interface SortOption {
   template: `
     <div class="flex items-center gap-3 relative">
       <span class="text-sm font-semibold text-muted-foreground whitespace-nowrap">{{ label }}</span>
-      
+    
       <!-- Custom Dropdown Button -->
-      <button 
+      <button
         (click)="toggleDropdown()"
         class="flex items-center justify-between gap-3 bg-secondary/30 hover:bg-secondary/60 border border-border/50 px-4 py-2.5 rounded-xl transition-all duration-200 min-w-[160px] group text-sm font-medium">
         <span class="text-foreground">{{ getSelectedLabel() }}</span>
         <lucide-icon name="chevron-down" class="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-transform duration-200" [class.rotate-180]="isOpen"></lucide-icon>
       </button>
-
+    
       <!-- Dropdown Menu -->
-      <div *ngIf="isOpen" 
-        class="absolute top-full right-0 mt-2 w-48 bg-card border border-border shadow-2xl rounded-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200 p-1.5">
-        <div class="p-1.5 flex flex-col gap-0.5">
-          <button *ngFor="let option of options"
-            (click)="selectOption(option.value)"
-            class="flex items-center justify-between w-full px-3 py-2.5 text-left text-sm rounded-xl transition-colors duration-150"
-            [class.bg-accent]="selectedSort === option.value"
-            [class.text-accent-foreground]="selectedSort === option.value"
-            [class.font-bold]="selectedSort === option.value"
-            [class.hover:bg-secondary]="selectedSort !== option.value"
-            [class.text-foreground]="selectedSort !== option.value">
-            {{ option.label }}
-            <lucide-icon *ngIf="selectedSort === option.value" name="check" class="w-4 h-4"></lucide-icon>
-          </button>
+      @if (isOpen) {
+        <div
+          class="absolute top-full right-0 mt-2 w-48 bg-card border border-border shadow-2xl rounded-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200 p-1.5">
+          <div class="p-1.5 flex flex-col gap-0.5">
+            @for (option of options; track option) {
+              <button
+                (click)="selectOption(option.value)"
+                class="flex items-center justify-between w-full px-3 py-2.5 text-left text-sm rounded-xl transition-colors duration-150"
+                [class.bg-accent]="selectedSort === option.value"
+                [class.text-accent-foreground]="selectedSort === option.value"
+                [class.font-bold]="selectedSort === option.value"
+                [class.hover:bg-secondary]="selectedSort !== option.value"
+                [class.text-foreground]="selectedSort !== option.value">
+                {{ option.label }}
+                @if (selectedSort === option.value) {
+                  <lucide-icon name="check" class="w-4 h-4"></lucide-icon>
+                }
+              </button>
+            }
+          </div>
         </div>
-      </div>
+      }
     </div>
     
     <!-- Invisible overlay to catch outside clicks -->
-    <div *ngIf="isOpen" class="fixed inset-0 z-40" (click)="closeDropdown()"></div>
-  `,
+    @if (isOpen) {
+      <div class="fixed inset-0 z-40" (click)="closeDropdown()"></div>
+    }
+    `,
   styles: []
 })
 export class SortDropdownComponent {

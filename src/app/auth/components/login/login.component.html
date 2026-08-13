@@ -18,74 +18,84 @@
             placeholder="you@example.com"
             class="form-input w-full mt-2"
             [class.error]="isFieldInvalid('email')">
-          <span *ngIf="isFieldInvalid('email')" class="text-xs text-red-500">
-            Please enter a valid email
-          </span>
+            @if (isFieldInvalid('email')) {
+              <span class="text-xs text-red-500">
+                Please enter a valid email
+              </span>
+            }
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label class="section-label">Password</label>
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="Enter your password"
+              class="form-input w-full mt-2"
+              [class.error]="isFieldInvalid('password')">
+              @if (isFieldInvalid('password')) {
+                <span class="text-xs text-red-500">
+                  Password is required
+                </span>
+              }
+            </div>
+
+            <!-- Remember Me -->
+            <div class="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="remember"
+                formControlName="rememberMe"
+                class="w-4 h-4 rounded">
+                <label for="remember" class="text-sm text-muted-foreground cursor-pointer">
+                  Remember me
+                </label>
+              </div>
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                [disabled]="!loginForm.valid || isLoading"
+                class="btn-primary w-full py-2 flex items-center justify-center gap-2">
+                @if (!isLoading) {
+                  <lucide-icon name="log-in" class="w-4 h-4"></lucide-icon>
+                }
+                @if (isLoading) {
+                  <span>Signing in...</span>
+                }
+                @if (!isLoading) {
+                  <span>Sign In</span>
+                }
+              </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="flex items-center gap-4 my-6">
+              <div class="flex-1 h-px bg-border"></div>
+              <span class="text-xs text-muted-foreground">or</span>
+              <div class="flex-1 h-px bg-border"></div>
+            </div>
+
+            <!-- Register Link -->
+            <div class="text-center">
+              <p class="text-muted-foreground mb-4">
+                Don't have an account?
+                <a routerLink="/auth/register" class="text-accent font-semibold hover:underline">
+                  Sign up here
+                </a>
+              </p>
+            </div>
+          </app-ui-card>
+
+          <!-- Demo Credentials -->
+          <div class="mt-6 card glass-card p-4 text-xs text-muted-foreground">
+            <p class="font-semibold mb-2">Demo Credentials:</p>
+            <p>Email: demo&#64;zyro-electric.com</p>
+            <p>Password: demo123</p>
+          </div>
         </div>
 
-        <!-- Password -->
-        <div>
-          <label class="section-label">Password</label>
-          <input
-            type="password"
-            formControlName="password"
-            placeholder="Enter your password"
-            class="form-input w-full mt-2"
-            [class.error]="isFieldInvalid('password')">
-          <span *ngIf="isFieldInvalid('password')" class="text-xs text-red-500">
-            Password is required
-          </span>
-        </div>
-
-        <!-- Remember Me -->
-        <div class="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="remember"
-            formControlName="rememberMe"
-            class="w-4 h-4 rounded">
-          <label for="remember" class="text-sm text-muted-foreground cursor-pointer">
-            Remember me
-          </label>
-        </div>
-
-        <!-- Submit Button -->
-        <button
-          type="submit"
-          [disabled]="!loginForm.valid || isLoading"
-          class="btn-primary w-full py-2 flex items-center justify-center gap-2">
-          <lucide-icon *ngIf="!isLoading" name="log-in" class="w-4 h-4"></lucide-icon>
-          <span *ngIf="isLoading">Signing in...</span>
-          <span *ngIf="!isLoading">Sign In</span>
-        </button>
-      </form>
-
-      <!-- Divider -->
-      <div class="flex items-center gap-4 my-6">
-        <div class="flex-1 h-px bg-border"></div>
-        <span class="text-xs text-muted-foreground">or</span>
-        <div class="flex-1 h-px bg-border"></div>
+        <!-- Toast -->
+        <app-ui-toast #toast></app-ui-toast>
       </div>
-
-      <!-- Register Link -->
-      <div class="text-center">
-        <p class="text-muted-foreground mb-4">
-          Don't have an account?
-          <a routerLink="/auth/register" class="text-accent font-semibold hover:underline">
-            Sign up here
-          </a>
-        </p>
-      </div>
-    </app-ui-card>
-
-    <!-- Demo Credentials -->
-    <div class="mt-6 card glass-card p-4 text-xs text-muted-foreground">
-      <p class="font-semibold mb-2">Demo Credentials:</p>
-      <p>Email: demo&#64;zyro-electric.com</p>
-      <p>Password: demo123</p>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <app-ui-toast #toast></app-ui-toast>
-</div>

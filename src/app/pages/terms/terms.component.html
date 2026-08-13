@@ -29,15 +29,17 @@
 <section class="py-16 md:py-24">
   <div class="max-w-4xl mx-auto px-4 md:px-6">
     <h2 class="text-section-xl text-center mb-16">Key Sections</h2>
-    
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div *ngFor="let section of sections" class="glass-card p-6 rounded-lg hover:border-accent transition-colors">
-        <div class="text-4xl mb-3">{{ section.icon }}</div>
-        <h3 class="text-lg font-bold text-accent">{{ section.title }}</h3>
-        <p class="text-sm text-muted-foreground mt-2">
-          Important terms regarding {{ section.title.toLowerCase() }}
-        </p>
-      </div>
+      @for (section of sections; track section) {
+        <div class="glass-card p-6 rounded-lg hover:border-accent transition-colors">
+          <div class="text-4xl mb-3">{{ section.icon }}</div>
+          <h3 class="text-lg font-bold text-accent">{{ section.title }}</h3>
+          <p class="text-sm text-muted-foreground mt-2">
+            Important terms regarding {{ section.title.toLowerCase() }}
+          </p>
+        </div>
+      }
     </div>
   </div>
 </section>
@@ -46,23 +48,23 @@
 <section class="py-16 md:py-24">
   <div class="max-w-4xl mx-auto px-4 md:px-6">
     <h2 class="text-2xl font-bold text-accent mb-8">Important Points</h2>
-    
+
     <div class="space-y-6">
       <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
         <h3 class="font-bold text-foreground mb-2">Use License</h3>
         <p class="text-muted-foreground">You may not reproduce, duplicate, copy, sell, or resell any portion of our platform without written permission.</p>
       </div>
-      
+
       <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
         <h3 class="font-bold text-foreground mb-2">Account Responsibility</h3>
         <p class="text-muted-foreground">You are responsible for all activities under your account. Notify us immediately of unauthorized access.</p>
       </div>
-      
+
       <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
         <h3 class="font-bold text-foreground mb-2">Prohibited Conduct</h3>
         <p class="text-muted-foreground">Do not violate laws, infringe rights, harass others, or attempt unauthorized access to our systems.</p>
       </div>
-      
+
       <div class="glass-card p-6 rounded-lg border-l-4 border-accent">
         <h3 class="font-bold text-foreground mb-2">Limitation of Liability</h3>
         <p class="text-muted-foreground">We are not liable for indirect, incidental, or consequential damages arising from your use of our platform.</p>

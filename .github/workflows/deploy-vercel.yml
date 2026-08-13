@@ -18,10 +18,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
 
@@ -37,11 +37,12 @@ jobs:
         if: env.VERCEL_TOKEN != ''
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: team_qtHEfgqPZSTu1viXoTU6aHrE
+          VERCEL_PROJECT_ID: prj_g4ws7Ahaic1ltl4V9BWgvUQtigpV
         run: |
-          rm -rf .vercel
           npm install -g vercel
+          mkdir -p .vercel
+          echo '{"projectId":"prj_g4ws7Ahaic1ltl4V9BWgvUQtigpV","orgId":"team_qtHEfgqPZSTu1viXoTU6aHrE"}' > .vercel/project.json
           vercel deploy --prod --token="$VERCEL_TOKEN" --yes
 
       - name: Deployment status
