@@ -46,8 +46,9 @@ jobs:
             COMMITS=$(git log --oneline $PREV_TAG..$TAG --pretty=format:"* %h - %s (%an)")
           fi
           
-          # Create changelog
-          CHANGELOG="## What's Changed
+          # Create changelog safely using heredoc
+          cat << EOF > /tmp/changelog.md
+## What's Changed
 
 ### Commits
 $COMMITS
@@ -72,16 +73,15 @@ docker pull ghcr.io/mostafa-said7/zyro-electric:${{ steps.tag_info.outputs.versi
 \`\`\`
 
 ---
-**Auto-generated release** | [View on GitHub](https://github.com/Mostafa-SAID7/ZYRO-Electric/releases/tag/$TAG)"
+**Auto-generated release** | [View on GitHub](https://github.com/Mostafa-SAID7/ZYRO-Electric/releases/tag/$TAG)
+EOF
           
-          # Save to file for output
-          echo "$CHANGELOG" > /tmp/changelog.md
-          
-          # Output for GitHub
+          # Output for GitHub using dynamic EOF
+          EOF_DELIMITER=$(openssl rand -hex 8)
           {
-            echo "changelog<<EOF"
+            echo "changelog<<$EOF_DELIMITER"
             cat /tmp/changelog.md
-            echo "EOF"
+            echo "$EOF_DELIMITER"
           } >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
