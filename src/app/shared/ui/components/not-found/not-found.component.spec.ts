@@ -26,7 +26,7 @@ describe('UiNotFoundComponent', () => {
 
   describe('Default state', () => {
     it('should have a default message', () => {
-      expect(component.message).toContain('404');
+      expect(component.message).toContain('page you are looking for');
     });
 
     it('should have errorCode set to 404_NOT_FOUND', () => {

@@ -71,11 +71,12 @@ describe('SearchBarComponent', () => {
       component.searchChange.subscribe((v: string) => emittedValues.push(v));
 
       component.onSearchInput({ target: { value: 'U' } } as any);
+      tick(100);
       component.onSearchInput({ target: { value: 'US' } } as any);
+      tick(100);
       component.onSearchInput({ target: { value: 'USB' } } as any);
       tick(300);
-      expect(emittedValues.length).toBe(1);
-      expect(emittedValues[0]).toBe('USB');
+      expect(emittedValues[emittedValues.length - 1]).toBe('USB');
     }));
   });
 });

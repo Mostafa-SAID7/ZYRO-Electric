@@ -48,19 +48,23 @@ export class RegisterComponent {
     this.authService.register(this.registerForm.value).subscribe({
       next: () => {
         this.isLoading = false;
-        this.toast.type = 'success';
-        this.toast.title = 'Account Created';
-        this.toast.message = 'Welcome! Redirecting to products...';
-        this.toast.show();
+        if (this.toast && typeof this.toast.show === 'function') {
+          this.toast.type = 'success';
+          this.toast.title = 'Account Created';
+          this.toast.message = 'Welcome! Redirecting to products...';
+          this.toast.show();
+        }
         
         setTimeout(() => this.router.navigate(['/products']), 2000);
       },
       error: (err) => {
         this.isLoading = false;
-        this.toast.type = 'error';
-        this.toast.title = 'Registration Failed';
-        this.toast.message = err || 'An error occurred';
-        this.toast.show();
+        if (this.toast && typeof this.toast.show === 'function') {
+          this.toast.type = 'error';
+          this.toast.title = 'Registration Failed';
+          this.toast.message = err || 'An error occurred';
+          this.toast.show();
+        }
       }
     });
   }

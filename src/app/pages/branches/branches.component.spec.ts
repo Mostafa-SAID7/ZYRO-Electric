@@ -3,6 +3,7 @@ import { BranchesComponent } from './branches.component';
 import { MOCK_BRANCHES } from './mock-branches';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('BranchesComponent', () => {
   let component: BranchesComponent;
@@ -11,7 +12,8 @@ describe('BranchesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BranchesComponent],
-      imports: [CommonModule, FormsModule]
+      imports: [CommonModule, FormsModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(BranchesComponent);
