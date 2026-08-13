@@ -75,7 +75,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GH_PAT }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract version and owner
         id: meta
@@ -98,5 +98,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ steps.meta.outputs.owner }}/zyro-electric:latest
             ${{ env.REGISTRY }}/${{ steps.meta.outputs.owner }}/zyro-electric:${{ steps.meta.outputs.version }}
+            msaid356/zyro-electric:latest
+            msaid356/zyro-electric:${{ steps.meta.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
