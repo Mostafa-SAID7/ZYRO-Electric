@@ -1,6 +1,7 @@
 {
   "name": "ZYRO Electric",
   "version": 2,
+  "nodeVersion": "22.x",
   "buildCommand": "npm run build",
   "outputDirectory": "dist/market",
   "framework": "angular",

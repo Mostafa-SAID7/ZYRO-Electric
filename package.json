@@ -2,6 +2,10 @@
   "name": "@mostafa-said7/zyro-electric",
   "version": "1.0.19",
   "description": "ZYRO - Tech Accessories E-Commerce Platform",
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
