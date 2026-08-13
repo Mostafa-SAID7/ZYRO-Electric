@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PromoBannersComponent } from './promo-banners.component';
+import { HomeModule } from '../../home.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PromoBannersComponent', () => {
   let component: PromoBannersComponent;
@@ -8,12 +9,12 @@ describe('PromoBannersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PromoBannersComponent]
-    })
-    .compileComponents();
+      imports: [HomeModule, RouterTestingModule]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PromoBannersComponent);
     component = fixture.componentInstance;
+    component.promoOffers = [];
     fixture.detectChanges();
   });
 

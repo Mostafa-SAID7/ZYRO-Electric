@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { FeaturedProductsComponent } from './featured-products.component';
+import { HomeModule } from '../../home.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('FeaturedProductsComponent', () => {
   let component: FeaturedProductsComponent;
@@ -8,12 +9,12 @@ describe('FeaturedProductsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FeaturedProductsComponent]
-    })
-    .compileComponents();
+      imports: [HomeModule, RouterTestingModule]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FeaturedProductsComponent);
     component = fixture.componentInstance;
+    component.featuredProducts = [];
     fixture.detectChanges();
   });
 
