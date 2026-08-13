@@ -38,6 +38,8 @@ import { FilterPanelComponent } from './components/filter-panel/filter-panel.com
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { SortDropdownComponent } from './components/sort-dropdown/sort-dropdown.component';
 import { UiDrawerComponent } from './components/drawer/drawer.component';
+import { SelectComponent } from './components/select/select.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 const UI_COMPONENTS = [
   UiButtonComponent,
@@ -56,7 +58,9 @@ const UI_COMPONENTS = [
   FilterPanelComponent,
   PaginationComponent,
   SortDropdownComponent,
-  UiDrawerComponent
+  UiDrawerComponent,
+  SelectComponent,
+  SpinnerComponent
 ];
 
 @NgModule({

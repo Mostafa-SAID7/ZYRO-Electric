@@ -35,20 +35,24 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
         this.isLoading = false;
-        this.toast.type = 'success';
-        this.toast.title = 'Success';
-        this.toast.message = 'Logged in successfully';
-        this.toast.show();
+        if (this.toast && typeof this.toast.show === 'function') {
+          this.toast.type = 'success';
+          this.toast.title = 'Success';
+          this.toast.message = 'Logged in successfully';
+          this.toast.show();
+        }
         
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/products';
         this.router.navigateByUrl(returnUrl);
       },
       error: (err) => {
         this.isLoading = false;
-        this.toast.type = 'error';
-        this.toast.title = 'Login Failed';
-        this.toast.message = err || 'An error occurred';
-        this.toast.show();
+        if (this.toast && typeof this.toast.show === 'function') {
+          this.toast.type = 'error';
+          this.toast.title = 'Login Failed';
+          this.toast.message = err || 'An error occurred';
+          this.toast.show();
+        }
       }
     });
   }

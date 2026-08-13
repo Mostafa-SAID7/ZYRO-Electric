@@ -71,7 +71,9 @@ export class CheckoutComponent implements OnInit {
 
   onSubmit(): void {
     if (!this.checkoutForm.valid) return;
-    this.confirm.open();
+    if (this.confirm && typeof this.confirm.open === 'function') {
+      this.confirm.open();
+    }
   }
 
   completeOrder(): void {
@@ -105,19 +107,23 @@ export class CheckoutComponent implements OnInit {
     this.orderService.createOrder(orderItems, shippingAddress, paymentMethod).subscribe({
       next: (order) => {
         this.isProcessing = false;
-        this.toast.type = 'success';
-        this.toast.title = 'Order Placed!';
-        this.toast.message = `Your order #${order.id} has been confirmed`;
-        this.toast.show();
+        if (this.toast && typeof this.toast.show === 'function') {
+          this.toast.type = 'success';
+          this.toast.title = 'Order Placed!';
+          this.toast.message = `Your order #${order.id} has been confirmed`;
+          this.toast.show();
+        }
         
         setTimeout(() => this.router.navigate(['/orders/tracking', order.id]), 2000);
       },
       error: () => {
         this.isProcessing = false;
-        this.toast.type = 'error';
-        this.toast.title = 'Order Failed';
-        this.toast.message = 'Could not place order. Please try again.';
-        this.toast.show();
+        if (this.toast && typeof this.toast.show === 'function') {
+          this.toast.type = 'error';
+          this.toast.title = 'Order Failed';
+          this.toast.message = 'Could not place order. Please try again.';
+          this.toast.show();
+        }
       }
     });
   }
