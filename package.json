@@ -1,6 +1,6 @@
 {
   "name": "@mostafa-said7/zyro-electric",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "ZYRO - Tech Accessories E-Commerce Platform",
   "engines": {
     "node": ">=22.0.0",
