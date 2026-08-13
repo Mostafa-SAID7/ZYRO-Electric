@@ -8,4 +8,6 @@ export { UiToastComponent, type ToastType } from './components/toast/toast.compo
 export { UiConfirmationComponent } from './components/confirmation/confirmation.component';
 export { UiSkeletonComponent, UiSkeletonGroupComponent } from './components/skeleton/skeleton.component';
 export { UiErrorComponent, UiErrorBoundaryComponent } from './components/error/error.component';
+export { SelectComponent } from './components/select/select.component';
+export { SpinnerComponent } from './components/spinner/spinner.component';
 export { UiModule } from './ui.module';
