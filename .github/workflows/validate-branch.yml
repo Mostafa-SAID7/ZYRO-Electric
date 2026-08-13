@@ -6,7 +6,12 @@ on:
       - 'feature/**'
       - 'bugfix/**'
       - 'hotfix/**'
+      - 'release/**'
   pull_request:
+    branches:
+      - main
+      - develop
+      - testing
     types: [opened, synchronize, reopened]
 
 jobs:

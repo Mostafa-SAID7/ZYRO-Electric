@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - main
+      - develop
+      - testing
+  pull_request:
+    branches:
+      - main
+      - develop
+      - testing
   workflow_dispatch:
 
 jobs:
