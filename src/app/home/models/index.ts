@@ -14,6 +14,7 @@ export interface FeaturedProduct {
   rating: number;
   reviews: number;
   badge?: string;
+  hasError?: boolean;
 }
 
 export interface PromoOffer {
@@ -32,4 +33,22 @@ export interface Feature {
   icon: string;
   title: string;
   description: string;
+}
+
+export interface HeroSlide {
+  badge: string;
+  badgeIcon: string;
+  badgeBg: string;
+  badgeBorder: string;
+  badgeText: string;
+  titlePrefix: string;
+  titleHighlight: string;
+  titleSuffix: string;
+  description: string;
+  ctaPrimary: string;
+  ctaSecondary: string;
+  image: string;
+  bgGradient: string;
+  accentColor: string;
+  tags: string[];
 }

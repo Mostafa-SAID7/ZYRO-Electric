@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+/* Cairo font is loaded via <link> in index.html for performance (no FOUC) */
+
 
 :root {
   --background: #0A0A0A;
@@ -21,8 +22,8 @@
   --input: #1A1A1A;
   --ring: #E8C547;
   --radius: 1rem;
-  --font-sans: 'Plus Jakarta Sans', sans-serif;
-  --font-arabic: 'Tajawal', sans-serif;
+  --font-sans: 'Cairo', sans-serif;
+  --font-arabic: 'Cairo', sans-serif;
 }
 
 .light {
@@ -78,26 +79,26 @@
 @layer utilities {
   /* Typography Utilities */
   .text-hero-xl {
-    font-size: clamp(3.5rem, 12vw, 10rem);
-    line-height: 0.85;
-    letter-spacing: -0.04em;
-    font-weight: 900;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 800;
   }
 
   .text-section-xl {
-    font-size: clamp(2.5rem, 8vw, 6rem);
-    line-height: 0.85;
-    letter-spacing: -0.03em;
-    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    font-weight: 800;
   }
 
   .text-monolith {
-    font-size: clamp(5rem, 25vw, 22rem);
-    line-height: 0.75;
-    letter-spacing: -0.08em;
-    font-weight: 900;
+    font-size: clamp(3rem, 10vw, 6rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 800;
     text-transform: uppercase;
-    opacity: 0.03;
+    opacity: 0.05;
     pointer-events: none;
     white-space: nowrap;
   }

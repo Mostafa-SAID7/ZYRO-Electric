@@ -1,0 +1,118 @@
+<div class="max-w-7xl mx-auto px-4 md:px-6 pt-6">
+  <section class="relative overflow-hidden border border-border/60 rounded-2xl shadow-2xl" style="height: 88vh; min-height: 560px; max-height: 720px;">
+
+    <!-- Slides -->
+    <div class="absolute inset-0">
+      <div
+        *ngFor="let slide of heroSlides; let i = index"
+        class="absolute inset-0 transition-opacity duration-700 ease-in-out"
+        [style.opacity]="activeSlide === i ? '1' : '0'"
+        [style.z-index]="activeSlide === i ? '1' : '0'"
+        [style.pointer-events]="activeSlide === i ? 'auto' : 'none'">
+
+        <!-- Full-bleed image side -->
+        <div class="grid grid-cols-1 md:grid-cols-2 h-full">
+
+          <!-- Left: Text -->
+          <div class="flex flex-col justify-center px-8 md:px-14 lg:px-20 py-16 z-10 relative"
+            [style.background]="slide.bgGradient">
+            <!-- Decorative blur blob -->
+            <div class="absolute -top-20 -left-20 w-72 h-72 rounded-full blur-3xl opacity-30"
+              [style.background]="slide.accentColor"></div>
+
+            <div class="relative z-10 space-y-6"
+              [class.animate-fade-in-up]="activeSlide === i">
+
+              <!-- Badge -->
+              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-bold w-fit"
+                [style.background]="slide.badgeBg"
+                [style.border-color]="slide.badgeBorder"
+                [style.color]="slide.badgeText">
+                <lucide-icon [name]="slide.badgeIcon" class="w-4 h-4"></lucide-icon>
+                {{ slide.badge }}
+              </div>
+
+              <!-- Title -->
+              <h1 class="text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight text-foreground">
+                {{ slide.titlePrefix }}
+                <span class="gradient-text">{{ slide.titleHighlight }}</span>
+                <br *ngIf="slide.titleSuffix">
+                <span *ngIf="slide.titleSuffix">{{ slide.titleSuffix }}</span>
+              </h1>
+
+              <!-- Description -->
+              <p class="text-base md:text-lg text-muted-foreground max-w-md font-medium leading-relaxed">
+                {{ slide.description }}
+              </p>
+
+              <!-- CTA Buttons -->
+              <div class="flex flex-wrap gap-4 pt-2">
+                <button
+                  (click)="goToProducts()"
+                  class="btn-primary rounded-xl px-7 py-3.5 text-base font-bold shadow-lg flex items-center gap-2 group"
+                  [style.box-shadow]="'0 8px 30px ' + slide.accentColor + '55'">
+                  {{ slide.ctaPrimary }}
+                  <lucide-icon name="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></lucide-icon>
+                </button>
+                <button class="btn-outline rounded-xl px-7 py-3.5 text-base font-bold">
+                  {{ slide.ctaSecondary }}
+                </button>
+              </div>
+
+              <!-- Slide meta tags -->
+              <div class="flex flex-wrap gap-2 pt-2">
+                <span *ngFor="let tag of slide.tags"
+                  class="text-xs font-bold px-3 py-1.5 rounded-lg bg-background/60 border border-border/60 text-muted-foreground">
+                  {{ tag }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Full-bleed image -->
+          <div class="hidden md:block relative overflow-hidden">
+            <!-- Ensure active slide image is eager loaded, others lazy -->
+            <img
+              [src]="slide.image"
+              [alt]="slide.titlePrefix + slide.titleHighlight"
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700"
+              [class.scale-105]="activeSlide === i"
+              [attr.loading]="activeSlide === i ? 'eager' : 'lazy'"
+              [attr.fetchpriority]="activeSlide === i ? 'high' : 'auto'"
+              onerror="this.style.opacity='0'">
+            <!-- Overlay gradient for blending -->
+            <div class="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-transparent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide Controls (Dots) -->
+    <div class="absolute bottom-6 left-8 md:left-14 lg:left-20 z-20 flex items-center gap-3">
+      <button
+        *ngFor="let slide of heroSlides; let i = index"
+        (click)="goToSlide(i)"
+        class="h-2 rounded-full transition-all duration-300 border border-border/40"
+        [style.width]="activeSlide === i ? '32px' : '8px'"
+        [style.background]="activeSlide === i ? 'var(--accent)' : 'var(--border)'">
+      </button>
+    </div>
+
+    <!-- Prev / Next arrows -->
+    <button
+      (click)="prevSlide()"
+      class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-card/80 border border-border rounded-xl shadow-lg hover:bg-secondary transition-colors">
+      <lucide-icon name="chevron-left" class="w-5 h-5"></lucide-icon>
+    </button>
+    <button
+      (click)="nextSlide()"
+      class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center bg-card/80 border border-border rounded-xl shadow-lg hover:bg-secondary transition-colors">
+      <lucide-icon name="chevron-right" class="w-5 h-5"></lucide-icon>
+    </button>
+
+    <!-- Slide counter -->
+    <div class="absolute bottom-6 right-8 z-20 text-xs font-bold text-muted-foreground">
+      {{ activeSlide + 1 }} / {{ heroSlides.length }}
+    </div>
+  </section>
+</div>
