@@ -95,8 +95,6 @@ docker pull ghcr.io/mostafa-said7/zyro-electric:${{ steps.tag_info.outputs.versi
           files: |
             package.json
             README.md
-            docker/Dockerfile
-            docker/docker-compose.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
