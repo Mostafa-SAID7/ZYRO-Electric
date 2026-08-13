@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -10,17 +10,17 @@ import { UiToastComponent } from '../../../shared/ui/components/toast/toast.comp
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   @ViewChild('toast') toast!: UiToastComponent;
   
   loginForm: FormGroup;
   isLoading = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],

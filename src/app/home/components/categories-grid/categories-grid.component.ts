@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Category } from '../../models';
 
@@ -8,9 +8,9 @@ import { Category } from '../../models';
   styleUrls: ['./categories-grid.component.scss']
 })
 export class CategoriesGridComponent {
-  @Input() categories: Category[] = [];
+  private router = inject(Router);
 
-  constructor(private router: Router) {}
+  @Input() categories: Category[] = [];
 
   goToCategory(category: Category): void {
     this.router.navigate(['/products'], { queryParams: { category: category.id } });

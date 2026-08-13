@@ -31,13 +31,13 @@ export type ToastType = 'success' | 'error' | 'warning' | 'info';
 })
 export class UiToastComponent {
   @Input() type: ToastType = 'info';
-  @Input() title: string = '';
-  @Input() message: string = '';
-  @Input() duration: number = 5000;
+  @Input() title = '';
+  @Input() message = '';
+  @Input() duration = 5000;
   @Output() closed = new EventEmitter<void>();
 
   isVisible = false;
-  private timeoutId: any;
+  private timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   show(): void {
     this.isVisible = true;
@@ -48,7 +48,9 @@ export class UiToastComponent {
 
   close(): void {
     this.isVisible = false;
-    clearTimeout(this.timeoutId);
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
     this.closed.emit();
   }
 

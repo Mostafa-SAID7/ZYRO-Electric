@@ -5,7 +5,9 @@
       <!-- Left: Brand Logo & Name -->
       <div class="flex items-center flex-shrink-0">
         <h1 class="text-xl md:text-2xl font-black gradient-text cursor-pointer flex items-center gap-2 px-2"
+          tabindex="0"
           (click)="goToHome()"
+          (keyup.enter)="goToHome()"
           title="Go to Home">
           <div class="bg-accent/10 p-2 rounded-xl">
             <lucide-icon name="shopping-basket" class="w-6 h-6 text-accent"></lucide-icon>
@@ -245,12 +247,12 @@
         @if (authModalMode === 'login') {
           <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" class="space-y-5">
             <div>
-              <label class="section-label ml-1">Email</label>
-              <input type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('email')">
+              <label for="header-login-email" class="section-label ml-1">Email</label>
+              <input id="header-login-email" type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('email')">
             </div>
             <div>
-              <label class="section-label ml-1">Password</label>
-              <input type="password" formControlName="password" placeholder="Enter password" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('password')">
+              <label for="header-login-password" class="section-label ml-1">Password</label>
+              <input id="header-login-password" type="password" formControlName="password" placeholder="Enter password" class="form-input w-full mt-2 rounded-xl" [class.error]="isLoginFieldInvalid('password')">
             </div>
             <button type="submit" [disabled]="!loginForm.valid || isAuthLoading" class="btn-primary w-full py-3.5 rounded-xl mt-6 font-bold tracking-wider shadow-lg shadow-accent/20">
               @if (isAuthLoading) {
@@ -266,31 +268,31 @@
         @if (authModalMode === 'register') {
           <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()" class="space-y-4">
             <div>
-              <label class="section-label ml-1">Name</label>
-              <input type="text" formControlName="name" placeholder="John Doe" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('name')">
+              <label for="header-reg-name" class="section-label ml-1">Name</label>
+              <input id="header-reg-name" type="text" formControlName="name" placeholder="John Doe" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('name')">
             </div>
             <div>
-              <label class="section-label ml-1">Email</label>
-              <input type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('email')">
+              <label for="header-reg-email" class="section-label ml-1">Email</label>
+              <input id="header-reg-email" type="email" formControlName="email" placeholder="you@example.com" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('email')">
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="section-label ml-1">Phone</label>
-                <input type="tel" formControlName="phone" placeholder="+1..." class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('phone')">
+                <label for="header-reg-phone" class="section-label ml-1">Phone</label>
+                <input id="header-reg-phone" type="tel" formControlName="phone" placeholder="+1..." class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('phone')">
               </div>
               <div>
-                <label class="section-label ml-1">Address</label>
-                <input type="text" formControlName="address" placeholder="City" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('address')">
+                <label for="header-reg-address" class="section-label ml-1">Address</label>
+                <input id="header-reg-address" type="text" formControlName="address" placeholder="City" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('address')">
               </div>
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="section-label ml-1">Password</label>
-                <input type="password" formControlName="password" placeholder="Min 8 chars" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('password')">
+                <label for="header-reg-password" class="section-label ml-1">Password</label>
+                <input id="header-reg-password" type="password" formControlName="password" placeholder="Min 8 chars" class="form-input w-full mt-1.5 rounded-xl" [class.error]="isRegisterFieldInvalid('password')">
               </div>
               <div>
-                <label class="section-label ml-1">Confirm</label>
-                <input type="password" formControlName="confirmPassword" placeholder="Confirm" class="form-input w-full mt-1.5 rounded-xl" [class.error]="registerForm.errors?.['passwordMismatch']">
+                <label for="header-reg-confirm" class="section-label ml-1">Confirm</label>
+                <input id="header-reg-confirm" type="password" formControlName="confirmPassword" placeholder="Confirm" class="form-input w-full mt-1.5 rounded-xl" [class.error]="registerForm.errors?.['passwordMismatch']">
               </div>
             </div>
             <!-- Terms checkbox -->

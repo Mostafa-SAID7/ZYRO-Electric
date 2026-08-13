@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { tap, catchError, delay, map } from 'rxjs/operators';
+import { tap, catchError, delay } from 'rxjs/operators';
 import {
   Order,
   OrderItem,
   OrderStatus,
-  OrderPaymentStatus,
   OrderPage,
   OrderFilter,
   OrderStatistics,
   ShippingAddress,
-  PaymentMethod,
-  OrderHistory
+  PaymentMethod
 } from '../models';
 
 @Injectable({
@@ -89,7 +87,7 @@ export class OrderService {
     );
   }
 
-  getOrders(page: number = 1, pageSize: number = 10, filter?: OrderFilter): Observable<OrderPage> {
+  getOrders(page = 1, pageSize = 10, filter?: OrderFilter): Observable<OrderPage> {
     this.setLoading(true);
 
     return of(this.filterOrders(page, pageSize, filter)).pipe(
@@ -297,15 +295,15 @@ export class OrderService {
       if (stored) {
         const orders = JSON.parse(stored);
         // Convert date strings back to Date objects
-        return orders.map((order: any) => ({
+        return orders.map((order: Record<string, unknown>) => ({
           ...order,
-          createdAt: new Date(order.createdAt),
-          updatedAt: new Date(order.updatedAt),
-          estimatedDelivery: order.estimatedDelivery ? new Date(order.estimatedDelivery) : undefined,
-          actualDelivery: order.actualDelivery ? new Date(order.actualDelivery) : undefined,
-          history: order.history.map((h: any) => ({
+          createdAt: new Date(order['createdAt'] as string),
+          updatedAt: new Date(order['updatedAt'] as string),
+          estimatedDelivery: order['estimatedDelivery'] ? new Date(order['estimatedDelivery'] as string) : undefined,
+          actualDelivery: order['actualDelivery'] ? new Date(order['actualDelivery'] as string) : undefined,
+          history: (order['history'] as Record<string, unknown>[]).map((h: Record<string, unknown>) => ({
             ...h,
-            timestamp: new Date(h.timestamp)
+            timestamp: new Date(h['timestamp'] as string)
           }))
         }));
       }

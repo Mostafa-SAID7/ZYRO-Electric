@@ -9,8 +9,8 @@ import { Component, Input } from '@angular/core';
 })
 export class UiSkeletonComponent {
   @Input() variant: 'text' | 'card' | 'avatar' | 'button' = 'text';
-  @Input() width: string = '100%';
-  @Input() height: string = '1rem';
+  @Input() width = '100%';
+  @Input() height = '1rem';
 
   getSkeletonClasses(): string {
     const baseClasses = 'bg-muted rounded-[var(--radius)] animate-pulse';
@@ -42,12 +42,12 @@ export class UiSkeletonComponent {
   styles: []
 })
 export class UiSkeletonGroupComponent {
-  @Input() count: number = 3;
+  @Input() count = 3;
   @Input() variant: 'text' | 'card' = 'text';
   @Input() gap: 'sm' | 'md' | 'lg' = 'md';
 
-  get skeletons(): any[] {
-    return Array.from({ length: this.count }).map((_, i) => ({
+  get skeletons(): { variant: string; width: string; height: string }[] {
+    return Array.from({ length: this.count }).map(() => ({
       variant: this.variant,
       width: '100%',
       height: this.variant === 'card' ? '200px' : '1rem'

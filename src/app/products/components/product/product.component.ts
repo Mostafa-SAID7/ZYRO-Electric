@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Product } from '../../models';
 import { Router } from '@angular/router';
 
@@ -8,13 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent {
+  private router = inject(Router);
+
   @Input() product!: Product;
   @Output() addToCart = new EventEmitter<Product>();
 
   Math = Math;
   imgError = false;
-
-  constructor(private router: Router) {}
 
   viewDetails(): void {
     this.router.navigate(['/details', this.product.id]);

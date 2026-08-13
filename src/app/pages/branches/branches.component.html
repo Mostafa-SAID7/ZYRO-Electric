@@ -36,9 +36,10 @@
 
       <!-- Search Input -->
       <div class="md:col-span-1 relative">
-        <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Search Store</label>
+        <label for="branch-search" class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Search Store</label>
         <div class="relative">
           <input
+            id="branch-search"
             type="text"
             [(ngModel)]="searchQuery"
             (input)="onSearchChange()"
@@ -50,7 +51,7 @@
 
         <!-- City Select -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Filter by City</label>
+          <span class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Filter by City</span>
           <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             @for (city of cities; track city) {
               <button
@@ -68,7 +69,7 @@
 
         <!-- Services Select -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Services Provided</label>
+          <span class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Services Provided</span>
           <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             @for (service of servicesList; track service) {
               <button
@@ -104,7 +105,9 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @for (branch of filteredBranches; track branch) {
           <div
+            tabindex="0"
             (click)="openBranchDetails(branch)"
+            (keyup.enter)="openBranchDetails(branch)"
             class="bg-card rounded-3xl border border-border/80 hover:border-accent/60 overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group flex flex-col cursor-pointer">
             <!-- Store Image & Status Badge -->
             <div class="relative h-48 w-full overflow-hidden bg-muted">

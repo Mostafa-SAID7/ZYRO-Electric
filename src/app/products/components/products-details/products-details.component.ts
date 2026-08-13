@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
 import { CartsService } from '../../../carts/services/carts.service';
@@ -10,6 +10,11 @@ import { UiToastComponent } from '../../../shared/ui/components/toast/toast.comp
   templateUrl: './products-details.component.html'
 })
 export class ProductsDetailsComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private productsService = inject(ProductsService);
+  private cartsService = inject(CartsService);
+
   @ViewChild('toast') toast!: UiToastComponent;
 
   product: Product | null = null;
@@ -18,13 +23,6 @@ export class ProductsDetailsComponent implements OnInit {
   imgError = false;
   quantity = 1;
   Math = Math;
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private productsService: ProductsService,
-    private cartsService: CartsService
-  ) {}
 
   ngOnInit(): void {
     this.loadProduct();

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
@@ -25,12 +25,12 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
     `,
   styles: []
 })
-export class SearchBarComponent {
-  @Input() placeholder: string = 'Search...';
-  @Input() debounceMs: number = 300;
+export class SearchBarComponent implements OnInit {
+  @Input() placeholder = 'Search...';
+  @Input() debounceMs = 300;
   @Output() searchChange = new EventEmitter<string>();
 
-  searchQuery: string = '';
+  searchQuery = '';
   private searchSubject = new Subject<string>();
 
   ngOnInit(): void {

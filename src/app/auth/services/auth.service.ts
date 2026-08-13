@@ -137,14 +137,16 @@ export class AuthService {
 
   // ============ Email Verification ============
 
-  requestEmailVerification(request: EmailVerificationRequest): Observable<{ message: string }> {
+  requestEmailVerification(_request: EmailVerificationRequest): Observable<{ message: string }> {
+    void _request;
     return of({ message: 'Verification code sent to email' }).pipe(
       delay(500),
       tap(() => this.setSuccess('Verification code sent'))
     );
   }
 
-  confirmEmailVerification(request: EmailVerificationConfirm): Observable<{ message: string }> {
+  confirmEmailVerification(_request: EmailVerificationConfirm): Observable<{ message: string }> {
+    void _request;
     return of({ message: 'Email verified successfully' }).pipe(
       delay(500),
       tap(() => {
@@ -169,7 +171,8 @@ export class AuthService {
     return of(setup).pipe(delay(500));
   }
 
-  enableTwoFactor(verify: TwoFactorVerify): Observable<{ message: string; backupCodes: string[] }> {
+  enableTwoFactor(_verify: TwoFactorVerify): Observable<{ message: string; backupCodes: string[] }> {
+    void _verify;
     const backupCodes = Array.from({ length: 10 }, () =>
       Math.random().toString(36).substr(2, 8).toUpperCase()
     );
@@ -183,7 +186,8 @@ export class AuthService {
     );
   }
 
-  disableTwoFactor(password: string): Observable<{ message: string }> {
+  disableTwoFactor(_password: string): Observable<{ message: string }> {
+    void _password;
     return of({ message: '2FA disabled successfully' }).pipe(
       delay(500),
       tap(() => {
@@ -245,7 +249,8 @@ export class AuthService {
     return of(newAddress).pipe(delay(300));
   }
 
-  removeAddress(addressId: string): Observable<{ message: string }> {
+  removeAddress(_addressId: string): Observable<{ message: string }> {
+    void _addressId;
     return of({ message: 'Address removed' }).pipe(delay(300));
   }
 
@@ -319,7 +324,8 @@ export class AuthService {
     this.authStateSubject.next({ ...state, error });
   }
 
-  private setSuccess(message: string): void {
+  private setSuccess(_message: string): void {
+    void _message;
     const state = this.authStateSubject.value;
     this.authStateSubject.next({ ...state, error: null });
   }

@@ -12,10 +12,9 @@
     <div class="space-y-4">
       @for (faq of faqs; track faq; let i = $index) {
         <div
-          (click)="toggleFAQ('faq-' + i)"
-          class="glass-card rounded-lg overflow-hidden border border-border cursor-pointer hover:border-accent transition-colors"
+          class="glass-card rounded-lg overflow-hidden border border-border hover:border-accent transition-colors"
           >
-          <button class="w-full p-6 flex items-center justify-between hover:bg-secondary transition-colors">
+          <button (click)="toggleFAQ('faq-' + i)" class="w-full p-6 flex items-center justify-between hover:bg-secondary transition-colors cursor-pointer">
             <span class="text-left font-semibold text-foreground pr-4">
               {{ faq.question }}
             </span>

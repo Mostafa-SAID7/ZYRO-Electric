@@ -32,8 +32,9 @@
     <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <!-- Name -->
       <div>
-        <label class="block text-sm font-semibold text-foreground mb-2">Name *</label>
+        <label for="contact-name" class="block text-sm font-semibold text-foreground mb-2">Name *</label>
         <input
+          id="contact-name"
           type="text"
           formControlName="name"
           placeholder="Your full name"
@@ -48,8 +49,9 @@
 
         <!-- Email -->
         <div>
-          <label class="block text-sm font-semibold text-foreground mb-2">Email *</label>
+          <label for="contact-email" class="block text-sm font-semibold text-foreground mb-2">Email *</label>
           <input
+            id="contact-email"
             type="email"
             formControlName="email"
             placeholder="your.email@example.com"
@@ -69,8 +71,9 @@
 
           <!-- Category -->
           <div>
-            <label class="block text-sm font-semibold text-foreground mb-2">Category *</label>
+            <label for="contact-category" class="block text-sm font-semibold text-foreground mb-2">Category *</label>
             <select
+              id="contact-category"
               formControlName="category"
               class="form-input w-full"
               >
@@ -85,8 +88,9 @@
 
           <!-- Subject -->
           <div>
-            <label class="block text-sm font-semibold text-foreground mb-2">Subject *</label>
+            <label for="contact-subject" class="block text-sm font-semibold text-foreground mb-2">Subject *</label>
             <input
+              id="contact-subject"
               type="text"
               formControlName="subject"
               placeholder="What's this about?"
@@ -101,8 +105,9 @@
 
             <!-- Message -->
             <div>
-              <label class="block text-sm font-semibold text-foreground mb-2">Message *</label>
+              <label for="contact-message" class="block text-sm font-semibold text-foreground mb-2">Message *</label>
               <textarea
+                id="contact-message"
                 formControlName="message"
                 placeholder="Tell us how we can help..."
                 rows="6"

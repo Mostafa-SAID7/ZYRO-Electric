@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FeaturedProduct } from '../../models';
 
@@ -8,9 +8,9 @@ import { FeaturedProduct } from '../../models';
   styleUrls: ['./featured-products.component.scss']
 })
 export class FeaturedProductsComponent {
-  @Input() featuredProducts: FeaturedProduct[] = [];
+  private router = inject(Router);
 
-  constructor(private router: Router) {}
+  @Input() featuredProducts: FeaturedProduct[] = [];
 
   goToProduct(productId: string): void {
     this.router.navigate(['/details', productId]);

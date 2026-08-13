@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CartsService } from '../../services/carts.service';
 import { CartItem, CartSummary } from '../../models';
 import { Router } from '@angular/router';
@@ -12,6 +12,10 @@ import { ProductsService } from '../../../products/services/products.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
+  private cartService = inject(CartsService);
+  private productsService = inject(ProductsService);
+  private router = inject(Router);
+
   @ViewChild('toast') toast!: UiToastComponent;
   @ViewChild('confirm') confirm!: UiConfirmationComponent;
 
@@ -25,12 +29,6 @@ export class CartComponent implements OnInit {
     total: 0
   };
   couponCode = '';
-
-  constructor(
-    private cartService: CartsService,
-    private productsService: ProductsService,
-    private router: Router
-  ) {}
 
   ngOnInit(): void {
     this.loadCart();

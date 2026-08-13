@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,11 +7,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./not-found.component.scss']
 })
 export class UiNotFoundComponent {
+  private router = inject(Router);
+
   message = 'Sorry, the page you are looking for does not exist or has been moved.';
   errorCode = '404_NOT_FOUND';
   timestamp = new Date().toLocaleString();
-
-  constructor(private router: Router) {}
 
   goHome(): void {
     this.router.navigate(['/']);

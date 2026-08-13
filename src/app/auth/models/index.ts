@@ -65,9 +65,9 @@ export interface AuthResponse {
   expiresIn: number;
 }
 
-export interface LoginResponse extends AuthResponse {}
+export type LoginResponse = AuthResponse;
 
-export interface RegisterResponse extends AuthResponse {}
+export type RegisterResponse = AuthResponse;
 
 // Password Models
 export interface PasswordChangeRequest {

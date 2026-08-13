@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../../services/products.service';
-import { Product, ProductFilter, ProductPage } from '../../models';
+import { Product, ProductFilter, ProductPage, Category } from '../../models';
 import { CartsService } from '../../../carts/services/carts.service';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
 import { FilterGroup } from '../../../shared/ui/components/filter-panel/filter-panel.component';
@@ -14,12 +14,16 @@ import { SORT_OPTIONS, DEFAULT_FILTER_GROUPS, DEFAULT_PAGE_SIZE, DEFAULT_CURRENT
   styleUrls: ['./all-products.component.scss']
 })
 export class AllProductsComponent implements OnInit {
+  private productsService = inject(ProductsService);
+  private cartsService = inject(CartsService);
+  private route = inject(ActivatedRoute);
+
   @ViewChild('toast') toast!: UiToastComponent;
 
   products: Product[] = [];
-  categories: any[] = [];
+  categories: Category[] = [];
   isLoading = false;
-  
+
   currentPage = DEFAULT_CURRENT_PAGE;
   pageSize = DEFAULT_PAGE_SIZE;
   totalProducts = 0;
@@ -29,12 +33,6 @@ export class AllProductsComponent implements OnInit {
   sortOptions: SortOption[] = SORT_OPTIONS;
 
   filterGroups: FilterGroup[] = [];
-
-  constructor(
-    private productsService: ProductsService,
-    private cartsService: CartsService,
-    private route: ActivatedRoute
-  ) {}
 
   ngOnInit(): void {
     this.initFilterGroups();
@@ -57,7 +55,7 @@ export class AllProductsComponent implements OnInit {
             }
           }
           this.loadProducts();
-        }).add(() => {});
+        }).add(() => { /* noop: subscription cleanup */ });
       },
       error: () => {
         this.showToast('Error', 'Failed to load categories', 'error');
@@ -79,19 +77,13 @@ export class AllProductsComponent implements OnInit {
     }
   }
 
-  onFilterChange(event: { filterId: string; value: any }): void {
-    const { filterId, value } = event;
-    
+  onFilterChange(event: { filterId: string; value: unknown }): void {
+    const { filterId } = event;
+
     switch (filterId) {
       case 'category':
-        this.applyFilters();
-        break;
       case 'price-range':
-        this.applyFilters();
-        break;
       case 'rating':
-        this.applyFilters();
-        break;
       case 'stock':
         this.applyFilters();
         break;
@@ -122,12 +114,12 @@ export class AllProductsComponent implements OnInit {
     const stockGroup = this.filterGroups.find(g => g.id === 'stock');
 
     const filter: ProductFilter = {
-      categories: categoryGroup?.currentValue ? [categoryGroup.currentValue] : undefined,
+      categories: categoryGroup?.currentValue ? [categoryGroup.currentValue as string] : undefined,
       minPrice: priceGroup?.currentMin,
       maxPrice: priceGroup?.currentMax,
-      rating: ratingGroup?.currentValue || 0,
-      inStock: stockGroup?.currentValue && Array.isArray(stockGroup.currentValue) && stockGroup.currentValue.includes('in-stock'),
-      sortBy: this.sortBy as any
+      rating: (ratingGroup?.currentValue as number) || 0,
+      inStock: stockGroup?.currentValue ? !!(stockGroup.currentValue as string[]).includes('in-stock') : undefined,
+      sortBy: this.sortBy as ProductFilter['sortBy']
     };
 
     this.productsService.getProducts(filter, this.currentPage, this.pageSize).subscribe({
@@ -173,4 +165,3 @@ export class AllProductsComponent implements OnInit {
     this.toast.show();
   }
 }
-

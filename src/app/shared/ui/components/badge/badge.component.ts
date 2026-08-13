@@ -13,7 +13,7 @@ import { Component, Input } from '@angular/core';
   styles: []
 })
 export class UiBadgeComponent {
-  @Input() label: string = '';
+  @Input() label = '';
   @Input() icon?: string;
   @Input() variant: 'default' | 'accent' | 'success' | 'warning' | 'danger' = 'default';
 

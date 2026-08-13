@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 
 export interface FilterGroup {
   id: string;
   name: string;
   type: 'select' | 'checkbox' | 'price-range' | 'rating';
-  options?: { value: any; label: string }[];
+  options?: { value: unknown; label: string }[];
   minValue?: number;
   maxValue?: number;
-  currentValue?: any;
+  currentValue?: unknown;
   currentMin?: number;
   currentMax?: number;
 }
@@ -38,7 +38,7 @@ export interface FilterGroup {
           <!-- Checkbox Filter -->
           @if (group.type === 'checkbox') {
             <div class="mb-6">
-              <label class="section-label mb-3 block">{{ group.name }}</label>
+              <span class="section-label mb-3 block">{{ group.name }}</span>
               <div class="space-y-3">
                 @for (opt of group.options; track opt) {
                   <label class="flex items-center gap-3 cursor-pointer group">
@@ -66,7 +66,7 @@ export interface FilterGroup {
             <!-- Price Range Filter -->
             @if (group.type === 'price-range') {
               <div class="mb-6">
-                <label class="section-label mb-3 block">{{ group.name }}</label>
+                <span class="section-label mb-3 block">{{ group.name }}</span>
                 <div class="space-y-3">
                   <div class="flex gap-3">
                     <div class="relative flex-1">
@@ -99,7 +99,7 @@ export interface FilterGroup {
                 <!-- Rating Filter -->
                 @if (group.type === 'rating') {
                   <div class="mb-6">
-                    <label class="section-label mb-4 block">{{ group.name }}</label>
+                    <span class="section-label mb-4 block">{{ group.name }}</span>
                     <div class="space-y-3">
                       @for (i of [5,4,3,2,1]; track i) {
                         <label class="flex items-center gap-3 cursor-pointer group">
@@ -135,7 +135,7 @@ export interface FilterGroup {
                   <!-- Select Filter -->
                   @if (group.type === 'select') {
                     <div class="mb-6 relative">
-                      <label class="section-label mb-2 block">{{ group.name }}</label>
+                      <span class="section-label mb-2 block">{{ group.name }}</span>
                       <!-- Custom Select Trigger -->
                       <button
                         (click)="toggleSelectDropdown(group.id)"
@@ -183,7 +183,7 @@ export interface FilterGroup {
                       }
                       <!-- Invisible overlay for click outside -->
                       @if (isSelectOpen(group.id)) {
-                        <div class="fixed inset-0 z-40" (click)="closeSelectDropdown(group.id)"></div>
+                        <div class="fixed inset-0 z-40" tabindex="0" (click)="closeSelectDropdown(group.id)" (keyup.enter)="closeSelectDropdown(group.id)"></div>
                       }
                     </div>
                   }
@@ -240,14 +240,14 @@ export interface FilterGroup {
     }
   `]
 })
-export class FilterPanelComponent {
-  @Input() title: string = 'Filters';
+export class FilterPanelComponent implements OnInit {
+  @Input() title = 'Filters';
   @Input() filterGroups: FilterGroup[] = [];
-  @Output() filterChange = new EventEmitter<{ filterId: string; value: any }>();
-  @Output() reset = new EventEmitter<void>();
+  @Output() filterChange = new EventEmitter<{ filterId: string; value: unknown }>();
+  @Output() panelReset = new EventEmitter<void>();
 
-  checkedValues: Map<string, Set<any>> = new Map();
-  openDropdowns: Set<string> = new Set();
+  checkedValues = new Map<string, Set<unknown>>();
+  openDropdowns = new Set<string>();
 
   ngOnInit(): void {
     // Initialize checked values map for checkbox and rating filters
@@ -274,7 +274,7 @@ export class FilterPanelComponent {
     this.openDropdowns.delete(id);
   }
 
-  selectGroupOption(group: FilterGroup, value: any): void {
+  selectGroupOption(group: FilterGroup, value: unknown): void {
     group.currentValue = value;
     this.onFilterChange(group.id, value);
     this.closeSelectDropdown(group.id);
@@ -288,12 +288,12 @@ export class FilterPanelComponent {
     return option ? option.label : `All ${group.name}`;
   }
 
-  onFilterChange(filterId: string, value: any): void {
+  onFilterChange(filterId: string, value: unknown): void {
     this.filterChange.emit({ filterId, value });
   }
 
-  onCheckboxChange(filterId: string, value: any, event: any): void {
-    const checked = event.target.checked;
+  onCheckboxChange(filterId: string, value: unknown, event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
     if (!this.checkedValues.has(filterId)) {
       this.checkedValues.set(filterId, new Set());
     }
@@ -308,8 +308,8 @@ export class FilterPanelComponent {
     this.filterChange.emit({ filterId, value: Array.from(values) });
   }
 
-  onRatingChange(filterId: string, rating: number, event: any): void {
-    const checked = event.target.checked;
+  onRatingChange(filterId: string, rating: number, event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
     if (!this.checkedValues.has(filterId)) {
       this.checkedValues.set(filterId, new Set());
     }
@@ -335,7 +335,7 @@ export class FilterPanelComponent {
     }
   }
 
-  isChecked(filterId: string, value: any): boolean {
+  isChecked(filterId: string, value: unknown): boolean {
     return this.checkedValues.get(filterId)?.has(value) ?? false;
   }
 
@@ -347,6 +347,6 @@ export class FilterPanelComponent {
       group.currentMin = group.minValue;
       group.currentMax = group.maxValue;
     });
-    this.reset.emit();
+    this.panelReset.emit();
   }
 }

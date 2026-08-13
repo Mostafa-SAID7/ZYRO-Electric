@@ -11,9 +11,9 @@ export class BranchesComponent implements OnInit {
   branches: Branch[] = MOCK_BRANCHES;
   filteredBranches: Branch[] = [];
   
-  searchQuery: string = '';
-  selectedCity: string = 'All';
-  selectedService: string = 'All';
+  searchQuery = '';
+  selectedCity = 'All';
+  selectedService = 'All';
   
   selectedBranch: Branch | null = null;
   preferredBranchId: string | null = null;

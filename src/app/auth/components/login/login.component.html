@@ -11,8 +11,9 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
         <!-- Email -->
         <div>
-          <label class="section-label">Email</label>
+          <label for="login-email" class="section-label">Email</label>
           <input
+            id="login-email"
             type="email"
             formControlName="email"
             placeholder="you@example.com"
@@ -27,8 +28,9 @@
 
           <!-- Password -->
           <div>
-            <label class="section-label">Password</label>
+            <label for="login-password" class="section-label">Password</label>
             <input
+              id="login-password"
               type="password"
               formControlName="password"
               placeholder="Enter your password"

@@ -75,11 +75,11 @@ import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from
   styles: []
 })
 export class PaginationComponent implements OnChanges {
-  @Input() currentPage: number = 1;
-  @Input() totalPages: number = 1;
-  @Input() totalItems: number = 0;
-  @Input() pagesVisible: number = 5;
-  @Input() showPageInfo: boolean = true;
+  @Input() currentPage = 1;
+  @Input() totalPages = 1;
+  @Input() totalItems = 0;
+  @Input() pagesVisible = 5;
+  @Input() showPageInfo = true;
   @Output() pageChange = new EventEmitter<number>();
 
   pages: number[] = [];
@@ -93,7 +93,7 @@ export class PaginationComponent implements OnChanges {
   private calculatePages(): void {
     const half = Math.floor(this.pagesVisible / 2);
     let start = Math.max(1, this.currentPage - half);
-    let end = Math.min(this.totalPages, start + this.pagesVisible - 1);
+    const end = Math.min(this.totalPages, start + this.pagesVisible - 1);
 
     if (end - start + 1 < this.pagesVisible) {
       start = Math.max(1, end - this.pagesVisible + 1);

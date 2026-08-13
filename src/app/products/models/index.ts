@@ -22,9 +22,7 @@ export interface Product {
 export interface ProductRating {
   average: number;
   count: number;
-  distribution: {
-    [key: number]: number; // 1-5 star distribution
-  };
+  distribution: Record<number, number>;
 }
 
 // Category

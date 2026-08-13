@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../models';
@@ -9,13 +9,11 @@ import { Order } from '../../models';
   styleUrls: ['./tracking.component.scss']
 })
 export class TrackingComponent implements OnInit {
-  order: Order | null = null;
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private orderService = inject(OrderService);
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private orderService: OrderService
-  ) {}
+  order: Order | null = null;
 
   ngOnInit(): void {
     const orderId = this.route.snapshot.paramMap.get('id');

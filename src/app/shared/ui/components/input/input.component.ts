@@ -5,9 +5,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   template: `
     <div class="flex flex-col gap-2">
       @if (label) {
-        <label class="section-label">{{ label }}</label>
+        <label [for]="inputId" class="section-label">{{ label }}</label>
       }
       <input
+        [id]="inputId"
         [type]="type"
         [value]="value"
         [placeholder]="placeholder"
@@ -23,11 +24,13 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styles: []
 })
 export class UiInputComponent {
+  inputId = 'input-' + Math.random().toString(36).substring(2, 9);
+
   @Input() label?: string;
-  @Input() type: string = 'text';
-  @Input() value: string = '';
-  @Input() placeholder: string = '';
-  @Input() disabled: boolean = false;
+  @Input() type = 'text';
+  @Input() value = '';
+  @Input() placeholder = '';
+  @Input() disabled = false;
   @Input() error?: string;
   @Output() valueChange = new EventEmitter<string>();
 

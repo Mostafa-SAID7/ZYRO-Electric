@@ -7,7 +7,9 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
     @if (isOpen) {
       <div
         class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm transition-opacity duration-300"
-        (click)="close()">
+        tabindex="0"
+        (click)="close()"
+        (keyup.enter)="close()">
       </div>
     }
     

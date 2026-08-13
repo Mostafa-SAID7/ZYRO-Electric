@@ -8,7 +8,9 @@
     <div class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
       @for (category of categories; track category) {
         <div
+          tabindex="0"
           (click)="goToCategory(category)"
+          (keyup.enter)="goToCategory(category)"
           class="group cursor-pointer h-full">
           <div [ngClass]="'bg-gradient-to-br ' + category.color"
             class="p-5 rounded-[1.5rem] text-white text-center space-y-3 shadow-md group-hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-2 border border-white/10 relative overflow-hidden h-full flex flex-col items-center justify-center">

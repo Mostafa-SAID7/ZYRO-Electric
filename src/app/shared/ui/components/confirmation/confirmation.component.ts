@@ -28,10 +28,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styles: []
 })
 export class UiConfirmationComponent {
-  @Input() title: string = 'Confirm';
-  @Input() message: string = '';
-  @Input() confirmLabel: string = 'Confirm';
-  @Input() cancelLabel: string = 'Cancel';
+  @Input() title = 'Confirm';
+  @Input() message = '';
+  @Input() confirmLabel = 'Confirm';
+  @Input() cancelLabel = 'Cancel';
   @Input() type: 'default' | 'danger' = 'default';
   @Output() confirmed = new EventEmitter<void>();
   @Output() cancelled = new EventEmitter<void>();

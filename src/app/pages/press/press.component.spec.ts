@@ -111,7 +111,7 @@ describe('PressComponent', () => {
   it('should have media contact with phone number', () => {
     component.mediaContacts.forEach(contact => {
       // Phone should have digits or letters (allowing +, -, space for formatting)
-      expect(contact.phone).toMatch(/^[\d\+\-\s\w]+$/);
+      expect(contact.phone).toMatch(/^[\d+\-\s\w]+$/);
     });
   });
 

@@ -12,7 +12,7 @@ import { Component, Input } from '@angular/core';
 export class UiCardComponent {
   @Input() variant: 'default' | 'glass' | 'glass-strong' = 'default';
   @Input() padding: 'sm' | 'md' | 'lg' = 'md';
-  @Input() hover: boolean = false;
+  @Input() hover = false;
 
   getCardClasses(): string {
     const baseClasses = 'rounded-[var(--radius)] overflow-hidden transition-all relative';

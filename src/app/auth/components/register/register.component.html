@@ -11,8 +11,9 @@
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
         <!-- Full Name -->
         <div>
-          <label class="section-label">Full Name</label>
+          <label for="reg-name" class="section-label">Full Name</label>
           <input
+            id="reg-name"
             type="text"
             formControlName="name"
             placeholder="John Doe"
@@ -22,8 +23,9 @@
 
           <!-- Email -->
           <div>
-            <label class="section-label">Email</label>
+            <label for="reg-email" class="section-label">Email</label>
             <input
+              id="reg-email"
               type="email"
               formControlName="email"
               placeholder="you@example.com"
@@ -33,8 +35,9 @@
 
             <!-- Phone -->
             <div>
-              <label class="section-label">Phone</label>
+              <label for="reg-phone" class="section-label">Phone</label>
               <input
+                id="reg-phone"
                 type="tel"
                 formControlName="phone"
                 placeholder="+1 (555) 123-4567"
@@ -44,8 +47,9 @@
 
               <!-- Address -->
               <div>
-                <label class="section-label">Address</label>
+                <label for="reg-address" class="section-label">Address</label>
                 <input
+                  id="reg-address"
                   type="text"
                   formControlName="address"
                   placeholder="123 Main St, City, State"
@@ -55,8 +59,9 @@
 
                 <!-- Password -->
                 <div>
-                  <label class="section-label">Password</label>
+                  <label for="reg-password" class="section-label">Password</label>
                   <input
+                    id="reg-password"
                     type="password"
                     formControlName="password"
                     placeholder="At least 8 characters"
@@ -71,8 +76,9 @@
 
                   <!-- Confirm Password -->
                   <div>
-                    <label class="section-label">Confirm Password</label>
+                    <label for="reg-confirm" class="section-label">Confirm Password</label>
                     <input
+                      id="reg-confirm"
                       type="password"
                       formControlName="confirmPassword"
                       placeholder="Re-enter password"

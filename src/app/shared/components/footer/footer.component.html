@@ -16,7 +16,9 @@
         <div class="flex gap-3">
           @for (social of footerLinks.social; track social) {
             <a
+              tabindex="0"
               (click)="openExternal(social.url)"
+              (keyup.enter)="openExternal(social.url)"
               class="p-2 hover:bg-secondary rounded-lg transition-colors cursor-pointer"
               [title]="social.label">
               <!-- Facebook -->
@@ -54,7 +56,7 @@
         <ul class="space-y-3">
           @for (link of footerLinks.company; track link) {
             <li>
-              <a (click)="navigateTo(link.route)"
+              <a tabindex="0" (click)="navigateTo(link.route)" (keyup.enter)="navigateTo(link.route)"
                 class="text-sm text-muted-foreground hover:text-accent transition-colors cursor-pointer">
                 {{ link.label }}
               </a>
@@ -69,7 +71,7 @@
         <ul class="space-y-3">
           @for (link of footerLinks.support; track link) {
             <li>
-              <a (click)="navigateTo(link.route)"
+              <a tabindex="0" (click)="navigateTo(link.route)" (keyup.enter)="navigateTo(link.route)"
                 class="text-sm text-muted-foreground hover:text-accent transition-colors cursor-pointer">
                 {{ link.label }}
               </a>
@@ -84,7 +86,7 @@
         <ul class="space-y-3">
           @for (link of footerLinks.legal; track link) {
             <li>
-              <a (click)="navigateTo(link.route)"
+              <a tabindex="0" (click)="navigateTo(link.route)" (keyup.enter)="navigateTo(link.route)"
                 class="text-sm text-muted-foreground hover:text-accent transition-colors cursor-pointer">
                 {{ link.label }}
               </a>

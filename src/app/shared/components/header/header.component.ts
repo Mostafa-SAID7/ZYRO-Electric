@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CartsService } from '../../../carts/services/carts.service';
@@ -14,6 +14,13 @@ import { UiToastComponent } from '../../../shared/ui/components/toast/toast.comp
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  private cartsService = inject(CartsService);
+  private authService = inject(AuthService);
+  private productsService = inject(ProductsService);
+  private router = inject(Router);
+  private renderer = inject(Renderer2);
+  private fb = inject(FormBuilder);
+
   @ViewChild('toast') toast!: UiToastComponent;
 
   isCartDrawerOpen = false;
@@ -32,15 +39,6 @@ export class HeaderComponent implements OnInit {
   isAuthLoading = false;
   loginForm!: FormGroup;
   registerForm!: FormGroup;
-
-  constructor(
-    private cartsService: CartsService,
-    private authService: AuthService,
-    private productsService: ProductsService,
-    private router: Router,
-    private renderer: Renderer2,
-    private fb: FormBuilder
-  ) {}
 
   ngOnInit(): void {
     // Initialize Forms

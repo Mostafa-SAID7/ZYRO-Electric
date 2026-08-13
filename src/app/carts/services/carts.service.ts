@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { tap, catchError, map, delay } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
 import { Cart, CartItem, CartState, CartSummary, AddToCartRequest, UpdateCartItemRequest, CheckoutData } from '../models';
 
 @Injectable({
@@ -33,7 +33,9 @@ export class CartsService {
   private readonly TAX_RATE = 0.10;
   private readonly SHIPPING_COST = 10;
 
-  constructor(private http: HttpClient) {
+  private http = inject(HttpClient);
+
+  constructor() {
     this.initializeCart();
   }
 
@@ -182,7 +184,8 @@ export class CartsService {
 
   // ============ Server Operations ============
 
-  createOrder(model: any): Observable<any> {
+  createOrder(_model: unknown): Observable<unknown> {
+    void _model;
     // This would call the actual API in a real application
     return of({ success: true, orderId: Math.random().toString(36).substr(2, 9) }).pipe(delay(500));
   }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-ui-button',
@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
     <button
       [class]="getButtonClasses()"
       [disabled]="disabled"
-      (click)="onClick()">
+      (click)="clicked.emit()">
       @if (icon) {
         <lucide-icon [name]="icon" class="w-4 h-4"></lucide-icon>
       }
@@ -16,12 +16,12 @@ import { Component, Input } from '@angular/core';
   styles: []
 })
 export class UiButtonComponent {
-  @Input() label: string = 'Button';
+  @Input() label = 'Button';
   @Input() variant: 'primary' | 'outline' | 'danger' = 'primary';
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() icon?: string;
-  @Input() disabled: boolean = false;
-  @Input() onClick: () => void = () => {};
+  @Input() disabled = false;
+  @Output() clicked = new EventEmitter<void>();
 
   getButtonClasses(): string {
     const baseClasses = 'inline-flex items-center justify-center gap-2 font-bold transition-all rounded-[var(--radius)] disabled:opacity-50';

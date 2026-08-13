@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ProductComponent } from './product.component';
+import { Product } from '../../models';
 
 describe('ProductComponent', () => {
   let component: ProductComponent;
@@ -27,7 +28,7 @@ describe('ProductComponent', () => {
       price: 99.99,
       category: 'electronics',
       rating: { average: 4.5, count: 20 }
-    } as any;
+    } as unknown as Product;
     fixture.detectChanges();
   });
 

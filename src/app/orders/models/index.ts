@@ -57,7 +57,7 @@ export interface OrderHistory {
   status: OrderStatus;
   timestamp: Date;
   message: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // Order Statistics

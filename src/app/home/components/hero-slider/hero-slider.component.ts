@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeroSlide } from '../../models';
 
@@ -8,12 +8,12 @@ import { HeroSlide } from '../../models';
   styleUrls: ['./hero-slider.component.scss']
 })
 export class HeroSliderComponent implements OnInit, OnDestroy {
+  private router = inject(Router);
+
   @Input() heroSlides: HeroSlide[] = [];
   
   activeSlide = 0;
-  private autoPlayInterval: any;
-
-  constructor(private router: Router) {}
+  private autoPlayInterval: ReturnType<typeof setInterval> | null = null;
 
   ngOnInit(): void {
     if (this.heroSlides.length > 0) {

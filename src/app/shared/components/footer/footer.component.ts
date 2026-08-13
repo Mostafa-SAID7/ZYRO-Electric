@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent {
+  private router = inject(Router);
+
   currentYear = new Date().getFullYear();
 
   footerLinks = {
@@ -36,8 +38,6 @@ export class FooterComponent {
       { label: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com' }
     ]
   };
-
-  constructor(private router: Router) {}
 
   navigateTo(route: string): void {
     this.router.navigate([route]);

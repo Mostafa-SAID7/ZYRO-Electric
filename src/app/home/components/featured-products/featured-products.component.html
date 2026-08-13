@@ -17,7 +17,9 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       @for (product of featuredProducts; track product) {
         <div
+          tabindex="0"
           (click)="goToProduct(product.id)"
+          (keyup.enter)="goToProduct(product.id)"
           class="group cursor-pointer">
           <div class="bg-card rounded-[2rem] overflow-hidden border border-border/50 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 flex flex-col h-full">
             <!-- Product Image -->

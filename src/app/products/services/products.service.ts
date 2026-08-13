@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { tap, catchError, delay, map } from 'rxjs/operators';
+import { tap, catchError, delay } from 'rxjs/operators';
 import {
   Product,
   ProductPage,
   ProductFilter,
   Category,
-  Review,
-  ProductRating
+  Review
 } from '../models';
 import { MOCK_PRODUCTS_NICHES } from '../data/mock-products-niches';
 
@@ -16,6 +15,8 @@ import { MOCK_PRODUCTS_NICHES } from '../data/mock-products-niches';
   providedIn: 'root'
 })
 export class ProductsService {
+  private http = inject(HttpClient);
+
   private mockProducts: Product[] = this.generateMockProducts();
   private mockCategories: Category[] = this.generateMockCategories();
 
@@ -30,13 +31,13 @@ export class ProductsService {
   public isLoading$ = this.isLoadingSubject.asObservable();
   public error$ = this.errorSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.loadProducts();
   }
 
   // ============ Product Operations ============
 
-  getProducts(filter?: ProductFilter, page: number = 1, pageSize: number = 12): Observable<ProductPage> {
+  getProducts(filter?: ProductFilter, page = 1, pageSize = 12): Observable<ProductPage> {
     this.setLoading(true);
 
     return of(this.filterProducts(filter, page, pageSize)).pipe(
@@ -59,7 +60,7 @@ export class ProductsService {
     return of(product).pipe(delay(200));
   }
 
-  searchProducts(query: string, page: number = 1, pageSize: number = 12): Observable<ProductPage> {
+  searchProducts(query: string, page = 1, pageSize = 12): Observable<ProductPage> {
     const filter: ProductFilter = {
       searchQuery: query
     };
@@ -67,7 +68,7 @@ export class ProductsService {
     return this.getProducts(filter, page, pageSize);
   }
 
-  getProductsByCategory(categoryId: string, page: number = 1, pageSize: number = 12): Observable<ProductPage> {
+  getProductsByCategory(categoryId: string, page = 1, pageSize = 12): Observable<ProductPage> {
     const filter: ProductFilter = {
       categories: [categoryId]
     };
@@ -75,7 +76,7 @@ export class ProductsService {
     return this.getProducts(filter, page, pageSize);
   }
 
-  getFeaturedProducts(limit: number = 8): Observable<Product[]> {
+  getFeaturedProducts(limit = 8): Observable<Product[]> {
     const featured = this.mockProducts
       .filter(p => p.isFeatured && p.isActive)
       .slice(0, limit);
@@ -101,7 +102,7 @@ export class ProductsService {
 
   // ============ Review Operations ============
 
-  getProductReviews(productId: string, page: number = 1, pageSize: number = 5): Observable<{ items: Review[]; total: number }> {
+  getProductReviews(productId: string, page = 1, pageSize = 5): Observable<{ items: Review[]; total: number }> {
     // Mock reviews
     const mockReviews: Review[] = [
       {
@@ -151,7 +152,7 @@ export class ProductsService {
 
   // ============ Filtering & Sorting ============
 
-  filterByPriceRange(min: number, max: number, page: number = 1, pageSize: number = 12): Observable<ProductPage> {
+  filterByPriceRange(min: number, max: number, page = 1, pageSize = 12): Observable<ProductPage> {
     const filter: ProductFilter = {
       minPrice: min,
       maxPrice: max
@@ -160,7 +161,7 @@ export class ProductsService {
     return this.getProducts(filter, page, pageSize);
   }
 
-  filterByRating(minRating: number, page: number = 1, pageSize: number = 12): Observable<ProductPage> {
+  filterByRating(minRating: number, page = 1, pageSize = 12): Observable<ProductPage> {
     const filter: ProductFilter = {
       rating: minRating
     };
@@ -168,7 +169,7 @@ export class ProductsService {
     return this.getProducts(filter, page, pageSize);
   }
 
-  getInStockProducts(page: number = 1, pageSize: number = 12): Observable<ProductPage> {
+  getInStockProducts(page = 1, pageSize = 12): Observable<ProductPage> {
     const filter: ProductFilter = {
       inStock: true
     };
@@ -184,7 +185,7 @@ export class ProductsService {
     this.setLoading(false);
   }
 
-  private filterProducts(filter?: ProductFilter, page: number = 1, pageSize: number = 12): ProductPage {
+  private filterProducts(filter?: ProductFilter, page = 1, pageSize = 12): ProductPage {
     let results = [...this.mockProducts];
 
     if (filter) {

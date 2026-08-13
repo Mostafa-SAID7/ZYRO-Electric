@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartsService } from '../carts/services/carts.service';
+import { CartItem } from '../carts/models';
 import { AuthService } from '../auth/services/auth.service';
 import { OrderService } from '../orders/services/order.service';
 import { UiToastComponent } from '../shared/ui/components/toast/toast.component';
@@ -13,22 +14,22 @@ import { UiConfirmationComponent } from '../shared/ui/components/confirmation/co
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private cartService = inject(CartsService);
+  private authService = inject(AuthService);
+  private orderService = inject(OrderService);
+  private router = inject(Router);
+
   @ViewChild('toast') toast!: UiToastComponent;
   @ViewChild('confirm') confirm!: UiConfirmationComponent;
 
   checkoutForm: FormGroup;
-  cartItems: any[] = [];
+  cartItems: CartItem[] = [];
   isProcessing = false;
   subtotal = 0;
   total = 0;
 
-  constructor(
-    private fb: FormBuilder,
-    private cartService: CartsService,
-    private authService: AuthService,
-    private orderService: OrderService,
-    private router: Router
-  ) {
+  constructor() {
     this.checkoutForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -91,7 +92,17 @@ export class CheckoutComponent implements OnInit {
       type: formValue.paymentMethod
     };
 
-    this.orderService.createOrder(this.cartItems, shippingAddress, paymentMethod).subscribe({
+    const orderItems = this.cartItems.map(item => ({
+      productId: item.productId,
+      title: item.product?.title || 'Unknown Product',
+      price: item.price,
+      quantity: item.quantity,
+      image: item.product?.image || '',
+      discount: item.discount,
+      tax: item.tax
+    }));
+
+    this.orderService.createOrder(orderItems, shippingAddress, paymentMethod).subscribe({
       next: (order) => {
         this.isProcessing = false;
         this.toast.type = 'success';
@@ -101,7 +112,7 @@ export class CheckoutComponent implements OnInit {
         
         setTimeout(() => this.router.navigate(['/orders/tracking', order.id]), 2000);
       },
-      error: (err) => {
+      error: () => {
         this.isProcessing = false;
         this.toast.type = 'error';
         this.toast.title = 'Order Failed';

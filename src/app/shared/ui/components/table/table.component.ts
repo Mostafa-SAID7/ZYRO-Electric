@@ -25,7 +25,7 @@ import { Component, Input } from '@angular/core';
                   @if (row[column] | async; as data) {
                     {{ data }}
                   }
-                  @if (!(row[column] | async)) {
+                  @if ((row[column] | async) === null || (row[column] | async) === undefined) {
                     {{ row[column] }}
                   }
                 </td>
@@ -40,5 +40,5 @@ import { Component, Input } from '@angular/core';
 })
 export class UiTableComponent {
   @Input() columns: string[] = [];
-  @Input() rows: any[] = [];
+  @Input() rows: Record<string, unknown>[] = [];
 }

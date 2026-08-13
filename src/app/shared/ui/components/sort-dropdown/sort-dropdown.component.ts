@@ -47,15 +47,15 @@ export interface SortOption {
     
     <!-- Invisible overlay to catch outside clicks -->
     @if (isOpen) {
-      <div class="fixed inset-0 z-40" (click)="closeDropdown()"></div>
+      <div class="fixed inset-0 z-40" tabindex="0" (click)="closeDropdown()" (keyup.enter)="closeDropdown()"></div>
     }
     `,
   styles: []
 })
 export class SortDropdownComponent {
-  @Input() label: string = 'Sort by';
+  @Input() label = 'Sort by';
   @Input() options: SortOption[] = [];
-  @Input() selectedSort: string = '';
+  @Input() selectedSort = '';
   @Output() sortChange = new EventEmitter<string>();
 
   isOpen = false;

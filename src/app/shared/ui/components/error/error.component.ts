@@ -6,8 +6,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./error.component.scss']
 })
 export class UiErrorComponent {
-  @Input() title: string = 'Something went wrong';
-  @Input() message: string = 'An unexpected error occurred';
+  @Input() title = 'Something went wrong';
+  @Input() message = 'An unexpected error occurred';
   @Input() details?: string;
   @Output() retried = new EventEmitter<void>();
 
@@ -28,14 +28,14 @@ export class UiErrorBoundaryComponent {
   errorId = '';
   errorTime = '';
 
-  captureError(error: Error | any): void {
+  captureError(error: Error | unknown): void {
     this.hasError = true;
-    this.errorMessage = error?.message || 'An unexpected error occurred. Please try again.';
-    this.errorDetails = error?.stack || JSON.stringify(error, null, 2);
+    this.errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred. Please try again.';
+    this.errorDetails = error instanceof Error ? error.stack || JSON.stringify(error, null, 2) : JSON.stringify(error, null, 2);
     this.errorId = 'ERR_' + Math.random().toString(36).substr(2, 9).toUpperCase();
     this.errorTime = new Date().toLocaleTimeString();
     console.error('Error Boundary Caught:', error);
-    this.reportError(error);
+    this.reportError();
   }
 
   resetError(): void {
@@ -48,7 +48,7 @@ export class UiErrorBoundaryComponent {
     window.location.href = '/';
   }
 
-  private reportError(error: Error | any): void {
+  private reportError(): void {
     // TODO: Send to error tracking service (Sentry, LogRocket, etc.)
     console.log('Report Error:', {
       errorId: this.errorId,
