@@ -25,21 +25,31 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
 
-      - name: Log in to Docker Hub (if secrets provided)
+      - name: Log in to Docker Hub (if token available)
         if: secrets.DOCKERHUB_TOKEN != ''
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME || 'msaid356' }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Extract metadata
+      - name: Extract metadata & tags
         id: meta
         run: |
           OWNER="${{ github.repository_owner }}"
           OWNER_LOWER=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
           echo "owner=$OWNER_LOWER" >> $GITHUB_OUTPUT
+          
+          # Base GHCR tags (always built and pushed to GitHub Packages)
+          TAGS="ghcr.io/${OWNER_LOWER}/zyro-electric:latest,ghcr.io/${OWNER_LOWER}/zyro-electric:${{ github.sha }}"
+          
+          # Append Docker Hub tags if Docker Hub login token exists
+          if [ -n "${{ secrets.DOCKERHUB_TOKEN }}" ]; then
+            TAGS="${TAGS},msaid356/zyro-electric:latest,msaid356/zyro-electric:${{ github.sha }}"
+          fi
+          
+          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -47,11 +57,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            ghcr.io/${{ steps.meta.outputs.owner }}/zyro-electric:latest
-            ghcr.io/${{ steps.meta.outputs.owner }}/zyro-electric:${{ github.sha }}
-            msaid356/zyro-electric:latest
-            msaid356/zyro-electric:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
@@ -62,4 +68,3 @@ jobs:
         run: |
           echo "✅ Docker image built and pushed successfully!"
           echo "GitHub Package: ghcr.io/${{ steps.meta.outputs.owner }}/zyro-electric:latest"
-          echo "Docker Hub: msaid356/zyro-electric:latest"
