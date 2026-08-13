@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - 'src/**'
-      - 'Dockerfile'
+      - 'docker/Dockerfile'
       - 'angular.json'
       - '!**.md'
       - '!docs/**'

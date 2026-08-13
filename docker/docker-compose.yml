@@ -13,19 +13,19 @@ services:
   # ── ZYRO Development Service ──────────────────────────────────────────────
   zyro-dev:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: docker/Dockerfile.dev
     container_name: zyro-dev
     image: msaid356/zyro-electric:dev
     ports:
       - "4200:4200"
     volumes:
       # Mount source code for live hot-reload
-      - ./src:/app/src
-      - ./angular.json:/app/angular.json
-      - ./tailwind.config.js:/app/tailwind.config.js
-      - ./tsconfig.json:/app/tsconfig.json
-      - ./tsconfig.app.json:/app/tsconfig.app.json
+      - ../src:/app/src
+      - ../angular.json:/app/angular.json
+      - ../tailwind.config.js:/app/tailwind.config.js
+      - ../tsconfig.json:/app/tsconfig.json
+      - ../tsconfig.app.json:/app/tsconfig.app.json
       # Prevent node_modules from being overwritten
       - /app/node_modules
     environment:
@@ -45,8 +45,8 @@ services:
   # ── ZYRO Production Service ────────────────────────────────────────────────
   zyro-prod:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: docker/Dockerfile
     container_name: zyro-prod
     image: msaid356/zyro-electric:latest
     ports:
