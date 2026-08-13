@@ -62,7 +62,9 @@
     "@tailwindcss/typography": "^0.5.13",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.14.0",
+    "angular-eslint": "21.0.1",
     "autoprefixer": "^10.5.4",
+    "eslint": "^9.39.1",
     "husky": "^9.1.7",
     "jasmine-core": "~5.1.0",
     "karma": "^6.4.3",
@@ -72,7 +74,8 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "postcss": "^8.4.38",
     "postcss-preset-env": "^9.5.14",
-    "typescript": "~5.4.5"
+    "typescript": "~5.4.5",
+    "typescript-eslint": "8.46.4"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.18.0"
