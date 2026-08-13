@@ -110,11 +110,7 @@
         
         <!-- Status Badge -->
         <div class="absolute top-4 left-4">
-          <span 
-            [class.bg-emerald-500/90]="branch.isOpenNow"
-            [class.text-white]="branch.isOpenNow"
-            [class.bg-amber-500/90]="!branch.isOpenNow"
-            class="px-3 py-1 rounded-full text-xs font-black backdrop-blur-md shadow-md uppercase tracking-wider inline-flex items-center gap-1.5">
+          <span [ngClass]="branch.isOpenNow ? 'bg-emerald-500/90 text-white' : 'bg-amber-500/90 text-white'" class="px-3 py-1 rounded-full text-xs font-black backdrop-blur-md shadow-md uppercase tracking-wider inline-flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
             {{ branch.isOpenNow ? 'Open Now' : 'Closed' }}
           </span>

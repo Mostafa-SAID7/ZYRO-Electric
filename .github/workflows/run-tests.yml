@@ -2,9 +2,17 @@ name: Run Tests
 
 on:
   push:
-    branches: [ main, develop ]
+    branches:
+      - main
+      - testing
+      - test
+      - 'test/**'
   pull_request:
-    branches: [ main, develop ]
+    branches:
+      - main
+      - testing
+      - test
+  workflow_dispatch:
 
 jobs:
   test:
@@ -12,42 +20,28 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ['22.23.1']
+        node-version: ['20']
 
     steps:
-    - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.1.7
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.0.3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4.0.3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
 
-    - name: Run tests
-      run: npm test -- --watch=false --code-coverage
-      env:
-        CI: true
+      - name: Run tests
+        run: npm test -- --watch=false --code-coverage
+        env:
+          CI: true
 
-    - name: Upload coverage reports
-      uses: codecov/codecov-action@v4.4.1
-      with:
-        file: ./coverage/market/lcov.info
-        flags: unittests
-        name: codecov-umbrella
-
-    - name: Archive test results
-      if: always()
-      uses: actions/upload-artifact@v4.3.1
-      with:
-        name: test-results
-        path: coverage/market/
-
-    - name: Archive coverage report
-      if: always()
-      uses: actions/upload-artifact@v4.3.1
-      with:
-        name: coverage-report
-        path: coverage/market/index.html
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: test-results
+          path: coverage/

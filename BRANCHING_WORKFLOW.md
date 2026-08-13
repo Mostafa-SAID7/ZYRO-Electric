@@ -10,7 +10,9 @@ All development must take place on dedicated branches created from `develop` (or
 
 | Branch Type | Naming Format | Example | Description |
 |---|---|---|---|
-| **Feature** | `feature/<short-desc>` | `feature/branches-workflow` | New UI features, capabilities, pages |
+| **Main** | `main` | `main` | Production branch (runs build & deploy workflows) |
+| **Testing** | `testing` or `test/*` | `testing` | Staging/Test branch (runs test workflow) |
+| **Feature** | `feature/<short-desc>` | `feature/branches-workflow` | New UI features and capabilities |
 | **Bug Fix** | `bugfix/<short-desc>` | `bugfix/cart-drawer-fix` | Regular bug fixes during development |
 | **Hot Fix** | `hotfix/<short-desc>` | `hotfix/login-auth-patch` | Critical production fixes |
 | **Release** | `release/v<version>` | `release/v1.1.0` | Release preparation branch |

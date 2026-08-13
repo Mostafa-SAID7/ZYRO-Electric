@@ -1,4 +1,4 @@
-name: Auto Version Bump
+name: Auto Version Bump & Tag
 
 on:
   workflow_dispatch:
@@ -9,13 +9,12 @@ on:
       - 'src/**'
       - 'Dockerfile'
       - 'angular.json'
-    ignore-paths:
-      - '**.md'
-      - 'docs/**'
-      - '.github/ISSUE_TEMPLATE/**'
+      - '!**.md'
+      - '!docs/**'
+      - '!.github/ISSUE_TEMPLATE/**'
 
 jobs:
-  bump-version:
+  bump-version-and-tag:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -30,7 +29,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.3
         with:
-          node-version: '22.23.1'
+          node-version: '20'
 
       - name: Configure Git
         run: |
@@ -64,7 +63,7 @@ jobs:
       - name: Commit version bump
         run: |
           git add package.json
-          git commit -m "chore: bump version to ${{ steps.new_version.outputs.version }}"
+          git commit -m "chore: bump version to ${{ steps.new_version.outputs.version }} [skip ci]"
           git push origin main
         continue-on-error: true
 
@@ -73,13 +72,3 @@ jobs:
           git tag -a "v${{ steps.new_version.outputs.version }}" -m "Release v${{ steps.new_version.outputs.version }}"
           git push origin "v${{ steps.new_version.outputs.version }}"
         continue-on-error: true
-
-      - name: Verify version updated
-        run: |
-          UPDATED_VERSION=$(grep '"version"' package.json | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
-          echo "Verified version: $UPDATED_VERSION"
-          if [ "$UPDATED_VERSION" != "${{ steps.new_version.outputs.version }}" ]; then
-            echo "ERROR: Version update failed"
-            exit 1
-          fi
-

@@ -274,17 +274,14 @@ docker build -t test:1.0 .
 
 | File | Name | Purpose |
 |------|------|---------|
-| build-app.yml | Build Application | Compile Angular app |
-| build-docker.yml | Build Docker Image | Build container |
-| validate-feature.yml | Validate Feature Branch | Feature validation |
-| validate-bugfix.yml | Validate Bugfix Branch | Bugfix validation |
-| check-lint.yml | Check Linting | ESLint check |
-| check-tests.yml | Check Unit Tests | Run tests |
-| check-security.yml | Check Security Vulnerabilities | Security scan |
-| check-validation.yml | Check Configuration Validation | Config check |
-| check-analysis.yml | Check Code Analysis | Code analysis |
+| build-app.yml | Build Application | Compile Angular app & upload artifacts |
+| build-docker.yml | Build Docker Image | Build container image |
+| validate-branch.yml | Validate Branch Naming | Check feature/bugfix branch names |
+| auto-version-bump.yml | Auto Version Bump & Tag | Bumps package.json & pushes git tag |
+| auto-release.yml | Auto Create Release | Generates GitHub release on tag push |
+| run-tests.yml | Run Unit Tests | Run test suite |
+| deploy-vercel.yml | Deploy to Vercel | Production deployment |
 | publish-packages.yml | Publish Packages | Release NPM + Docker |
-| deploy-netlify.yml | Deploy to Netlify | Production deploy |
 
 ---
 

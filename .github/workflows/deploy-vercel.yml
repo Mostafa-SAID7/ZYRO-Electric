@@ -4,13 +4,6 @@ on:
   push:
     branches:
       - main
-      - develop
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - main
-      - develop
   workflow_dispatch:
 
 jobs:
@@ -28,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.3
         with:
-          node-version: '22.23.1'
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
@@ -39,20 +32,9 @@ jobs:
           CI: true
 
       - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           npm install -g vercel
           vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Deploy to Vercel (Preview)
-        if: github.ref != 'refs/heads/main' || github.event_name == 'pull_request'
-        run: |
-          npm install -g vercel
-          DEPLOYMENT_URL=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN }} 2>&1 | grep -o 'https://[^ ]*' | tail -1)
-          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
