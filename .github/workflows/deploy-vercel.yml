@@ -42,6 +42,7 @@ jobs:
         run: |
           rm -rf .vercel
           npm install -g vercel
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
           vercel deploy --prod --token="$VERCEL_TOKEN" --yes
 
       - name: Deployment status
