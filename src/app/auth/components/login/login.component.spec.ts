@@ -98,7 +98,7 @@ describe('LoginComponent', () => {
       authServiceSpy.login.and.returnValue(of({ user: {} as any, token: 'tok', expiresIn: 3600 }));
       component.loginForm.patchValue({ email: 'a@b.com', password: 'pass' });
       component.onSubmit();
-      tick();
+      tick(2000);
       expect(component.isLoading).toBeFalse();
     }));
 
@@ -106,7 +106,7 @@ describe('LoginComponent', () => {
       authServiceSpy.login.and.returnValue(throwError(() => new Error('fail')));
       component.loginForm.patchValue({ email: 'a@b.com', password: 'pass' });
       component.onSubmit();
-      tick();
+      tick(2000);
       expect(component.isLoading).toBeFalse();
     }));
   });

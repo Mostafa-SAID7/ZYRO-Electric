@@ -125,12 +125,14 @@ describe('CheckoutComponent', () => {
 
   describe('onSubmit()', () => {
     it('should not open confirm when form is invalid', () => {
+      component.confirm = jasmine.createSpyObj('UiConfirmationComponent', ['open']);
       component.checkoutForm.reset();
       component.onSubmit();
       expect(component.confirm.open).not.toHaveBeenCalled();
     });
 
     it('should open confirm dialog when form is valid', () => {
+      component.confirm = jasmine.createSpyObj('UiConfirmationComponent', ['open']);
       component.checkoutForm.setValue({
         firstName: 'A', lastName: 'B', streetAddress: 'C',
         city: 'D', state: 'E', zipCode: 'F', country: 'G', paymentMethod: 'card'

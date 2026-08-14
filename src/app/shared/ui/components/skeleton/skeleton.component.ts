@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-ui-skeleton',
@@ -30,7 +30,7 @@ export class UiSkeletonComponent {
   selector: 'app-ui-skeleton-group',
   template: `
     <div [class]="'space-y-' + (gap === 'sm' ? '2' : gap === 'md' ? '4' : '6')">
-      @for (item of skeletons; track item) {
+      @for (item of skeletons; track $index) {
         <app-ui-skeleton
           [variant]="item.variant"
           [width]="item.width"
@@ -41,13 +41,23 @@ export class UiSkeletonComponent {
     `,
   styles: []
 })
-export class UiSkeletonGroupComponent {
+export class UiSkeletonGroupComponent implements OnInit, OnChanges {
   @Input() count = 3;
   @Input() variant: 'text' | 'card' = 'text';
   @Input() gap: 'sm' | 'md' | 'lg' = 'md';
 
-  get skeletons(): { variant: string; width: string; height: string }[] {
-    return Array.from({ length: this.count }).map(() => ({
+  skeletons: { variant: string; width: string; height: string }[] = [];
+
+  ngOnInit(): void {
+    this.updateSkeletons();
+  }
+
+  ngOnChanges(): void {
+    this.updateSkeletons();
+  }
+
+  private updateSkeletons(): void {
+    this.skeletons = Array.from({ length: this.count }).map(() => ({
       variant: this.variant,
       width: '100%',
       height: this.variant === 'card' ? '200px' : '1rem'

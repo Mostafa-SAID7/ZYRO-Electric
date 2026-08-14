@@ -30,7 +30,8 @@ export class UiErrorBoundaryComponent {
 
   captureError(error: Error | unknown): void {
     this.hasError = true;
-    this.errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred. Please try again.';
+    this.errorMessage = error instanceof Error ? error.message : 
+      (error && typeof error === 'object' && 'message' in error ? String((error as any).message) : 'An unexpected error occurred. Please try again.');
     this.errorDetails = error instanceof Error ? error.stack || JSON.stringify(error, null, 2) : JSON.stringify(error, null, 2);
     this.errorId = 'ERR_' + Math.random().toString(36).substr(2, 9).toUpperCase();
     this.errorTime = new Date().toLocaleTimeString();
