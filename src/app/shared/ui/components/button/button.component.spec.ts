@@ -81,11 +81,11 @@ describe('UiButtonComponent', () => {
     });
   });
 
-  describe('onClick handler', () => {
-    it('should call the onClick function when invoked', () => {
-      const spy = jasmine.createSpy('onClickFn');
-      component.onClick = spy;
-      component.onClick();
+  describe('clicked handler', () => {
+    it('should emit clicked event when invoked', () => {
+      const spy = jasmine.createSpy('clickedFn');
+      component.clicked.subscribe(spy);
+      component.clicked.emit();
       expect(spy).toHaveBeenCalled();
     });
   });

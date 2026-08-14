@@ -83,15 +83,15 @@ describe('CheckoutComponent', () => {
   describe('calculateTotal()', () => {
     it('should calculate subtotal from cartItems', () => {
       component.cartItems = [
-        { price: 29.99, quantity: 2 },
-        { price: 9.99, quantity: 1 }
+        { price: 29.99, quantity: 2 } as any,
+        { price: 9.99, quantity: 1 } as any
       ];
       component.calculateTotal();
       expect(component.subtotal).toBeCloseTo(69.97, 1);
     });
 
     it('should add 10% tax to get total', () => {
-      component.cartItems = [{ price: 100, quantity: 1 }];
+      component.cartItems = [{ price: 100, quantity: 1 } as any];
       component.calculateTotal();
       expect(component.total).toBeCloseTo(110, 1);
     });

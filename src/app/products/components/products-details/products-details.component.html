@@ -61,13 +61,13 @@
                 @for (i of [1,2,3,4,5]; track i) {
                   <lucide-icon
                     name="star"
-                    [class]="i <= Math.floor(product.rating.average) ? 'fill-accent text-accent' : 'text-muted'"
+                    [class]="i <= Math.floor(product.rating?.average || 0) ? 'fill-accent text-accent' : 'text-muted'"
                   class="w-5 h-5"></lucide-icon>
                 }
               </div>
               <div class="h-4 w-px bg-border"></div>
-              <span class="text-lg font-bold">{{ product.rating.average }}</span>
-              <span class="text-muted-foreground font-semibold">({{ product.rating.count }} reviews)</span>
+              <span class="text-lg font-bold">{{ product.rating?.average || 0 }}</span>
+              <span class="text-muted-foreground font-semibold">({{ product.rating?.count || 0 }} reviews)</span>
             </div>
             <!-- Price -->
             <div class="mb-8">
