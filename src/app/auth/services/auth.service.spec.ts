@@ -180,4 +180,120 @@ describe('AuthService', () => {
       expect(lastState.user).not.toBeNull();
     }));
   });
+
+  describe('confirmPasswordReset()', () => {
+    it('should throw error when passwords do not match', () => {
+      let error: any;
+      service.confirmPasswordReset({ token: 't', newPassword: 'new', confirmPassword: 'old' })
+        .subscribe({ error: e => error = e });
+      expect(error.message).toBe('Passwords do not match');
+    });
+
+    it('should return success message when passwords match', fakeAsync(() => {
+      let result: any;
+      service.confirmPasswordReset({ token: 't', newPassword: 'new', confirmPassword: 'new' })
+        .subscribe(r => result = r);
+      tick(600);
+      expect(result.message).toBe('Password reset successfully');
+    }));
+  });
+
+  describe('Email Verification', () => {
+    it('should requestEmailVerification', fakeAsync(() => {
+      let result: any;
+      service.requestEmailVerification({ email: 'e' }).subscribe(r => result = r);
+      tick(600);
+      expect(result.message).toBe('Verification code sent to email');
+    }));
+
+    it('should confirmEmailVerification', fakeAsync(() => {
+      let result: any;
+      service.login({ email: 'u@zyro.com', password: 'p' }).subscribe();
+      tick(600);
+      service.confirmEmailVerification({ token: 't' }).subscribe(r => result = r);
+      tick(600);
+      expect(result.message).toBe('Email verified successfully');
+    }));
+  });
+
+  describe('Two-Factor Auth', () => {
+    it('should setupTwoFactor', fakeAsync(() => {
+      let result: any;
+      service.setupTwoFactor().subscribe(r => result = r);
+      tick(600);
+      expect(result.secret).toBeDefined();
+      expect(result.qrCode).toBeDefined();
+    }));
+
+    it('should enableTwoFactor', fakeAsync(() => {
+      let result: any;
+      service.enableTwoFactor({ code: 'c' }).subscribe(r => result = r);
+      tick(600);
+      expect(result.message).toBe('2FA enabled successfully');
+      expect(result.backupCodes.length).toBe(10);
+    }));
+
+    it('should disableTwoFactor', fakeAsync(() => {
+      let result: any;
+      service.disableTwoFactor('pass').subscribe(r => result = r);
+      tick(600);
+      expect(result.message).toBe('2FA disabled successfully');
+    }));
+  });
+
+  describe('updateUserProfile()', () => {
+    it('should throw error if not authenticated', () => {
+      let error: any;
+      service.updateUserProfile({ name: 'n' }).subscribe({ error: e => error = e });
+      expect(error.message).toBe('Not authenticated');
+    });
+
+    it('should update user profile if authenticated', fakeAsync(() => {
+      service.login({ email: 'u@zyro.com', password: 'p' }).subscribe();
+      tick(600);
+      let result: any;
+      service.updateUserProfile({ name: 'Mostafa' }).subscribe(r => result = r);
+      tick(600);
+      expect(result.name).toBe('Mostafa');
+    }));
+  });
+
+  describe('Address Management', () => {
+    it('should addAddress', fakeAsync(() => {
+      let result: any;
+      service.addAddress({ type: 'home', street: 's', city: 'c', state: 's', zipCode: 'z', country: 'c', isDefault: true }).subscribe(r => result = r);
+      tick(600);
+      expect(result.id).toBeDefined();
+    }));
+
+    it('should removeAddress', fakeAsync(() => {
+      let result: any;
+      service.removeAddress('id').subscribe(r => result = r);
+      tick(600);
+      expect(result.message).toBe('Address removed');
+    }));
+  });
+
+  describe('Session Management', () => {
+    it('should getSessions', fakeAsync(() => {
+      let result: any;
+      service.getSessions().subscribe(r => result = r);
+      tick(600);
+      expect(result.length).toBeGreaterThan(0);
+    }));
+
+    it('should revokeSession', fakeAsync(() => {
+      let result: any;
+      service.revokeSession('id').subscribe(r => result = r);
+      tick(600);
+      expect(result.message).toBe('Session revoked');
+    }));
+
+    it('should revokeAllSessions', fakeAsync(() => {
+      let result: any;
+      service.revokeAllSessions().subscribe(r => result = r);
+      tick(600);
+      expect(result.message).toBe('All sessions revoked');
+    }));
+  });
 });
