@@ -12,6 +12,7 @@ import { FeaturedProductsComponent } from './components/featured-products/featur
 import { PromoBannersComponent } from './components/promo-banners/promo-banners.component';
 import { FeaturesGridComponent } from './components/features-grid/features-grid.component';
 import { NewsletterComponent } from './components/newsletter/newsletter.component';
+import { ParallaxGalleryComponent } from './components/3d-parallax-gallery/parallax-gallery.component';
 
 import { LucideAngularModule, Laptop, Smartphone, Camera, Zap, ChevronLeft, ChevronRight, ArrowRight, Star, Mail, Image } from 'lucide-angular';
 
@@ -30,6 +31,7 @@ import { LucideAngularModule, Laptop, Smartphone, Camera, Zap, ChevronLeft, Chev
     CommonModule,
     RouterModule,
     UiModule,
+    ParallaxGalleryComponent,
     LucideAngularModule.pick({ Laptop, Smartphone, Camera, Zap, ChevronLeft, ChevronRight, ArrowRight, Star, Mail, Image })
   ],
   exports: [HomeComponent]
