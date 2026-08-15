@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { CartComponent } from './cart.component';
 import { CartsService } from '../../services/carts.service';
@@ -9,8 +11,28 @@ import { ProductsService } from '../../../products/services/products.service';
 describe('CartComponent', () => {
   let component: CartComponent;
   let fixture: ComponentFixture<CartComponent>;
+  let mockCartService: any;
+  let mockProductsService: any;
+  let mockRouter: any;
 
   beforeEach(async () => {
+    mockCartService = {
+      cartState$: of({ items: [{ productId: 'p1', quantity: 2, price: 10 }] }),
+      getCartSummary: jest.fn().mockReturnValue({ itemCount: 1, total: 20 }),
+      updateCartItem: jest.fn().mockReturnValue(of({})),
+      removeFromCart: jest.fn().mockReturnValue(of({})),
+      clearCart: jest.fn().mockReturnValue(of({})),
+      applyCoupon: jest.fn().mockReturnValue(of({ message: 'Success' }))
+    };
+
+    mockProductsService = {
+      getProductById: jest.fn().mockReturnValue(of({ id: 'p1', name: 'Product 1' }))
+    };
+
+    mockRouter = {
+      navigate: jest.fn()
+    };
+
     await TestBed.configureTestingModule({
       declarations: [ CartComponent ],
       imports: [
@@ -18,8 +40,9 @@ describe('CartComponent', () => {
         RouterTestingModule
       ],
       providers: [
-        CartsService,
-        ProductsService
+        { provide: CartsService, useValue: mockCartService },
+        { provide: ProductsService, useValue: mockProductsService },
+        { provide: Router, useValue: mockRouter }
       ]
     })
     .compileComponents();
@@ -28,10 +51,95 @@ describe('CartComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CartComponent);
     component = fixture.componentInstance;
+    
+    // Mock child components
+    component.toast = { show: jest.fn() } as any;
+    component.confirm = { open: jest.fn() } as any;
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should load cart on init', () => {
+    expect(component.cartItems.length).toBe(1);
+    expect(mockProductsService.getProductById).toHaveBeenCalledWith('p1');
+    expect(component.cartSummary.total).toBe(20);
+  });
+
+  it('should increase quantity', () => {
+    const item = { productId: 'p1', quantity: 2, price: 10, addedAt: new Date() };
+    component.increaseQuantity(item);
+    expect(item.quantity).toBe(3);
+    expect(mockCartService.updateCartItem).toHaveBeenCalled();
+  });
+
+  it('should decrease quantity', () => {
+    const item = { productId: 'p1', quantity: 2, price: 10, addedAt: new Date() };
+    component.decreaseQuantity(item);
+    expect(item.quantity).toBe(1);
+    expect(mockCartService.updateCartItem).toHaveBeenCalled();
+  });
+
+  it('should not decrease quantity below 1', () => {
+    const item = { productId: 'p1', quantity: 1, price: 10, addedAt: new Date() };
+    component.decreaseQuantity(item);
+    expect(item.quantity).toBe(1);
+    expect(mockCartService.updateCartItem).not.toHaveBeenCalled();
+  });
+
+  it('should return cart summary', () => {
+    expect(component.getCartSummary()).toEqual({ itemCount: 1, total: 20 });
+  });
+
+  it('should remove item', () => {
+    const item = { productId: 'p1', quantity: 1, price: 10, addedAt: new Date() };
+    component.removeItem(item);
+    expect(mockCartService.removeFromCart).toHaveBeenCalledWith('p1');
+    expect(component.toast.show).toHaveBeenCalled();
+  });
+
+  it('should show clear confirm', () => {
+    component.showClearConfirm();
+    expect(component.confirm.open).toHaveBeenCalled();
+  });
+
+  it('should clear cart', () => {
+    component.clearCart();
+    expect(mockCartService.clearCart).toHaveBeenCalled();
+    expect(component.toast.show).toHaveBeenCalled();
+  });
+
+  it('should apply coupon', () => {
+    component.couponCode = 'SAVE10';
+    component.applyCoupon();
+    expect(mockCartService.applyCoupon).toHaveBeenCalledWith('SAVE10');
+    expect(component.toast.show).toHaveBeenCalled();
+    expect(component.couponCode).toBe('');
+  });
+
+  it('should show error for empty coupon', () => {
+    component.couponCode = '   ';
+    component.applyCoupon();
+    expect(component.toast.show).toHaveBeenCalled();
+  });
+
+  it('should show error for invalid coupon', () => {
+    mockCartService.applyCoupon.mockReturnValueOnce(throwError(() => new Error('Invalid')));
+    component.couponCode = 'INVALID';
+    component.applyCoupon();
+    expect(component.toast.show).toHaveBeenCalled();
+  });
+
+  it('should proceed to checkout', () => {
+    component.proceedToCheckout();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/checkout']);
+  });
+
+  it('should continue shopping', () => {
+    component.continueShopping();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/products']);
   });
 });

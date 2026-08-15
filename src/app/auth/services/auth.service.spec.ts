@@ -210,7 +210,7 @@ describe('AuthService', () => {
       let result: any;
       service.login({ email: 'u@zyro.com', password: 'p' }).subscribe();
       tick(600);
-      service.confirmEmailVerification({ token: 't' }).subscribe(r => result = r);
+      service.confirmEmailVerification({ email: 'u@zyro.com', code: '123456' }).subscribe(r => result = r);
       tick(600);
       expect(result.message).toBe('Email verified successfully');
     }));

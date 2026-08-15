@@ -102,12 +102,14 @@ describe('UiSkeletonGroupComponent', () => {
   describe('skeletons getter', () => {
     it('should return array with length equal to count', () => {
       component.count = 5;
+      component.ngOnChanges();
       expect(component.skeletons.length).toBe(5);
     });
 
     it('should use card height 200px for card variant', () => {
       component.variant = 'card';
       component.count = 2;
+      component.ngOnChanges();
       component.skeletons.forEach(s => {
         expect(s.height).toBe('200px');
       });
@@ -116,6 +118,7 @@ describe('UiSkeletonGroupComponent', () => {
     it('should use 1rem height for text variant', () => {
       component.variant = 'text';
       component.count = 3;
+      component.ngOnChanges();
       component.skeletons.forEach(s => {
         expect(s.height).toBe('1rem');
       });

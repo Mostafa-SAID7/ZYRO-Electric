@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UiErrorComponent, UiErrorBoundaryComponent } from './error.component';
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('UiErrorComponent', () => {
   let component: UiErrorComponent;
@@ -9,7 +10,8 @@ describe('UiErrorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UiErrorComponent],
-      imports: [CommonModule]
+      imports: [CommonModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiErrorComponent);
@@ -52,7 +54,8 @@ describe('UiErrorBoundaryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UiErrorBoundaryComponent],
-      imports: [CommonModule]
+      imports: [CommonModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiErrorBoundaryComponent);
