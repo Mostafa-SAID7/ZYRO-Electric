@@ -18,19 +18,19 @@ describe('CartComponent', () => {
   beforeEach(async () => {
     mockCartService = {
       cartState$: of({ items: [{ productId: 'p1', quantity: 2, price: 10 }] }),
-      getCartSummary: jest.fn().mockReturnValue({ itemCount: 1, total: 20 }),
-      updateCartItem: jest.fn().mockReturnValue(of({})),
-      removeFromCart: jest.fn().mockReturnValue(of({})),
-      clearCart: jest.fn().mockReturnValue(of({})),
-      applyCoupon: jest.fn().mockReturnValue(of({ message: 'Success' }))
+      getCartSummary: jasmine.createSpy('getCartSummary').and.returnValue({ itemCount: 1, uniqueProducts: 1, subtotal: 20, tax: 0, shipping: 0, total: 20 }),
+      updateCartItem: jasmine.createSpy('updateCartItem').and.returnValue(of({})),
+      removeFromCart: jasmine.createSpy('removeFromCart').and.returnValue(of({})),
+      clearCart: jasmine.createSpy('clearCart').and.returnValue(of({})),
+      applyCoupon: jasmine.createSpy('applyCoupon').and.returnValue(of({ message: 'Success' }))
     };
 
     mockProductsService = {
-      getProductById: jest.fn().mockReturnValue(of({ id: 'p1', name: 'Product 1' }))
+      getProductById: jasmine.createSpy('getProductById').and.returnValue(of({ id: 'p1', name: 'Product 1' }))
     };
 
     mockRouter = {
-      navigate: jest.fn()
+      navigate: jasmine.createSpy('navigate')
     };
 
     await TestBed.configureTestingModule({
@@ -53,8 +53,8 @@ describe('CartComponent', () => {
     component = fixture.componentInstance;
     
     // Mock child components
-    component.toast = { show: jest.fn() } as any;
-    component.confirm = { open: jest.fn() } as any;
+    component.toast = { show: jasmine.createSpy('show') } as any;
+    component.confirm = { open: jasmine.createSpy('open') } as any;
 
     fixture.detectChanges();
   });
@@ -91,7 +91,7 @@ describe('CartComponent', () => {
   });
 
   it('should return cart summary', () => {
-    expect(component.getCartSummary()).toEqual({ itemCount: 1, total: 20 });
+    expect(component.getCartSummary()).toEqual({ itemCount: 1, uniqueProducts: 1, subtotal: 20, tax: 0, shipping: 0, total: 20 });
   });
 
   it('should remove item', () => {
@@ -127,7 +127,7 @@ describe('CartComponent', () => {
   });
 
   it('should show error for invalid coupon', () => {
-    mockCartService.applyCoupon.mockReturnValueOnce(throwError(() => new Error('Invalid')));
+    mockCartService.applyCoupon.and.returnValue(throwError(() => new Error('Invalid')));
     component.couponCode = 'INVALID';
     component.applyCoupon();
     expect(component.toast.show).toHaveBeenCalled();
