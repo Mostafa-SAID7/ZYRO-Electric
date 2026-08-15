@@ -126,7 +126,7 @@ describe('RegisterComponent', () => {
         address: 'addr', password: 'password1', confirmPassword: 'password1', terms: true
       });
       component.onSubmit();
-      tick();
+      tick(2000);
       expect(component.isLoading).toBeFalse();
     }));
 
@@ -137,7 +137,7 @@ describe('RegisterComponent', () => {
         address: 'addr', password: 'password1', confirmPassword: 'password1', terms: true
       });
       component.onSubmit();
-      tick();
+      tick(2000);
       expect(component.isLoading).toBeFalse();
     }));
   });

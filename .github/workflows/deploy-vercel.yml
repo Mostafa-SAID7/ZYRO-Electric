@@ -40,10 +40,9 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          rm -rf .vercel
-          npm install -g vercel
-          vercel pull --yes --environment=production --token="$VERCEL_TOKEN" || true
-          vercel build --prod --token="$VERCEL_TOKEN" || vercel deploy --prod --token="$VERCEL_TOKEN" --yes --force
+          npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          npx vercel build --prod --token="$VERCEL_TOKEN"
+          npx vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
 
       - name: Deployment status
         if: always()
