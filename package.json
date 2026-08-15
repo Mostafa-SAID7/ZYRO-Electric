@@ -16,7 +16,7 @@
     "test:log": "powershell -NoProfile -Command \"npm test -- --watch=false --code-coverage 2>&1 | Out-File -FilePath ./test-log/$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').log\"",
     "lint": "ng lint",
     "docs": "npx compodoc -p tsconfig.json -d docs",
-    "prepare": "husky"
+    "prepare": "is-ci || husky"
   },
   "private": false,
   "publishConfig": {
@@ -66,6 +66,7 @@
     "autoprefixer": "^10.5.4",
     "eslint": "^9.39.1",
     "husky": "^9.1.7",
+    "is-ci": "^4.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "^6.4.3",
     "karma-chrome-launcher": "^3.2.0",
