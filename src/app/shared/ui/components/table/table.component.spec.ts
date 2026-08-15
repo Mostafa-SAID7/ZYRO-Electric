@@ -1,4 +1,4 @@
-﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UiTableComponent } from './table.component';
 
@@ -8,10 +8,9 @@ describe('UiTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UiTableComponent ]
+      declarations: [ UiTableComponent ],
       schemas: [ NO_ERRORS_SCHEMA ]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UiTableComponent);
     component = fixture.componentInstance;
