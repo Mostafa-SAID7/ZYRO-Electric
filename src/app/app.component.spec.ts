@@ -8,6 +8,7 @@ import { FooterComponent } from './shared/layout/footer/footer.component';
 import { CartsService } from './carts/services/carts.service';
 import { AuthService } from './auth/services/auth.service';
 import { ProductsService } from './products/services/products.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -26,7 +27,8 @@ describe('AppComponent', () => {
         CartsService,
         AuthService,
         ProductsService
-      ]
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
   });
 
