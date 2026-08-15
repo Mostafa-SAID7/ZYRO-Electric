@@ -1,4 +1,4 @@
-﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RegisterComponent } from './register.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
@@ -16,7 +16,7 @@ describe('RegisterComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [RegisterComponent],
-      imports: [ReactiveFormsModule, RouterTestingModule],
+      imports: [ReactiveFormsModule, RouterTestingModule.withRoutes([{ path: 'products', redirectTo: '' }])],
       providers: [
         FormBuilder,
         { provide: AuthService, useValue: authServiceSpy }

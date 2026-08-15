@@ -29,7 +29,7 @@ describe('ProductsDetailsComponent', () => {
 
   const mockReviews = {
     items: [
-      { id: '1', user: 'User 1', rating: 5, comment: 'Great!' }
+      { id: '1', userName: 'User 1', rating: 5, comment: 'Great!' }
     ]
   };
 
@@ -74,6 +74,8 @@ describe('ProductsDetailsComponent', () => {
     fixture = TestBed.createComponent(ProductsDetailsComponent);
     component = fixture.componentInstance;
     
+    fixture.detectChanges();
+
     // Mock the ViewChild toast
     component.toast = {
       type: 'success',
@@ -81,8 +83,6 @@ describe('ProductsDetailsComponent', () => {
       message: '',
       show: jasmine.createSpy('show')
     } as any;
-
-    fixture.detectChanges();
   });
 
   it('should create', () => {

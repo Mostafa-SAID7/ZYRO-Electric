@@ -4,6 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { CartComponent } from './cart.component';
 import { CartsService } from '../../services/carts.service';
@@ -38,7 +39,8 @@ describe('CartComponent', () => {
       declarations: [ CartComponent ],
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        FormsModule
       ],
       providers: [
         { provide: CartsService, useValue: mockCartService },

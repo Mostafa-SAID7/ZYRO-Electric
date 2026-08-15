@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UiTableComponent } from './table.component';
+import { of } from 'rxjs';
 
 describe('UiTableComponent', () => {
   let component: UiTableComponent;
@@ -33,7 +34,7 @@ describe('UiTableComponent', () => {
 
   it('should render rows', () => {
     component.columns = ['id', 'name'];
-    component.rows = [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2' }];
+    component.rows = [{ id: of(1), name: of('Item 1') }, { id: of(2), name: of('Item 2') }];
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     const trs = compiled.querySelectorAll('tbody tr');
