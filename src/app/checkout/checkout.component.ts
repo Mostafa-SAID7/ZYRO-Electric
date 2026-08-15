@@ -117,6 +117,8 @@ export class CheckoutComponent implements OnInit {
           this.toast.show();
         }
         
+        this.cartService.clearCart();
+        
         setTimeout(() => this.router.navigate(['/orders/tracking', order.id]), 2000);
       },
       error: () => {

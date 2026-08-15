@@ -108,6 +108,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/branches/branches.module').then(m => m.BranchesModule)
   },
   {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule)
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },

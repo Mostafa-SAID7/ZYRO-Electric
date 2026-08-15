@@ -85,13 +85,23 @@
           }
         </button>
 
-        <!-- User Icon -->
+        <!-- Profile Icon -->
+        @if (isLoggedIn) {
+          <a
+            routerLink="/profile"
+            class="p-2.5 hover:bg-secondary rounded-full transition-colors duration-200 group ml-1"
+            title="My Profile">
+            <lucide-icon name="user" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+          </a>
+        }
+
+        <!-- User/Auth Icon -->
         <button
           (click)="isLoggedIn ? logout() : goToAuth()"
           class="p-2.5 hover:bg-secondary rounded-full transition-colors duration-200 group ml-1"
           [title]="isLoggedIn ? 'Logout' : 'Login'">
           @if (!isLoggedIn) {
-            <lucide-icon name="user" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
+            <lucide-icon name="log-in" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
           }
           @if (isLoggedIn) {
             <lucide-icon name="log-out" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
