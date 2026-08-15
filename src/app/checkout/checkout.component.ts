@@ -48,9 +48,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   loadCartItems(): void {
-    // TODO: Get from cart service
-    this.cartItems = [];
-    this.calculateTotal();
+    this.cartService.cartState$.subscribe(state => {
+      this.cartItems = state.items;
+      const summary = this.cartService.getCartSummary();
+      this.subtotal = summary.subtotal;
+      this.total = summary.total;
+    });
   }
 
   populateUserInfo(): void {

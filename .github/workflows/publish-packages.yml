@@ -57,6 +57,7 @@ jobs:
         continue-on-error: true
 
   publish-docker:
+    if: false
     needs: build
     runs-on: ubuntu-latest
     permissions:

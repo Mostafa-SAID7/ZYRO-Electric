@@ -175,7 +175,7 @@
                                   <div
                                     class="flex justify-between items-start gap-2 pb-3 border-b border-border">
                                     <div>
-                                      <p class="font-semibold text-sm">{{ item.title }}</p>
+                                      <p class="font-semibold text-sm">{{ item.product?.title || 'Product' }}</p>
                                       <p class="text-xs text-muted-foreground">Qty: {{ item.quantity }}</p>
                                     </div>
                                     <p class="font-semibold whitespace-nowrap">${{ item.price * item.quantity | number:'1.2-2' }}</p>
