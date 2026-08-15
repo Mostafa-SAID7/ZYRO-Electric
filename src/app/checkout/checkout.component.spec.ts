@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutComponent } from './checkout.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
@@ -28,7 +29,8 @@ describe('CheckoutComponent', () => {
         { provide: CartsService, useValue: cartsServiceSpy },
         { provide: AuthService, useValue: authServiceSpy },
         { provide: OrderService, useValue: orderServiceSpy }
-      ]
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CheckoutComponent);

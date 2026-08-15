@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { fakeAsync, tick } from '@angular/core/testing';
@@ -7,7 +8,8 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     localStorage.clear();
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      schemas: [ NO_ERRORS_SCHEMA ]});
     service = TestBed.inject(AuthService);
   });
 
@@ -171,7 +173,7 @@ describe('AuthService', () => {
 
   describe('authState$', () => {
     it('should emit updated state after login', fakeAsync(() => {
-      let states: any[] = [];
+      const states: any[] = [];
       service.authState$.subscribe(s => states.push(s));
       service.login({ email: 'u@zyro.com', password: 'p' }).subscribe();
       tick(600);

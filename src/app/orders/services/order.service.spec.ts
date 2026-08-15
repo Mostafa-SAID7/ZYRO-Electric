@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { OrderService } from './order.service';
 import { OrderItem, ShippingAddress, PaymentMethod } from '../models';
@@ -29,7 +30,8 @@ describe('OrderService', () => {
 
   beforeEach(() => {
     localStorage.clear();
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      schemas: [ NO_ERRORS_SCHEMA ]});
     service = TestBed.inject(OrderService);
   });
 

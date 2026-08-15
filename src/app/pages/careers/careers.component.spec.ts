@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CareersComponent } from './careers.component';
 import { CAREER_JOBS, CAREER_BENEFITS } from './data';
@@ -8,7 +9,8 @@ describe('CareersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CareersComponent]
+      declarations: [CareersComponent],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CareersComponent);

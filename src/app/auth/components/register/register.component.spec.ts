@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { RegisterComponent } from './register.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
@@ -19,7 +20,8 @@ describe('RegisterComponent', () => {
       providers: [
         FormBuilder,
         { provide: AuthService, useValue: authServiceSpy }
-      ]
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterComponent);

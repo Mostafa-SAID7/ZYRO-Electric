@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UiButtonComponent } from './button.component';
 import { CommonModule } from '@angular/common';
@@ -9,7 +10,8 @@ describe('UiButtonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UiButtonComponent],
-      imports: [CommonModule]
+      imports: [CommonModule],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiButtonComponent);

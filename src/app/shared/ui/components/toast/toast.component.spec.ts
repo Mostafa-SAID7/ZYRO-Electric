@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { UiToastComponent, ToastType } from './toast.component';
 import { CommonModule } from '@angular/common';
@@ -9,7 +10,8 @@ describe('UiToastComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UiToastComponent],
-      imports: [CommonModule]
+      imports: [CommonModule],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiToastComponent);

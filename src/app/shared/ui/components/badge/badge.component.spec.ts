@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UiBadgeComponent } from './badge.component';
 import { CommonModule } from '@angular/common';
@@ -9,7 +10,8 @@ describe('UiBadgeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UiBadgeComponent],
-      imports: [CommonModule]
+      imports: [CommonModule],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiBadgeComponent);

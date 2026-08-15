@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
@@ -43,7 +44,8 @@ describe('CartComponent', () => {
         { provide: CartsService, useValue: mockCartService },
         { provide: ProductsService, useValue: mockProductsService },
         { provide: Router, useValue: mockRouter }
-      ]
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   });
@@ -51,12 +53,11 @@ describe('CartComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CartComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     
-    // Mock child components
+    // Mock child components after detectChanges so ViewChild queries don't overwrite them
     component.toast = { show: jasmine.createSpy('show') } as any;
     component.confirm = { open: jasmine.createSpy('open') } as any;
-
-    fixture.detectChanges();
   });
 
   it('should create', () => {

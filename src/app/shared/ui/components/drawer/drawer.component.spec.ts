@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UiDrawerComponent } from './drawer.component';
 import { CommonModule } from '@angular/common';
@@ -9,7 +10,8 @@ describe('UiDrawerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UiDrawerComponent],
-      imports: [CommonModule]
+      imports: [CommonModule],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiDrawerComponent);

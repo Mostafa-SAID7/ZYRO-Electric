@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UiSkeletonComponent, UiSkeletonGroupComponent } from './skeleton.component';
 import { CommonModule } from '@angular/common';
@@ -9,7 +10,8 @@ describe('UiSkeletonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UiSkeletonComponent, UiSkeletonGroupComponent],
-      imports: [CommonModule]
+      imports: [CommonModule],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiSkeletonComponent);
@@ -73,7 +75,8 @@ describe('UiSkeletonGroupComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UiSkeletonComponent, UiSkeletonGroupComponent],
-      imports: [CommonModule]
+      imports: [CommonModule],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiSkeletonGroupComponent);

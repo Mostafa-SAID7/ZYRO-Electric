@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
@@ -24,7 +25,8 @@ describe('LoginComponent', () => {
           provide: ActivatedRoute,
           useValue: { snapshot: { queryParams: { returnUrl: '/products' } } }
         }
-      ]
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);

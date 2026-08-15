@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
@@ -28,7 +29,8 @@ describe('AuthInterceptor', () => {
           useClass: AuthInterceptor,
           multi: true
         }
-      ]
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     });
 
     http = TestBed.inject(HttpClient);

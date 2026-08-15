@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UiNotFoundComponent } from './not-found.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,7 +12,8 @@ describe('UiNotFoundComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UiNotFoundComponent],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiNotFoundComponent);

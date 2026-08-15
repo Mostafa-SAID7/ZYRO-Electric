@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CartsService } from './carts.service';
@@ -8,7 +9,8 @@ describe('CartsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
+      schemas: [ NO_ERRORS_SCHEMA ]
     });
     service = TestBed.inject(CartsService);
     // clear local storage for pure tests

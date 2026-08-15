@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthGuard } from './auth.guard';
@@ -19,7 +20,8 @@ describe('AuthGuard', () => {
         AuthGuard,
         { provide: AuthService, useValue: authServiceSpy },
         { provide: Router, useValue: routerSpy }
-      ]
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     });
 
     guard = TestBed.inject(AuthGuard);

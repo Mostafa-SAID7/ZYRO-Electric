@@ -1,3 +1,4 @@
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FeaturedProductsComponent } from './featured-products.component';
 import { HomeModule } from '../../home.module';
@@ -9,7 +10,8 @@ describe('FeaturedProductsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomeModule, RouterTestingModule]
+      imports: [HomeModule, RouterTestingModule],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(FeaturedProductsComponent);
