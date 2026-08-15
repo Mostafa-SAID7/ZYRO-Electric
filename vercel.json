@@ -1,7 +1,6 @@
 {
   "name": "ZYRO Electric",
   "version": 2,
-  "nodeVersion": "22.x",
   "buildCommand": "npm run build",
   "installCommand": "npm install --legacy-peer-deps",
   "outputDirectory": "dist/market",
