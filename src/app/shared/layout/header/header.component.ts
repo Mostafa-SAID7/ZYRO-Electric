@@ -10,8 +10,7 @@ import { CART_SERVICE_TOKEN, AUTH_SERVICE_TOKEN, PRODUCT_SERVICE_TOKEN } from '.
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  imports: [ProfileDropdownComponent]
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
   // DIP: Inject via tokens (abstraction), not concrete classes

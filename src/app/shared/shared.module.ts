@@ -7,6 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UiModule } from './ui/ui.module';
+import { ProfileDropdownComponent } from './ui/components/profile-dropdown/profile-dropdown.component';
 
 // DIP: Import all injection tokens
 import {
@@ -90,7 +91,8 @@ const DIP_PROVIDERS: Provider[] = [
     ReactiveFormsModule,
     RouterModule,
     HttpClientModule,
-    UiModule
+    UiModule,
+    ProfileDropdownComponent
   ],
   exports: [
     HeaderComponent,
