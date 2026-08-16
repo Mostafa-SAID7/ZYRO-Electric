@@ -11,7 +11,8 @@ import {
   CheckCircle, Activity, XCircle, Download, Package, Inbox, RotateCcw, Star, Eye, 
   MessageSquare, ThumbsUp, ShoppingBasket, Home, Store, Sun, Moon, User, LogOut, 
   X, Loader2, AlertTriangle, RefreshCw, AlertCircle, Filter, SearchX, ArrowRight, 
-  ChevronLeft, ChevronRight, ChevronDown, Search, Mail
+  ChevronLeft, ChevronRight, ChevronDown, Search, Mail, Info, Calendar, List, 
+  HelpCircle, Sliders
 } from 'lucide-angular';
 
 const icons = {
@@ -20,7 +21,8 @@ const icons = {
   CheckCircle, Activity, XCircle, Download, Package, Inbox, RotateCcw, Star, Eye, 
   MessageSquare, ThumbsUp, ShoppingBasket, Home, Store, Sun, Moon, User, LogOut, 
   X, Loader2, AlertTriangle, RefreshCw, AlertCircle, Filter, SearchX, ArrowRight, 
-  ChevronLeft, ChevronRight, ChevronDown, Search, Mail
+  ChevronLeft, ChevronRight, ChevronDown, Search, Mail, Info, Calendar, List, 
+  HelpCircle, Sliders
 };
 
 import { UiButtonComponent } from './components/button/button.component';
