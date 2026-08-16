@@ -4,11 +4,12 @@ import { InjectionToken } from '@angular/core';
 import {
   IProductService,
   ICartService,
-  ICheckoutService,
   IAuthenticationService,
   INotificationService,
   ICalculationService,
-  IOrderService
+  IOrderService,
+  ISortStrategy,
+  IFilterStrategy
 } from './business-logic';
 import {
   IReadRepository,
@@ -17,8 +18,6 @@ import {
   IOrderRepository
 } from './repositories';
 import { PersistenceService } from '../services/persistence.service';
-import { FilterStrategyService } from '../services/filter-strategy.service';
-import { SortStrategyService } from '../services/sort-strategy.service';
 
 // ============ INJECTION TOKENS ============
 
@@ -29,7 +28,6 @@ import { SortStrategyService } from '../services/sort-strategy.service';
 
 export const PRODUCT_SERVICE_TOKEN = new InjectionToken<IProductService>('ProductService');
 export const CART_SERVICE_TOKEN = new InjectionToken<ICartService>('CartService');
-export const CHECKOUT_SERVICE_TOKEN = new InjectionToken<ICheckoutService>('CheckoutService');
 export const AUTH_SERVICE_TOKEN = new InjectionToken<IAuthenticationService>('AuthService');
 export const ORDER_SERVICE_TOKEN = new InjectionToken<IOrderService>('OrderService');
 export const NOTIFICATION_SERVICE_TOKEN = new InjectionToken<INotificationService>('NotificationService');
@@ -40,8 +38,10 @@ export const CART_REPOSITORY_TOKEN = new InjectionToken<ICartReadRepository>('Ca
 export const ORDER_REPOSITORY_TOKEN = new InjectionToken<IOrderRepository>('OrderRepository');
 
 export const PERSISTENCE_SERVICE_TOKEN = new InjectionToken<PersistenceService>('PersistenceService');
-export const FILTER_STRATEGY_TOKEN = new InjectionToken<FilterStrategyService>('FilterStrategy');
-export const SORT_STRATEGY_TOKEN = new InjectionToken<SortStrategyService>('SortStrategy');
+
+// DIP: Strategy tokens depend on abstractions, not concrete classes
+export const SORT_STRATEGY_TOKEN = new InjectionToken<ISortStrategy>('SortStrategy');
+export const FILTER_STRATEGY_TOKEN = new InjectionToken<IFilterStrategy>('FilterStrategy');
 
 // ============ PROVIDER CONFIGURATION ============
 

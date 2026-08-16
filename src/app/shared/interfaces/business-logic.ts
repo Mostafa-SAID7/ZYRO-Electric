@@ -1,4 +1,5 @@
-// Liskov Substitution & Interface Segregation: Focused business logic contracts
+// Interface Segregation Principle: Clients depend only on methods they use
+// Each interface should have a single purpose
 
 import { Observable } from 'rxjs';
 import { AddToCartRequest, UpdateCartItemRequest, CartSummary, Cart } from '../../carts/models';
@@ -6,72 +7,115 @@ import { AuthCredentials, RegisterData, User, UserProfile, AuthResponse } from '
 import { Product, ProductPage, ProductFilter, Category, Review } from '../../products/models';
 import { Order, OrderItem, ShippingAddress, PaymentMethod, OrderPage, OrderFilter, OrderStatus } from '../../orders/models';
 
-// ============ PRODUCT SERVICE INTERFACE ============
+// ============ PRODUCT SERVICE INTERFACES (SEGREGATED) ============
 
-export interface IProductService {
+// ISP: Clients reading products only need query methods
+export interface IProductQuery {
   getProducts(filter?: ProductFilter, page?: number, pageSize?: number): Observable<ProductPage>;
   getProductById(id: string): Observable<Product>;
   searchProducts(query: string, page?: number, pageSize?: number): Observable<ProductPage>;
+}
+
+// ISP: Clients accessing categories only need category methods
+export interface ICategoryQuery {
   getCategories(): Observable<Category[]>;
-  getProductReviews(productId: string, page?: number, pageSize?: number): Observable<{ items: Review[]; total: number }>;
   getProductsByCategory(categoryId: string, page?: number, pageSize?: number): Observable<ProductPage>;
+}
+
+// ISP: Clients accessing reviews only need review methods
+export interface IProductReviewQuery {
+  getProductReviews(productId: string, page?: number, pageSize?: number): Observable<{ items: Review[]; total: number }>;
+}
+
+// ISP: Clients accessing featured products only need featured methods
+export interface IFeaturedProductQuery {
   getFeaturedProducts(limit?: number): Observable<Product[]>;
 }
 
-// ============ CART SERVICE INTERFACE ============
+// COMPOSITE: For components that need full product service
+export interface IProductService extends IProductQuery, ICategoryQuery, IProductReviewQuery, IFeaturedProductQuery {}
 
-export interface ICartService {
+// ============ CART SERVICE INTERFACES (SEGREGATED) ============
+
+// ISP: Clients reading cart only need read operations
+export interface ICartQuery {
   getCart(): Observable<Cart>;
-  addToCart(request: AddToCartRequest): Observable<any>;
-  removeFromCart(productId: string): Observable<any>;
-  updateCartItem(request: UpdateCartItemRequest): Observable<any>;
-  clearCart(): Observable<void>;
   getCartSummary(): CartSummary;
   cartState$: Observable<any>;
   cartItems$: Observable<any>;
   cartTotal$: Observable<number>;
   cartItemCount$: Observable<number>;
+}
+
+// ISP: Clients modifying cart only need write operations
+export interface ICartMutation {
+  addToCart(request: AddToCartRequest): Observable<any>;
+  removeFromCart(productId: string): Observable<any>;
+  updateCartItem(request: UpdateCartItemRequest): Observable<any>;
+  clearCart(): Observable<void>;
+}
+
+// ISP: Clients applying coupons only need coupon methods
+export interface ICouponOperations {
   applyCoupon(code: string): Observable<{ discountAmount: number; message: string }>;
   removeCoupon(): Observable<void>;
 }
 
-// ============ CHECKOUT SERVICE INTERFACE ============
+// COMPOSITE: For components that need full cart service
+export interface ICartService extends ICartQuery, ICartMutation, ICouponOperations {}
 
-export interface ICheckoutService {
-  prepareCheckout(): Observable<any>;
-  applyDiscount(code: string): Observable<{ success: boolean; discount: number }>;
-  processPayment(paymentDetails: any): Observable<{ success: boolean; orderId: string }>;
-  confirmOrder(): Observable<any>;
-}
+// ============ AUTHENTICATION SERVICE INTERFACES (SEGREGATED) ============
 
-// ============ AUTH SERVICE INTERFACES ============
-
-export interface IAuthenticationService {
+// ISP: Clients doing authentication only need auth methods
+export interface IAuthOperation {
   login(credentials: AuthCredentials): Observable<AuthResponse>;
   logout(): Observable<void>;
   register(data: RegisterData): Observable<AuthResponse>;
   isAuthenticated(): boolean;
+}
+
+// ISP: Clients accessing user info only need profile methods
+export interface IUserProfileQuery {
   getCurrentUser(): User | null;
   getUserProfile(): Observable<UserProfile>;
   updateUserProfile(profile: Partial<UserProfile>): Observable<UserProfile>;
 }
 
-// ============ ORDER SERVICE INTERFACE ============
+// COMPOSITE: For components that need full authentication service
+export interface IAuthenticationService extends IAuthOperation, IUserProfileQuery {}
 
-export interface IOrderService {
+// ============ ORDER SERVICE INTERFACES (SEGREGATED) ============
+
+// ISP: Clients creating orders only need creation method
+export interface IOrderCreation {
   createOrder(items: OrderItem[], shippingAddress: ShippingAddress, paymentMethod: PaymentMethod): Observable<Order>;
+}
+
+// ISP: Clients querying orders only need read methods
+export interface IOrderQuery {
   getOrders(page?: number, pageSize?: number, filter?: OrderFilter): Observable<OrderPage>;
   getOrderById(id: string): Observable<Order>;
+}
+
+// ISP: Clients managing orders only need management methods
+export interface IOrderManagement {
   updateOrderStatus(orderId: string, status: OrderStatus, message: string): Observable<Order>;
   cancelOrder(orderId: string, reason: string): Observable<Order>;
   returnOrder(orderId: string, reason: string): Observable<Order>;
 }
+
+// COMPOSITE: For components that need full order service
+export interface IOrderService extends IOrderCreation, IOrderQuery, IOrderManagement {}
+
+// ============ PASSWORD SERVICE INTERFACE ============
 
 export interface IPasswordService {
   changePassword(oldPassword: string, newPassword: string): Observable<void>;
   resetPassword(email: string): Observable<void>;
   validatePasswordStrength(password: string): { score: number; feedback: string[] };
 }
+
+// ============ TWO-FACTOR AUTH SERVICE INTERFACE ============
 
 export interface ITwoFactorService {
   enableTwoFactor(): Observable<{ secret: string; qrCode: string }>;
@@ -97,14 +141,28 @@ export interface ICalculationService {
   calculateTotal(subtotal: number, tax: number, shipping: number, discount: number): number;
 }
 
-// ============ FILTER & SORT SERVICE INTERFACE ============
+// ============ FILTER & SORT SERVICE INTERFACES ============
 
+// ISP: Clients filtering only need filter methods
 export interface IFilterService {
   filter(items: any[], filters: any): any[];
 }
 
+// ISP: Clients sorting only need sort methods
 export interface ISortService {
   sort(items: any[], sortBy: string): any[];
+}
+
+// ============ STRATEGY SERVICE INTERFACES ============
+
+// DIP: ProductsService depends on ISortStrategy abstraction, not concrete SortStrategyService
+export interface ISortStrategy {
+  sort(items: any[], sortBy: string): any[];
+}
+
+// DIP: ProductsService depends on IFilterStrategy abstraction, not concrete FilterStrategyService
+export interface IFilterStrategy {
+  filter(items: any[], filters: any): any[];
 }
 
 // ============ REVIEW SERVICE INTERFACE ============

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../../products/models';
+import { IFilterStrategy } from '../interfaces/business-logic';
 
 // Single Responsibility: Handle product filtering only
+// DIP: Implements IFilterStrategy interface - depends on abstraction
 @Injectable({ providedIn: 'root' })
-export class FilterStrategyService {
+export class FilterStrategyService implements IFilterStrategy {
   filter(products: Product[], filters: any): Product[] {
     return products.filter(product => {
       if (filters.categories?.length && !filters.categories.includes(product.category)) {

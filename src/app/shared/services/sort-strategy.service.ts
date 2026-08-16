@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../../products/models';
+import { ISortStrategy } from '../interfaces/business-logic';
 
 // Single Responsibility: Handle product sorting only
+// DIP: Implements ISortStrategy interface - depends on abstraction
 @Injectable({ providedIn: 'root' })
-export class SortStrategyService {
+export class SortStrategyService implements ISortStrategy {
   sort(products: Product[], sortBy: string): Product[] {
     const sorted = [...products];
     switch (sortBy) {

@@ -10,16 +10,17 @@ import {
   Review
 } from '../models';
 import { MOCK_PRODUCTS_NICHES } from '../data/mock-products-niches';
-import { SortStrategyService } from '../../shared/services/sort-strategy.service';
-import { FilterStrategyService } from '../../shared/services/filter-strategy.service';
+import { SORT_STRATEGY_TOKEN, FILTER_STRATEGY_TOKEN } from '../../shared/interfaces/dependency-injection';
+import type { ISortStrategy, IFilterStrategy } from '../../shared/interfaces/business-logic';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
   private http = inject(HttpClient);
-  private sortStrategy = inject(SortStrategyService);
-  private filterStrategy = inject(FilterStrategyService);
+  // DIP: Depend on abstractions (ISortStrategy, IFilterStrategy) via injection tokens, not concrete classes
+  private sortStrategy = inject(SORT_STRATEGY_TOKEN);
+  private filterStrategy = inject(FILTER_STRATEGY_TOKEN);
 
   private mockProducts: Product[] = this.generateMockProducts();
   private mockCategories: Category[] = this.generateMockCategories();
