@@ -17,6 +17,7 @@ import { environment } from '../../../environments/environment';
  * 
  * Implements intelligent HTTP response caching with:
  * - Cache-first strategy for GET/HEAD requests
+ * - Explicit allowlist of public, authentication-independent endpoints
  * - In-flight request deduplication via shareReplay()
  * - CSRF token injection for state-changing operations
  * - Automatic cache invalidation for POST/PUT/DELETE requests
@@ -33,21 +34,24 @@ export class CacheInterceptor implements HttpInterceptor {
   // Cacheable methods (only GET and HEAD)
   private readonly CACHEABLE_METHODS = ['GET', 'HEAD'];
 
-  // Non-cacheable endpoints (patterns to exclude from caching)
-  private readonly EXCLUDED_PATTERNS = [
-    '/api/auth/login',
-    '/api/auth/logout',
-    '/api/auth/register',
-    '/api/auth/refresh',
-    '/api/payment',
-    '/api/checkout',
-    '/websocket',
-    '.json' // Config files
+  // Explicit allowlist of cacheable endpoints
+  // Only includes public, variant-independent endpoints that don't depend on authentication
+  private readonly CACHEABLE_ENDPOINTS = [
+    '/api/products',      // Public product catalog - safe to cache across sessions
+    '/api/categories',    // Public category data - safe to cache across sessions
+    '/api/search',        // Public search results - safe to cache across sessions
   ];
 
   // Cache TTL defaults (in milliseconds)
   private readonly DEFAULT_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
   private readonly API_CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
+  // Endpoint-specific TTL configurations
+  private readonly ENDPOINT_TTLS: { [key: string]: number } = {
+    '/api/products': 60 * 60 * 1000,        // 1 hour
+    '/api/categories': 24 * 60 * 60 * 1000, // 24 hours
+    '/api/search': 30 * 60 * 1000,          // 30 minutes
+  };
 
   intercept(
     request: HttpRequest<unknown>,
@@ -58,12 +62,20 @@ export class CacheInterceptor implements HttpInterceptor {
       request = this.addCSRFToken(request);
     }
 
-    // For GET/HEAD requests, try cache-first strategy
-    if (this.CACHEABLE_METHODS.includes(request.method) && this.isCacheable(request)) {
-      return this.handleCacheableRequest(request, next);
-    }
-
-    // For state-changing requests, invalidate related caches only after successful completion
+    // For other requests, invalidate related caches after a successful mutation
+    return next.handle(request).pipe(
+      tap(event => {
+        if (
+          request.method !== 'GET' &&
+          request.method !== 'HEAD' &&
+          event instanceof HttpResponse &&
+          event.status >= 200 &&
+          event.status < 300
+        ) {
+          this.invalidateRelatedCaches(request);
+        }
+      })
+    );
     return next.handle(request).pipe(
       tap(event => {
         if (
@@ -133,11 +145,11 @@ export class CacheInterceptor implements HttpInterceptor {
         setHeaders: {
           'X-CSRF-Token': csrfToken
         }
-      });
+    // Don't cache if Cache-Control: no-cache or no-store
+    const cacheControl = request.headers.get('Cache-Control');
+    if (cacheControl && /\b(no-cache|no-store)\b/i.test(cacheControl)) {
+      return false;
     }
-    return request;
-  }
-
   /**
    * Check if request origin is trusted (matches configured API origin)
    * Prevents CSRF token injection to third-party endpoints
@@ -161,6 +173,9 @@ export class CacheInterceptor implements HttpInterceptor {
 
   /**
    * Check if request is cacheable
+   * 
+   * Only cache endpoints in the explicit allowlist that are safe to share
+   * across authentication sessions and don't depend on user-specific state.
    */
   private isCacheable(request: HttpRequest<unknown>): boolean {
     // Only cache GET and HEAD
@@ -168,11 +183,13 @@ export class CacheInterceptor implements HttpInterceptor {
       return false;
     }
 
-    // Exclude specific patterns
-    for (const pattern of this.EXCLUDED_PATTERNS) {
-      if (request.url.includes(pattern)) {
-        return false;
-      }
+    // Check if endpoint is in the allowlist
+    const isCacheableEndpoint = this.CACHEABLE_ENDPOINTS.some(endpoint =>
+      request.url.includes(endpoint)
+    );
+
+    if (!isCacheableEndpoint) {
+      return false;
     }
 
     // Don't cache if Cache-Control: no-cache
@@ -203,7 +220,10 @@ export class CacheInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Extract TTL from Cache-Control header or use default
+   * Extract TTL from Cache-Control header or use endpoint-specific default
+   * 
+   * Only endpoints in the allowlist have predefined TTLs.
+   * Others fall back to the default API cache TTL.
    */
   private extractCacheTTL(response: HttpResponse<unknown>): number {
     const cacheControl = response.headers.get('cache-control');
@@ -214,15 +234,13 @@ export class CacheInterceptor implements HttpInterceptor {
       }
     }
 
-    // Default TTLs based on endpoint
-    if (response.url && response.url.includes('/api/products')) {
-      return 60 * 60 * 1000; // 1 hour
-    }
-    if (response.url && response.url.includes('/api/categories')) {
-      return 24 * 60 * 60 * 1000; // 24 hours
-    }
-    if (response.url && response.url.includes('/api/orders')) {
-      return 15 * 60 * 1000; // 15 minutes
+    // Check if endpoint has a predefined TTL
+    if (response.url) {
+      for (const [endpoint, ttl] of Object.entries(this.ENDPOINT_TTLS)) {
+        if (response.url.includes(endpoint)) {
+          return ttl;
+        }
+      }
     }
 
     return this.API_CACHE_TTL; // 10 minutes default
@@ -243,6 +261,9 @@ export class CacheInterceptor implements HttpInterceptor {
 
   /**
    * Invalidate related caches on state-changing operations
+   * 
+   * Only invalidates caches for endpoints in the allowlist.
+   * User-specific endpoints like /api/orders are not cached and don't need invalidation.
    */
   private invalidateRelatedCaches(request: HttpRequest<unknown>): void {
     const url = request.url.toLowerCase();
@@ -251,25 +272,6 @@ export class CacheInterceptor implements HttpInterceptor {
       this.cacheService.invalidate('product:*');
       this.cacheService.invalidate('category:*');
       this.cacheService.invalidate('search:*');
-    }
-
-    if (url.includes('/cart')) {
-      this.cacheService.invalidate('cart:*');
-    }
-
-    if (url.includes('/orders')) {
-      this.cacheService.invalidate('order:*');
-      this.cacheService.invalidate('order:statistics');
-    }
-
-    if (url.includes('/auth')) {
-      this.cacheService.invalidate('auth:*');
-      this.cacheService.invalidate('user:*');
-    }
-
-    if (url.includes('/coupon') || url.includes('/discount')) {
-      this.cacheService.invalidate('coupon:*');
-      this.cacheService.invalidate('discount:*');
     }
   }
 }
