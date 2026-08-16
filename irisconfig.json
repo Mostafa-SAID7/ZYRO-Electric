@@ -1,0 +1,43 @@
+{
+  "$schema": "https://www.iriscode.co/schema/v1/irisconfig.schema.json",
+  "presetId": "balanced",
+  "functionLengthThreshold": 40,
+  "fileLengthThreshold": 400,
+  "maxFunctionsPerFile": 12,
+  "maxImportsPerFile": 20,
+  "maxParameterCount": 5,
+  "complexityThreshold": 10,
+  "duplicateBlockMinTokens": 40,
+  "minHealthScore": 70,
+  "trendRegressionThreshold": 5,
+  "gateBaselineMode": true,
+  "fileNamingScope": "new-files",
+  "enableConsoleLogWarnings": true,
+  "enableMagicNumberDetection": false,
+  "enableMissingReturnTypeWarnings": true,
+  "enableSecretsDetection": true,
+  "enableSecuritySmells": true,
+  "enableDuplicateDetection": true,
+  "enableTodoDetection": true,
+  "enableLongParamDetection": true,
+  "enableUnusedDetection": true,
+  "enableCodeLens": true,
+  "enableStatusBar": true,
+  "enableInlineDiagnostics": true,
+  "inlineDiagnostics": {
+    "hardcodedSecrets": true,
+    "errorWarnings": true,
+    "warningLevelWarnings": true,
+    "tsIgnore": true,
+    "unusedFunctions": true,
+    "anyUsage": true,
+    "consoleLogs": false,
+    "magicNumbers": true,
+    "longParamLists": true,
+    "unusedVars": true,
+    "todos": false
+  },
+  "severityOverrides": {
+    "hardcoded-secret": "error"
+  }
+}

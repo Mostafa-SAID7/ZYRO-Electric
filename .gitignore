@@ -50,6 +50,11 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Deslop local runtime cache
+# Keep generated auth/session data local-only; never commit live tokens or local service state.
+.deslop/
+.deslop/**
+
 # Build
 dist/
 build/

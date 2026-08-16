@@ -15,6 +15,7 @@
     "test": "ng test --watch=false",
     "test:log": "powershell -NoProfile -Command \"npm test -- --watch=false --code-coverage 2>&1 | Out-File -FilePath ./test-log/$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').log\"",
     "lint": "ng lint",
+    "generate:cache-report": "node scripts/generate-cache-report.js",
     "docs": "npx compodoc -p tsconfig.json -d docs",
     "prepare": "is-ci || husky"
   },
