@@ -10,6 +10,25 @@ describe('HeroSliderComponent', () => {
   let fixture: ComponentFixture<HeroSliderComponent>;
   let router: Router;
 
+  // Helper to create mock hero slide data
+  const createMockSlide = (index: number) => ({
+    badge: index.toString(),
+    badgeIcon: 'zap',
+    badgeBg: '',
+    badgeBorder: '',
+    badgeText: '',
+    titlePrefix: `Slide ${index}`,
+    titleHighlight: '',
+    titleSuffix: '',
+    description: `Sub ${index}`,
+    ctaPrimary: `Go ${index}`,
+    ctaSecondary: '',
+    image: `img${index}.jpg`,
+    bgGradient: '',
+    accentColor: '',
+    tags: []
+  });
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HomeModule, RouterTestingModule],
@@ -21,9 +40,9 @@ describe('HeroSliderComponent', () => {
     router = TestBed.inject(Router);
     spyOn(router, 'navigate');
     component.heroSlides = [
-      { badge: '1', badgeIcon: 'zap', badgeBg: '', badgeBorder: '', badgeText: '', titlePrefix: 'Slide 1', titleHighlight: '', titleSuffix: '', description: 'Sub 1', ctaPrimary: 'Go 1', ctaSecondary: '', image: 'img1.jpg', bgGradient: '', accentColor: '', tags: [] },
-      { badge: '2', badgeIcon: 'zap', badgeBg: '', badgeBorder: '', badgeText: '', titlePrefix: 'Slide 2', titleHighlight: '', titleSuffix: '', description: 'Sub 2', ctaPrimary: 'Go 2', ctaSecondary: '', image: 'img2.jpg', bgGradient: '', accentColor: '', tags: [] },
-      { badge: '3', badgeIcon: 'zap', badgeBg: '', badgeBorder: '', badgeText: '', titlePrefix: 'Slide 3', titleHighlight: '', titleSuffix: '', description: 'Sub 3', ctaPrimary: 'Go 3', ctaSecondary: '', image: 'img3.jpg', bgGradient: '', accentColor: '', tags: [] }
+      createMockSlide(1),
+      createMockSlide(2),
+      createMockSlide(3)
     ];
     jasmine.clock().install();
     fixture.detectChanges();
@@ -107,3 +126,4 @@ describe('HeroSliderComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/products']);
   });
 });
+
