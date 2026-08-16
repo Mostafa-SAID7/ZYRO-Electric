@@ -10,12 +10,16 @@ import {
   Review
 } from '../models';
 import { MOCK_PRODUCTS_NICHES } from '../data/mock-products-niches';
+import { SortStrategyService } from '../../shared/services/sort-strategy.service';
+import { FilterStrategyService } from '../../shared/services/filter-strategy.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
   private http = inject(HttpClient);
+  private sortStrategy = inject(SortStrategyService);
+  private filterStrategy = inject(FilterStrategyService);
 
   private mockProducts: Product[] = this.generateMockProducts();
   private mockCategories: Category[] = this.generateMockCategories();
@@ -189,57 +193,14 @@ export class ProductsService {
     let results = [...this.mockProducts];
 
     if (filter) {
-      // Filter by search query
-      if (filter.searchQuery) {
-        const query = filter.searchQuery.toLowerCase();
-        results = results.filter(p =>
-          p.title.toLowerCase().includes(query) ||
-          p.description.toLowerCase().includes(query)
-        );
-      }
-
-      // Filter by categories
-      if (filter.categories && filter.categories.length > 0) {
-        results = results.filter(p => filter.categories!.includes(p.category));
-      }
-
-      // Filter by price range
-      if (filter.minPrice !== undefined) {
-        results = results.filter(p => p.price >= filter.minPrice!);
-      }
-      if (filter.maxPrice !== undefined) {
-        results = results.filter(p => p.price <= filter.maxPrice!);
-      }
-
-      // Filter by rating
-      if (filter.rating !== undefined) {
-        results = results.filter(p => p.rating.average >= filter.rating!);
-      }
-
-      // Filter by stock
-      if (filter.inStock) {
-        results = results.filter(p => p.stock > 0);
-      }
-
-      // Sort
+      // Use FilterStrategyService to follow OCP (Open-Closed Principle)
+      // New filter strategies can be added without modifying this code
+      results = this.filterStrategy.filter(results, filter);
+      
+      // Use SortStrategyService to follow OCP (Open-Closed Principle)
+      // New sort strategies can be added without modifying this code
       if (filter.sortBy) {
-        switch (filter.sortBy) {
-          case 'price-asc':
-            results.sort((a, b) => a.price - b.price);
-            break;
-          case 'price-desc':
-            results.sort((a, b) => b.price - a.price);
-            break;
-          case 'rating':
-            results.sort((a, b) => b.rating.average - a.rating.average);
-            break;
-          case 'newest':
-            results.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-            break;
-          case 'popularity':
-            results.sort((a, b) => b.rating.count - a.rating.count);
-            break;
-        }
+        results = this.sortStrategy.sort(results, filter.sortBy);
       }
     }
 

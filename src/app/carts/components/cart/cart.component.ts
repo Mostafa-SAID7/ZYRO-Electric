@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { CartsService } from '../../services/carts.service';
 import { CartItem, CartSummary } from '../../models';
 import { Router } from '@angular/router';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
 import { UiConfirmationComponent } from '../../../shared/ui/components/confirmation/confirmation.component';
-import { ProductsService } from '../../../products/services/products.service';
+import { ICartService, IProductService } from '../../../shared/interfaces/business-logic';
+import { CART_SERVICE_TOKEN, PRODUCT_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({
   selector: 'app-cart',
@@ -12,8 +12,9 @@ import { ProductsService } from '../../../products/services/products.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  private cartService = inject(CartsService);
-  private productsService = inject(ProductsService);
+  // DIP: Inject via tokens (abstraction), not concrete classes
+  private cartService = inject(CART_SERVICE_TOKEN);
+  private productsService = inject(PRODUCT_SERVICE_TOKEN);
   private router = inject(Router);
 
   @ViewChild('toast') toast!: UiToastComponent;

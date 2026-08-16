@@ -1,12 +1,11 @@
 import { Component, OnInit, Renderer2, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CartsService } from '../../../carts/services/carts.service';
-import { AuthService } from '../../../auth/services/auth.service';
 import { CartItem } from '../../../carts/models';
 import { Product } from '../../../products/models';
-import { ProductsService } from '../../../products/services/products.service';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
+import { ICartService, IAuthenticationService, IProductService } from '../../../shared/interfaces/business-logic';
+import { CART_SERVICE_TOKEN, AUTH_SERVICE_TOKEN, PRODUCT_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({
   selector: 'app-header',
@@ -14,9 +13,10 @@ import { UiToastComponent } from '../../../shared/ui/components/toast/toast.comp
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  private cartsService = inject(CartsService);
-  private authService = inject(AuthService);
-  private productsService = inject(ProductsService);
+  // DIP: Inject via tokens (abstraction), not concrete classes
+  private cartsService = inject(CART_SERVICE_TOKEN);
+  private authService = inject(AUTH_SERVICE_TOKEN);
+  private productsService = inject(PRODUCT_SERVICE_TOKEN);
   private router = inject(Router);
   private renderer = inject(Renderer2);
   private fb = inject(FormBuilder);

@@ -3,7 +3,8 @@
 
 import { Observable } from 'rxjs';
 import { Product, Review } from '../../products/models';
-import { Order, CartItem } from '../../carts/models';
+import { CartItem } from '../../carts/models';
+import { Order } from '../../orders/models';
 import { Category } from '../../home/models';
 
 // ============ REPOSITORY INTERFACES ============

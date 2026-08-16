@@ -15,7 +15,8 @@ export class StandardShipping implements IShippingStrategy {
     return 'Standard';
   }
 
-  calculateCost(): number {
+  calculateCost(weight: number, distance: number): number {
+    // Standard shipping: flat rate + minimal weight consideration
     return 10;
   }
 
@@ -33,8 +34,9 @@ export class ExpressShipping implements IShippingStrategy {
     return 'Express';
   }
 
-  calculateCost(weight: number): number {
-    return 20 + (weight * 0.5);
+  calculateCost(weight: number, distance: number): number {
+    // Express shipping: weight-based with distance consideration
+    return 20 + (weight * 0.5) + (distance * 0.01);
   }
 
   getDeliveryDays(): number {

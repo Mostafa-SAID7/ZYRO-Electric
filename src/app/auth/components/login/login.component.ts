@@ -1,8 +1,9 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
+import { IAuthenticationService } from '../../../shared/interfaces/business-logic';
+import { AUTH_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({
   selector: 'app-auth-login',
@@ -11,7 +12,8 @@ import { UiToastComponent } from '../../../shared/ui/components/toast/toast.comp
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
+  // DIP: Inject via tokens (abstraction), not concrete classes
+  private authService = inject(AUTH_SERVICE_TOKEN);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 

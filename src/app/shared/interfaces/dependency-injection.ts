@@ -7,7 +7,8 @@ import {
   ICheckoutService,
   IAuthenticationService,
   INotificationService,
-  ICalculationService
+  ICalculationService,
+  IOrderService
 } from './business-logic';
 import {
   IReadRepository,
@@ -30,6 +31,7 @@ export const PRODUCT_SERVICE_TOKEN = new InjectionToken<IProductService>('Produc
 export const CART_SERVICE_TOKEN = new InjectionToken<ICartService>('CartService');
 export const CHECKOUT_SERVICE_TOKEN = new InjectionToken<ICheckoutService>('CheckoutService');
 export const AUTH_SERVICE_TOKEN = new InjectionToken<IAuthenticationService>('AuthService');
+export const ORDER_SERVICE_TOKEN = new InjectionToken<IOrderService>('OrderService');
 export const NOTIFICATION_SERVICE_TOKEN = new InjectionToken<INotificationService>('NotificationService');
 export const CALCULATION_SERVICE_TOKEN = new InjectionToken<ICalculationService>('CalculationService');
 

@@ -1,7 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrderService } from '../../services/order.service';
 import { Order } from '../../models';
+import { IOrderService } from '../../../shared/interfaces/business-logic';
+import { ORDER_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({
   selector: 'app-order-tracking',
@@ -11,7 +12,8 @@ import { Order } from '../../models';
 export class TrackingComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private orderService = inject(OrderService);
+  // DIP: Inject via tokens (abstraction), not concrete classes
+  private orderService = inject(ORDER_SERVICE_TOKEN);
 
   order: Order | null = null;
 

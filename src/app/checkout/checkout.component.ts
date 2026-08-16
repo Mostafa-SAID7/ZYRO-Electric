@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CartsService } from '../carts/services/carts.service';
 import { CartItem } from '../carts/models';
-import { AuthService } from '../auth/services/auth.service';
-import { OrderService } from '../orders/services/order.service';
 import { UiToastComponent } from '../shared/ui/components/toast/toast.component';
 import { UiConfirmationComponent } from '../shared/ui/components/confirmation/confirmation.component';
+import { ICartService, IAuthenticationService, IOrderService } from '../shared/interfaces/business-logic';
+import { CART_SERVICE_TOKEN, AUTH_SERVICE_TOKEN, ORDER_SERVICE_TOKEN } from '../shared/interfaces/dependency-injection';
 
 @Component({
   selector: 'app-checkout',
@@ -15,9 +14,10 @@ import { UiConfirmationComponent } from '../shared/ui/components/confirmation/co
 })
 export class CheckoutComponent implements OnInit {
   private fb = inject(FormBuilder);
-  private cartService = inject(CartsService);
-  private authService = inject(AuthService);
-  private orderService = inject(OrderService);
+  // DIP: Inject via tokens (abstraction), not concrete classes
+  private cartService = inject(CART_SERVICE_TOKEN);
+  private authService = inject(AUTH_SERVICE_TOKEN);
+  private orderService = inject(ORDER_SERVICE_TOKEN);
   private router = inject(Router);
 
   @ViewChild('toast') toast!: UiToastComponent;

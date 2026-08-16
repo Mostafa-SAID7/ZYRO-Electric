@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductsService } from '../../services/products.service';
 import { Product, ProductFilter, ProductPage, Category } from '../../models';
-import { CartsService } from '../../../carts/services/carts.service';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
 import { FilterGroup } from '../../../shared/ui/components/filter-panel/filter-panel.component';
 import { SortOption } from '../../../shared/ui/components/sort-dropdown/sort-dropdown.component';
 import { SORT_OPTIONS, DEFAULT_FILTER_GROUPS, DEFAULT_PAGE_SIZE, DEFAULT_CURRENT_PAGE } from '../../../shared/data/mock-data';
+import { IProductService, ICartService } from '../../../shared/interfaces/business-logic';
+import { PRODUCT_SERVICE_TOKEN, CART_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({
   selector: 'app-all-products',
@@ -14,8 +14,9 @@ import { SORT_OPTIONS, DEFAULT_FILTER_GROUPS, DEFAULT_PAGE_SIZE, DEFAULT_CURRENT
   styleUrls: ['./all-products.component.scss']
 })
 export class AllProductsComponent implements OnInit {
-  private productsService = inject(ProductsService);
-  private cartsService = inject(CartsService);
+  // DIP: Inject via tokens (abstraction), not concrete classes
+  private productsService = inject(PRODUCT_SERVICE_TOKEN);
+  private cartsService = inject(CART_SERVICE_TOKEN);
   private route = inject(ActivatedRoute);
 
   @ViewChild('toast') toast!: UiToastComponent;
