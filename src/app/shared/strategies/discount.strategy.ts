@@ -25,7 +25,13 @@ export class PercentageDiscount implements IDiscountStrategy {
   }
 
   validate(context: DiscountContext): boolean {
-    return this.percent > 0 && this.percent <= 100 && context.subtotal >= 0;
+    return (
+      typeof context?.subtotal === 'number' &&
+      Number.isFinite(context.subtotal) &&
+      context.subtotal >= 0 &&
+      this.percent > 0 &&
+      this.percent <= 100
+    );
   }
 }
 
@@ -41,7 +47,12 @@ export class FixedDiscount implements IDiscountStrategy {
   }
 
   validate(context: DiscountContext): boolean {
-    return this.amount > 0 && context.subtotal >= 0;
+    return (
+      typeof context?.subtotal === 'number' &&
+      Number.isFinite(context.subtotal) &&
+      context.subtotal >= 0 &&
+      this.amount > 0
+    );
   }
 }
 
@@ -62,6 +73,9 @@ export class BulkDiscount implements IDiscountStrategy {
 
   validate(context: DiscountContext): boolean {
     return (
+      typeof context?.subtotal === 'number' &&
+      Number.isFinite(context.subtotal) &&
+      context.subtotal >= 0 &&
       typeof context?.itemCount === 'number' &&
       context.itemCount >= this.minQuantity &&
       this.discountPercent > 0 &&

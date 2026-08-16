@@ -72,13 +72,19 @@ export class CacheInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    // For cacheable GET/HEAD requests, use caching strategy
+    // Security: Reject untrusted origins before any cache lookup
+    if (!this.isTrustedOrigin(request)) {
+      // For untrusted origins, skip all caching and CSRF
+      return this.handleMutationResponse(request, next);
+    }
+
+    // For cacheable GET/HEAD requests from trusted origins, use caching strategy
     if (this.isCacheable(request)) {
       return this.handleCacheableRequest(request, next);
     }
 
-    // Add CSRF token to state-changing requests only if origin is trusted
-    if (!this.CACHEABLE_METHODS.includes(request.method) && this.isTrustedOrigin(request)) {
+    // Add CSRF token to state-changing requests from trusted origins
+    if (!this.CACHEABLE_METHODS.includes(request.method)) {
       request = this.addCSRFToken(request);
     }
 
@@ -193,6 +199,9 @@ export class CacheInterceptor implements HttpInterceptor {
    * 
    * Only cache endpoints in the explicit allowlist that are safe to share
    * across authentication sessions and don't depend on user-specific state.
+   * 
+   * Security: Only caches requests from trusted origins.
+   * Matching uses pathname to prevent third-party URL injection.
    */
   private isCacheable(request: HttpRequest<unknown>): boolean {
     // Only cache GET and HEAD
@@ -200,9 +209,19 @@ export class CacheInterceptor implements HttpInterceptor {
       return false;
     }
 
-    // Check if endpoint is in the allowlist
+    // Extract pathname from request URL (handles absolute and relative URLs safely)
+    let pathname: string;
+    try {
+      const url = new URL(request.url, window.location.origin);
+      pathname = url.pathname;
+    } catch (e) {
+      // If URL parsing fails, reject caching (likely malformed)
+      return false;
+    }
+
+    // Check if pathname matches an endpoint in the allowlist
     const isCacheableEndpoint = Object.keys(this.CACHEABLE_ENDPOINTS).some(endpoint =>
-      request.url.includes(endpoint)
+      pathname === endpoint || pathname.startsWith(endpoint + '/')
     );
 
     if (!isCacheableEndpoint) {
@@ -241,6 +260,7 @@ export class CacheInterceptor implements HttpInterceptor {
    * 
    * Only endpoints in the allowlist have predefined TTLs.
    * Others fall back to the default API cache TTL.
+   * Uses pathname for safe endpoint matching.
    */
   private extractCacheTTL(response: HttpResponse<unknown>): number {
     const cacheControl = response.headers.get('cache-control');
@@ -253,8 +273,16 @@ export class CacheInterceptor implements HttpInterceptor {
 
     // Check if endpoint has a predefined TTL
     if (response.url) {
+      let pathname: string;
+      try {
+        const url = new URL(response.url, window.location.origin);
+        pathname = url.pathname;
+      } catch (e) {
+        return this.API_CACHE_TTL; // Fallback on parse error
+      }
+
       for (const [endpoint, ttl] of Object.entries(this.ENDPOINT_TTLS)) {
-        if (response.url.includes(endpoint)) {
+        if (pathname === endpoint || pathname.startsWith(endpoint + '/')) {
           return ttl;
         }
       }
@@ -273,12 +301,23 @@ export class CacheInterceptor implements HttpInterceptor {
    * - http:search:query_laptop
    * 
    * This enables aligned invalidation patterns like http:products:*
+   * Uses pathname to prevent third-party URL injection.
    */
   private generateCacheKey(request: HttpRequest<unknown>): string {
-    // Determine resource type from URL
+    // Extract pathname from request URL
+    let pathname: string;
+    try {
+      const url = new URL(request.url, window.location.origin);
+      pathname = url.pathname;
+    } catch (e) {
+      // Fallback to request.url if parsing fails (should not happen after isCacheable check)
+      pathname = request.url;
+    }
+
+    // Determine resource type from pathname
     let resourceType = 'http'; // default fallback
     for (const [endpoint, resource] of Object.entries(this.CACHEABLE_ENDPOINTS)) {
-      if (request.url.includes(endpoint)) {
+      if (pathname === endpoint || pathname.startsWith(endpoint + '/')) {
         resourceType = resource;
         break;
       }
@@ -314,13 +353,22 @@ export class CacheInterceptor implements HttpInterceptor {
    * 
    * Uses the MUTATION_INVALIDATION_MAP to determine which cache patterns
    * to invalidate based on the mutated endpoint.
+   * Uses pathname for safe endpoint matching.
    */
   private invalidateRelatedCaches(request: HttpRequest<unknown>): void {
-    const url = request.url.toLowerCase();
+    // Extract pathname from request URL
+    let pathname: string;
+    try {
+      const url = new URL(request.url, window.location.origin);
+      pathname = url.pathname;
+    } catch (e) {
+      // If URL parsing fails, skip invalidation (malformed URL)
+      return;
+    }
 
     // Find matching endpoints in the invalidation map
     for (const [endpoint, patterns] of Object.entries(this.MUTATION_INVALIDATION_MAP)) {
-      if (url.includes(endpoint)) {
+      if (pathname === endpoint || pathname.startsWith(endpoint + '/')) {
         // Invalidate all related cache patterns for this endpoint
         patterns.forEach(pattern => {
           this.cacheService.invalidate(pattern);
