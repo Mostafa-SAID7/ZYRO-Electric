@@ -36,15 +36,15 @@ export class TrackingComponent implements OnInit {
 
   getStatusIcon(status: string): string {
     const icons: Record<string, string> = {
-      pending: 'clock',
+      pending: 'loader-2',
       confirmed: 'check-circle',
-      processing: 'zap',
+      processing: 'activity',
       shipped: 'truck',
       delivered: 'package',
       cancelled: 'x-circle',
-      returned: 'undo'
+      returned: 'undo-2'
     };
-    return icons[status] || 'info';
+    return icons[status] || 'alert-circle';
   }
 
   cancelOrder(): void {
