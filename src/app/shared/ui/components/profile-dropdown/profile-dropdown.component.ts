@@ -39,7 +39,7 @@ import { LucideAngularModule } from 'lucide-angular';
             <button
               (click)="navigateTo('/profile')"
               class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
-              <lucide-icon name="user-circle" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <lucide-icon name="user" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>My Profile</span>
             </button>
 
@@ -47,7 +47,7 @@ import { LucideAngularModule } from 'lucide-angular';
             <button
               (click)="navigateTo('/orders/tracking')"
               class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
-              <lucide-icon name="box" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <lucide-icon name="package" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Track Orders</span>
             </button>
 
@@ -55,7 +55,7 @@ import { LucideAngularModule } from 'lucide-angular';
             <button
               (click)="navigateTo('/profile')"
               class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
-              <lucide-icon name="history" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <lucide-icon name="clock" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Order History</span>
             </button>
 
@@ -91,7 +91,7 @@ import { LucideAngularModule } from 'lucide-angular';
             <button
               (click)="navigateTo('/profile')"
               class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
-              <lucide-icon name="sliders-horizontal" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <lucide-icon name="settings" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Preferences</span>
             </button>
 
@@ -99,7 +99,7 @@ import { LucideAngularModule } from 'lucide-angular';
             <button
               (click)="navigateTo('/help')"
               class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
-              <lucide-icon name="help-circle" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <lucide-icon name="info" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Help & Support</span>
             </button>
 
@@ -174,4 +174,5 @@ export class ProfileDropdownComponent {
     }
   }
 }
+
 
