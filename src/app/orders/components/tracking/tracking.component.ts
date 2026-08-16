@@ -100,20 +100,23 @@ export class TrackingComponent implements OnInit {
       <head>
         <meta charset="UTF-8">
         <title>Invoice #${this.order.id}</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
             padding: 40px;
-            color: #1a1a1a;
+            background: #0A0A0A;
+            color: #FAFAFA;
             line-height: 1.6;
           }
           .invoice-container {
             max-width: 800px;
             margin: 0 auto;
-            border: 2px solid #e5e7eb;
+            border: 2px solid #222222;
             padding: 40px;
-            background: white;
+            background: #111111;
+            border-radius: 1rem;
           }
           .header {
             display: flex;
@@ -121,16 +124,16 @@ export class TrackingComponent implements OnInit {
             align-items: start;
             margin-bottom: 40px;
             padding-bottom: 20px;
-            border-bottom: 3px solid #3b82f6;
+            border-bottom: 3px solid #E8C547;
           }
           .company-info h1 {
             font-size: 28px;
-            color: #3b82f6;
+            color: #E8C547;
             margin-bottom: 5px;
             font-weight: 800;
           }
           .company-info p {
-            color: #6b7280;
+            color: #888888;
             font-size: 14px;
           }
           .invoice-meta {
@@ -138,13 +141,17 @@ export class TrackingComponent implements OnInit {
           }
           .invoice-meta h2 {
             font-size: 24px;
-            color: #1f2937;
+            color: #FAFAFA;
             margin-bottom: 10px;
+            font-weight: 800;
           }
           .invoice-meta p {
-            color: #6b7280;
+            color: #888888;
             font-size: 14px;
             margin: 5px 0;
+          }
+          .invoice-meta p strong {
+            color: #FAFAFA;
           }
           .billing-info {
             display: flex;
@@ -154,39 +161,54 @@ export class TrackingComponent implements OnInit {
           }
           .billing-section {
             flex: 1;
+            background: #1A1A1A;
+            padding: 20px;
+            border-radius: 0.75rem;
+            border: 1px solid #222222;
           }
           .billing-section h3 {
             font-size: 16px;
-            color: #1f2937;
-            margin-bottom: 10px;
-            font-weight: 600;
+            color: #E8C547;
+            margin-bottom: 12px;
+            font-weight: 700;
           }
           .billing-section p {
-            color: #6b7280;
+            color: #888888;
             font-size: 14px;
-            margin: 5px 0;
+            margin: 8px 0;
+          }
+          .billing-section p strong {
+            color: #FAFAFA;
           }
           .items-table {
             width: 100%;
             border-collapse: collapse;
             margin: 30px 0;
+            background: #1A1A1A;
+            border-radius: 0.75rem;
+            overflow: hidden;
           }
           .items-table thead {
-            background: #f9fafb;
+            background: #222222;
           }
           .items-table th {
-            padding: 12px;
+            padding: 16px;
             text-align: left;
-            font-weight: 600;
-            color: #1f2937;
-            border-bottom: 2px solid #e5e7eb;
+            font-weight: 700;
+            color: #E8C547;
+            border-bottom: 2px solid #333333;
             font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
           }
           .items-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e5e7eb;
-            color: #6b7280;
+            padding: 16px;
+            border-bottom: 1px solid #222222;
+            color: #888888;
             font-size: 14px;
+          }
+          .items-table td strong {
+            color: #FAFAFA;
           }
           .items-table tr:last-child td {
             border-bottom: none;
@@ -194,51 +216,143 @@ export class TrackingComponent implements OnInit {
           .total-section {
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 2px solid #e5e7eb;
+            border-top: 2px solid #222222;
             text-align: right;
           }
           .total-row {
             display: flex;
             justify-content: flex-end;
-            margin: 10px 0;
-            font-size: 14px;
+            margin: 12px 0;
+            font-size: 15px;
           }
           .total-row .label {
-            width: 150px;
+            width: 180px;
             text-align: right;
-            margin-right: 20px;
-            color: #6b7280;
+            margin-right: 30px;
+            color: #888888;
+            font-weight: 600;
           }
           .total-row .value {
-            width: 120px;
+            width: 140px;
             text-align: right;
-            font-weight: 600;
-            color: #1f2937;
+            font-weight: 700;
+            color: #FAFAFA;
           }
           .grand-total {
-            font-size: 18px;
-            padding-top: 10px;
-            border-top: 2px solid #3b82f6;
-            margin-top: 10px;
+            font-size: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #E8C547;
+            margin-top: 15px;
+            background: linear-gradient(90deg, transparent, #E8C547/10);
+            padding: 20px;
+            border-radius: 0.5rem;
           }
           .grand-total .label {
-            color: #1f2937;
+            color: #FAFAFA;
+            font-weight: 800;
+            letter-spacing: 1px;
           }
           .grand-total .value {
-            color: #3b82f6;
-            font-size: 20px;
+            color: #E8C547;
+            font-size: 24px;
+            font-weight: 900;
           }
           .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #222222;
             text-align: center;
-            color: #9ca3af;
+            color: #666666;
             font-size: 12px;
           }
+          .footer p {
+            margin: 8px 0;
+          }
+          .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #E8C547;
+            color: #0A0A0A;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
           @media print {
-            body { padding: 0; }
-            .invoice-container { border: none; padding: 20px; }
+            body { 
+              padding: 20px;
+              background: white;
+              color: #0A0A0A;
+            }
+            .invoice-container { 
+              border: 2px solid #222222;
+              padding: 30px;
+              background: white;
+            }
+            .header {
+              border-bottom-color: #E8C547;
+            }
+            .company-info h1 {
+              color: #E8C547;
+            }
+            .company-info p,
+            .invoice-meta p {
+              color: #666666;
+            }
+            .invoice-meta h2,
+            .invoice-meta p strong,
+            .billing-section p strong,
+            .items-table td strong,
+            .total-row .value,
+            .grand-total .label {
+              color: #0A0A0A;
+            }
+            .billing-section {
+              background: #F9F9F9;
+              border-color: #E5E5E5;
+            }
+            .billing-section h3 {
+              color: #E8C547;
+            }
+            .billing-section p {
+              color: #666666;
+            }
+            .items-table {
+              background: white;
+            }
+            .items-table thead {
+              background: #F9F9F9;
+            }
+            .items-table th {
+              color: #E8C547;
+              border-bottom-color: #E5E5E5;
+            }
+            .items-table td {
+              color: #666666;
+              border-bottom-color: #E5E5E5;
+            }
+            .total-section {
+              border-top-color: #E5E5E5;
+            }
+            .total-row .label {
+              color: #666666;
+            }
+            .grand-total {
+              border-top-color: #E8C547;
+              background: #FFF9E6;
+            }
+            .grand-total .value {
+              color: #E8C547;
+            }
+            .footer {
+              border-top-color: #E5E5E5;
+              color: #999999;
+            }
+            .status-badge {
+              background: #E8C547;
+              color: #0A0A0A;
+            }
           }
         </style>
       </head>
@@ -256,7 +370,7 @@ export class TrackingComponent implements OnInit {
               <p><strong>Invoice #:</strong> INV-${this.order.id}</p>
               <p><strong>Order #:</strong> ${this.order.id}</p>
               <p><strong>Date:</strong> ${invoiceDate}</p>
-              <p><strong>Status:</strong> ${this.order.status.toUpperCase()}</p>
+              <p><strong>Status:</strong> <span class="status-badge">${this.order.status}</span></p>
             </div>
           </div>
 
@@ -265,12 +379,14 @@ export class TrackingComponent implements OnInit {
             <div class="billing-section">
               <h3>Bill To:</h3>
               <p><strong>${this.order.userId}</strong></p>
-              <p>${this.order.shippingAddress || 'Address not provided'}</p>
+              <p>${this.order.shippingAddress?.street || 'Address not provided'}</p>
+              <p>${this.order.shippingAddress?.city || ''} ${this.order.shippingAddress?.state || ''}</p>
+              <p>${this.order.shippingAddress?.zipCode || ''}</p>
             </div>
             <div class="billing-section">
               <h3>Order Details:</h3>
               <p><strong>Order Date:</strong> ${orderDate}</p>
-              <p><strong>Payment Method:</strong> ${this.order.paymentMethod || 'Credit Card'}</p>
+              <p><strong>Payment Method:</strong> ${this.order.paymentMethod?.type || 'Credit Card'}</p>
               <p><strong>Shipping:</strong> Standard Delivery</p>
             </div>
           </div>
@@ -289,8 +405,8 @@ export class TrackingComponent implements OnInit {
               ${this.order.items.map(item => `
                 <tr>
                   <td>
-                    <strong>${item.productId}</strong><br>
-                    <small style="color: #9ca3af;">SKU: ${item.productId}</small>
+                    <strong>${item.title || item.productId}</strong><br>
+                    <small style="color: #666666;">SKU: ${item.productId}</small>
                   </td>
                   <td style="text-align: center;">${item.quantity}</td>
                   <td style="text-align: right;">$${item.price.toFixed(2)}</td>
