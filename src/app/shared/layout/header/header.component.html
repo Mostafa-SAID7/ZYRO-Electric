@@ -85,28 +85,25 @@
           }
         </button>
 
-        <!-- Profile Icon -->
+        <!-- Profile Dropdown -->
         @if (isLoggedIn) {
-          <a
-            routerLink="/profile"
-            class="p-2.5 hover:bg-secondary rounded-full transition-colors duration-200 group ml-1"
-            title="My Profile">
-            <lucide-icon name="user" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
-          </a>
+          <app-profile-dropdown
+            [userName]="userName"
+            [userEmail]="userEmail"
+            [isOnline]="true"
+            (logout)="onProfileLogout()">
+          </app-profile-dropdown>
         }
 
-        <!-- User/Auth Icon -->
-        <button
-          (click)="isLoggedIn ? logout() : goToAuth()"
-          class="p-2.5 hover:bg-secondary rounded-full transition-colors duration-200 group ml-1"
-          [title]="isLoggedIn ? 'Logout' : 'Login'">
-          @if (!isLoggedIn) {
+        <!-- User/Auth Icon (when not logged in) -->
+        @if (!isLoggedIn) {
+          <button
+            (click)="goToAuth()"
+            class="p-2.5 hover:bg-secondary rounded-full transition-colors duration-200 group ml-1"
+            title="Login">
             <lucide-icon name="log-in" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
-          }
-          @if (isLoggedIn) {
-            <lucide-icon name="log-out" class="w-5 h-5 text-foreground group-hover:text-accent transition-colors"></lucide-icon>
-          }
-        </button>
+          </button>
+        }
       </div>
     </nav>
   </div>

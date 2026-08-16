@@ -4,12 +4,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CartItem } from '../../../carts/models';
 import { Product } from '../../../products/models';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
+import { ProfileDropdownComponent } from '../../../shared/ui/components/profile-dropdown/profile-dropdown.component';
 import { CART_SERVICE_TOKEN, AUTH_SERVICE_TOKEN, PRODUCT_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  imports: [ProfileDropdownComponent]
 })
 export class HeaderComponent implements OnInit {
   // DIP: Inject via tokens (abstraction), not concrete classes
@@ -28,6 +30,7 @@ export class HeaderComponent implements OnInit {
   cartTotal = 0;
   isLoggedIn = false;
   userName = '';
+  userEmail = '';
 
   // Theme state
   isDarkMode = true;
@@ -76,6 +79,7 @@ export class HeaderComponent implements OnInit {
     const user = this.authService.getCurrentUser();
     this.isLoggedIn = !!user;
     this.userName = user?.name || '';
+    this.userEmail = user?.email || '';
   }
 
   private passwordMatchValidator(g: FormGroup) {
@@ -136,6 +140,7 @@ export class HeaderComponent implements OnInit {
         this.isLoggedIn = true;
         const user = this.authService.getCurrentUser();
         this.userName = user?.name || '';
+        this.userEmail = user?.email || '';
         this.showToast('success', 'Success', 'Logged in successfully');
         this.closeAuthModal();
       },
@@ -155,6 +160,7 @@ export class HeaderComponent implements OnInit {
         this.isLoggedIn = true;
         const user = this.authService.getCurrentUser();
         this.userName = user?.name || '';
+        this.userEmail = user?.email || '';
         this.showToast('success', 'Success', 'Account created successfully');
         this.closeAuthModal();
       },
@@ -233,13 +239,20 @@ export class HeaderComponent implements OnInit {
     this.toggleAuthModal('login');
   }
 
-  logout(): void {
+  onProfileLogout(): void {
     this.authService.logout().subscribe({
       next: () => {
         this.isLoggedIn = false;
+        this.userName = '';
+        this.userEmail = '';
         this.router.navigate(['/']);
         this.closeCartDrawer();
       }
     });
   }
+
+  logout(): void {
+    this.onProfileLogout();
+  }
 }
+
