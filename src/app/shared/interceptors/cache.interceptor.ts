@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { tap, shareReplay, finalize } from 'rxjs/operators';
 import { CacheService } from '../services/cache.service';
 import { CookieService } from '../services/cookie.service';
+import { environment } from '../../../environments/environment';
 
 /**
  * HTTP Cache Interceptor
@@ -52,8 +53,8 @@ export class CacheInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    // Add CSRF token to state-changing requests
-    if (!this.CACHEABLE_METHODS.includes(request.method)) {
+    // Add CSRF token to state-changing requests only if origin is trusted
+    if (!this.CACHEABLE_METHODS.includes(request.method) && this.isTrustedOrigin(request)) {
       request = this.addCSRFToken(request);
     }
 
@@ -127,6 +128,27 @@ export class CacheInterceptor implements HttpInterceptor {
       });
     }
     return request;
+  }
+
+  /**
+   * Check if request origin is trusted (matches configured API origin)
+   * Prevents CSRF token injection to third-party endpoints
+   */
+  private isTrustedOrigin(request: HttpRequest<unknown>): boolean {
+    try {
+      const requestUrl = new URL(request.url, window.location.origin);
+      const requestOrigin = requestUrl.origin;
+
+      // Extract origin from configured API base URL
+      const apiUrl = new URL(environment.baseApi, window.location.origin);
+      const apiOrigin = apiUrl.origin;
+
+      // Allow if request origin matches API origin
+      return requestOrigin === apiOrigin;
+    } catch (e) {
+      // If URL parsing fails, treat as trusted (likely a relative URL)
+      return true;
+    }
   }
 
   /**
