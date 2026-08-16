@@ -80,3 +80,6 @@ karma-results.json
 .vercel
 
 .env*
+
+# VarAlign local store (machine-local variable-tracking data)
+.varmem/*
