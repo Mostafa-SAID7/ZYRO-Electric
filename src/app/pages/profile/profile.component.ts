@@ -18,20 +18,27 @@ export class ProfileComponent implements OnInit {
   isLoading = true;
 
   ngOnInit(): void {
+    console.log('[ProfileComponent] Initializing profile page');
+    
     this.authService.getUserProfile().subscribe({
       next: (profile) => {
+        console.log('[ProfileComponent] User profile loaded:', profile);
         this.userProfile = profile;
       },
-      error: (err) => console.error(err)
+      error: (err) => {
+        console.error('[ProfileComponent] Failed to load user profile:', err);
+        this.isLoading = false;
+      }
     });
 
     this.orderService.getOrders(1, 50).subscribe({
       next: (page) => {
+        console.log('[ProfileComponent] Orders loaded:', page);
         this.orders = page.items;
         this.isLoading = false;
       },
       error: (err) => {
-        console.error(err);
+        console.error('[ProfileComponent] Failed to load orders:', err);
         this.isLoading = false;
       }
     });

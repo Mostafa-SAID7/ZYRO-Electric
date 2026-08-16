@@ -4,7 +4,6 @@ import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UiModule } from './ui/ui.module';
 import { ProfileDropdownComponent } from './ui/components/profile-dropdown/profile-dropdown.component';
@@ -86,7 +85,6 @@ const DIP_PROVIDERS: Provider[] = [
   ],
   imports: [
     CommonModule,
-    BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -97,7 +95,6 @@ const DIP_PROVIDERS: Provider[] = [
   exports: [
     HeaderComponent,
     FooterComponent,
-    BrowserModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
