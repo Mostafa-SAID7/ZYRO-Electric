@@ -63,12 +63,20 @@ export class CacheInterceptor implements HttpInterceptor {
       return this.handleCacheableRequest(request, next);
     }
 
-    // For other requests, invalidate related caches
-    if (request.method !== 'GET' && request.method !== 'HEAD') {
-      this.invalidateRelatedCaches(request);
-    }
-
-    return next.handle(request);
+    // For state-changing requests, invalidate related caches only after successful completion
+    return next.handle(request).pipe(
+      tap(event => {
+        if (
+          request.method !== 'GET' &&
+          request.method !== 'HEAD' &&
+          event instanceof HttpResponse &&
+          event.status >= 200 &&
+          event.status < 300
+        ) {
+          this.invalidateRelatedCaches(request);
+        }
+      })
+    );
   }
 
   /**
