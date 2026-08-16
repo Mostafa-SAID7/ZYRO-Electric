@@ -38,42 +38,68 @@ import { LucideAngularModule } from 'lucide-angular';
             <!-- Profile -->
             <button
               (click)="navigateTo('/profile')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground">
-              <lucide-icon name="user" class="w-4 h-4 text-muted-foreground"></lucide-icon>
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+              <lucide-icon name="user-circle" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>My Profile</span>
             </button>
 
-            <!-- Orders -->
+            <!-- Orders Tracking -->
             <button
-              (click)="navigateTo('/orders')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground">
-              <lucide-icon name="package" class="w-4 h-4 text-muted-foreground"></lucide-icon>
-              <span>My Orders</span>
+              (click)="navigateTo('/orders/tracking')"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+              <lucide-icon name="box" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <span>Track Orders</span>
             </button>
+
+            <!-- Orders History -->
+            <button
+              (click)="navigateTo('/profile')"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+              <lucide-icon name="history" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <span>Order History</span>
+            </button>
+
+            <div class="my-2 border-t border-border/50"></div>
 
             <!-- Wishlist -->
             <button
-              (click)="navigateTo('/wishlist')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground">
-              <lucide-icon name="heart" class="w-4 h-4 text-muted-foreground"></lucide-icon>
+              (click)="navigateTo('/profile')"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+              <lucide-icon name="heart" class="w-4 h-4 text-muted-foreground group-hover:text-red-500 transition-colors"></lucide-icon>
               <span>Wishlist</span>
+            </button>
+
+            <!-- Saved Addresses -->
+            <button
+              (click)="navigateTo('/profile')"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+              <lucide-icon name="map-pin" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <span>Saved Addresses</span>
+            </button>
+
+            <!-- Payment Methods -->
+            <button
+              (click)="navigateTo('/profile')"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+              <lucide-icon name="credit-card" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <span>Payment Methods</span>
             </button>
 
             <div class="my-2 border-t border-border/50"></div>
 
             <!-- Settings -->
             <button
-              (click)="navigateTo('/settings')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground">
-              <lucide-icon name="settings" class="w-4 h-4 text-muted-foreground"></lucide-icon>
-              <span>Settings</span>
+              (click)="navigateTo('/profile')"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+              <lucide-icon name="sliders-horizontal" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
+              <span>Preferences</span>
             </button>
 
             <!-- Help & Support -->
             <button
               (click)="navigateTo('/help')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground">
-              <lucide-icon name="help-circle" class="w-4 h-4 text-muted-foreground"></lucide-icon>
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+              <lucide-icon name="help-circle" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Help & Support</span>
             </button>
 
@@ -82,8 +108,8 @@ import { LucideAngularModule } from 'lucide-angular';
             <!-- Logout -->
             <button
               (click)="onLogout()"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-red-500/10 transition-colors text-left text-sm font-medium text-red-500">
-              <lucide-icon name="log-out" class="w-4 h-4"></lucide-icon>
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-red-500/10 transition-colors text-left text-sm font-medium text-red-500 group">
+              <lucide-icon name="log-out" class="w-4 h-4 group-hover:scale-110 transition-transform"></lucide-icon>
               <span>Logout</span>
             </button>
           </div>
@@ -117,7 +143,11 @@ export class ProfileDropdownComponent {
 
   navigateTo(route: string): void {
     this.isOpen = false;
-    this.router.navigate([route]);
+    this.router.navigate([route]).then(success => {
+      if (!success) {
+        console.warn(`Navigation to ${route} failed`);
+      }
+    });
   }
 
   onLogout(): void {
@@ -132,3 +162,4 @@ export class ProfileDropdownComponent {
     }
   }
 }
+
