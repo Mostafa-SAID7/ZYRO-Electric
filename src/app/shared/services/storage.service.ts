@@ -82,7 +82,33 @@ export class StorageService {
         const storage = this.getStorage(storageType);
         if (storage) {
           const stored = storage.getItem(key);
-          entry = stored ? JSON.parse(stored) : null;
+          if (!stored) return null;
+
+          try {
+            // Try to parse as StorageEntry first (new format)
+            const parsed = JSON.parse(stored);
+            
+            // Check if it's a StorageEntry (has value, timestamp, ttl properties)
+            if (parsed && typeof parsed === 'object' && 'value' in parsed && 'timestamp' in parsed && 'ttl' in parsed) {
+              entry = parsed;
+            } else {
+              // Legacy format - just the value itself, wrap it
+              entry = {
+                value: parsed,
+                timestamp: Date.now(),
+                ttl: 0,
+                type: storageType
+              };
+            }
+          } catch (e) {
+            // If JSON parse fails, treat as plain string token
+            entry = {
+              value: stored as unknown as T,
+              timestamp: Date.now(),
+              ttl: 0,
+              type: storageType
+            };
+          }
         }
       }
 
