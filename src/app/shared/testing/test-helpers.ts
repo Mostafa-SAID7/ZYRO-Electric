@@ -150,3 +150,43 @@ export function setupNotificationMock() {
     show: jasmine.createSpy('show')
   };
 }
+
+/**
+ * Simple component test factory for basic "should create" tests
+ * Used for components with minimal logic (display-only components)
+ * 
+ * @example
+ * describe('MyComponent', () => {
+ *   const { beforeEach, createTest } = createBasicComponentTest(
+ *     MyComponent,
+ *     [SharedModule]
+ *   );
+ *   
+ *   beforeEach(beforeEach);
+ *   
+ *   it('should create', createTest());
+ * });
+ */
+export function createBasicComponentTest<T>(
+  componentType: any,
+  imports: any[]
+) {
+  let component: T;
+  let fixture: ComponentFixture<T>;
+
+  return {
+    beforeEach: async () => {
+      await TestBed.configureTestingModule({
+        imports,
+        schemas: [NO_ERRORS_SCHEMA]
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(componentType);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    },
+    createTest: () => () => {
+      expect(component).toBeTruthy();
+    }
+  };
+}

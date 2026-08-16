@@ -1,25 +1,15 @@
-﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NewsletterComponent } from './newsletter.component';
+﻿import { NewsletterComponent } from './newsletter.component';
 import { HomeModule } from '../../home.module';
 import { RouterTestingModule } from '@angular/router/testing';
+import { createBasicComponentTest } from '../../shared/testing/test-helpers';
 
 describe('NewsletterComponent', () => {
-  let component: NewsletterComponent;
-  let fixture: ComponentFixture<NewsletterComponent>;
+  const { beforeEach: setupTest, createTest } = createBasicComponentTest(
+    NewsletterComponent,
+    [HomeModule, RouterTestingModule]
+  );
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HomeModule, RouterTestingModule],
-      schemas: [ NO_ERRORS_SCHEMA ]
-    }).compileComponents();
+  beforeEach(setupTest);
 
-    fixture = TestBed.createComponent(NewsletterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it('should create', createTest());
 });
