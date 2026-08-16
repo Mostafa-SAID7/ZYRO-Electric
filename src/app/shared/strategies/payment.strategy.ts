@@ -1,5 +1,7 @@
 // Open/Closed Principle: Payment methods can be added without modifying existing code
 
+import { Injectable } from '@angular/core';
+
 export interface IPaymentStrategy {
   getName(): string;
   processPayment(amount: number, details: PaymentDetails): Promise<PaymentResult>;
@@ -88,6 +90,7 @@ export class ApplePayPayment implements IPaymentStrategy {
   }
 }
 
+@Injectable({ providedIn: 'root' })
 export class PaymentStrategyFactory {
   private strategies = new Map<string, IPaymentStrategy>([
     ['creditcard', new CreditCardPayment()],

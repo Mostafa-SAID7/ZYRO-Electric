@@ -1,5 +1,7 @@
 // Open/Closed Principle: Discount strategies can be added without modifying existing code
 
+import { Injectable } from '@angular/core';
+
 export interface IDiscountStrategy {
   getType(): string;
   calculate(subtotal: number): number;
@@ -55,6 +57,7 @@ export class BulkDiscount implements IDiscountStrategy {
   }
 }
 
+@Injectable({ providedIn: 'root' })
 export class DiscountStrategyFactory {
   private strategies = new Map<string, IDiscountStrategy>();
 

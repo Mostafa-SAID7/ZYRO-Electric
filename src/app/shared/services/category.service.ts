@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Category } from '../../models';
+import { Category } from '../../home/models';
 
 // Single Responsibility: Handle category operations only
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
   private mockCategories: Category[] = [
-    { id: 'smartphone-accessories', name: 'Smartphone Accessories', icon: 'smartphone' },
-    { id: 'laptop-accessories', name: 'Laptop Accessories', icon: 'laptop' },
-    { id: 'gaming-gear', name: 'Gaming Gear', icon: 'gamepad' },
-    { id: 'audio', name: 'Audio & Headphones', icon: 'headphones' },
-    { id: 'cameras', name: 'Cameras & Photography', icon: 'camera' },
-    { id: 'smart-home', name: 'Smart Home', icon: 'home' }
+    { id: 'smartphone-accessories', name: 'Smartphone Accessories', icon: 'smartphone', productCount: 0 },
+    { id: 'laptop-accessories', name: 'Laptop Accessories', icon: 'laptop', productCount: 0 },
+    { id: 'gaming-gear', name: 'Gaming Gear', icon: 'gamepad', productCount: 0 },
+    { id: 'audio', name: 'Audio & Headphones', icon: 'headphones', productCount: 0 },
+    { id: 'cameras', name: 'Cameras & Photography', icon: 'camera', productCount: 0 },
+    { id: 'smart-home', name: 'Smart Home', icon: 'home', productCount: 0 }
   ];
 
   private categoriesSubject = new BehaviorSubject<Category[]>(this.mockCategories);

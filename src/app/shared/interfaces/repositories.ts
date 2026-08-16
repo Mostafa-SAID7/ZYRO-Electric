@@ -2,7 +2,9 @@
 // Interface Segregation: Clients depend only on methods they use
 
 import { Observable } from 'rxjs';
-import { Product, Category, Order, CartItem, Review } from '../../models';
+import { Product, Review } from '../../products/models';
+import { Order, CartItem } from '../../carts/models';
+import { Category } from '../../home/models';
 
 // ============ REPOSITORY INTERFACES ============
 

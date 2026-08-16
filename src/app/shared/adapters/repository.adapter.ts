@@ -6,40 +6,23 @@ import { IReadRepository, IWriteRepository } from '../interfaces/repositories';
 
 /**
  * Generic Repository Adapter
- * Adapts any service to implement IReadRepository or IWriteRepository
+ * Adapts any service to implement IReadRepository
  * Ensures Liskov substitution for repository operations
  */
 @Injectable({ providedIn: 'root' })
 export class RepositoryAdapter<T> implements IReadRepository<T> {
-  constructor(
-    private getAll: () => Observable<T[]>,
-    private getById: (id: string) => Observable<T | undefined>,
-    private search: (query: string) => Observable<T[]>
-  ) {}
+  constructor(private service: any) {}
 
-  getAllItems(): Observable<T[]> {
-    return this.getAll();
+  getAll(): Observable<T[]> {
+    return this.service.getAll?.() || new Observable(obs => obs.complete());
   }
 
-  getItem(id: string): Observable<T | undefined> {
-    return this.getById(id);
+  getById(id: string): Observable<T | undefined> {
+    return this.service.getById?.(id) || new Observable(obs => obs.complete());
   }
 
-  searchItems(query: string): Observable<T[]> {
-    return this.search(query);
-  }
-
-  // Implement IReadRepository interface methods
-  getAll_(): Observable<T[]> {
-    return this.getAll();
-  }
-
-  getById_(id: string): Observable<T | undefined> {
-    return this.getById(id);
-  }
-
-  search_(query: string): Observable<T[]> {
-    return this.search(query);
+  search(query: string): Observable<T[]> {
+    return this.service.search?.(query) || new Observable(obs => obs.complete());
   }
 }
 
@@ -49,26 +32,17 @@ export class RepositoryAdapter<T> implements IReadRepository<T> {
  */
 @Injectable({ providedIn: 'root' })
 export class WriteRepositoryAdapter<T> implements IWriteRepository<T> {
-  constructor(
-    private save: (item: T) => Observable<T>,
-    private update: (id: string, item: Partial<T>) => Observable<T>,
-    private delete: (id: string) => Observable<void>
-  ) {}
+  constructor(private service: any) {}
 
-  save_(item: T): Observable<T> {
-    return this.save(item);
+  save(item: T): Observable<T> {
+    return this.service.save?.(item) || new Observable(obs => obs.complete());
   }
 
-  update_(id: string, item: Partial<T>): Observable<T> {
-    return this.update(id, item);
+  update(id: string, item: Partial<T>): Observable<T> {
+    return this.service.update?.(id, item) || new Observable(obs => obs.complete());
   }
 
-  delete_(id: string): Observable<void> {
-    return this.delete(id);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  deleteItem(id: string): Observable<void> {
-    return this.delete(id);
+  delete(id: string): Observable<void> {
+    return this.service.delete?.(id) || new Observable(obs => obs.complete());
   }
 }

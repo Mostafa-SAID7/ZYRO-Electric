@@ -1,6 +1,8 @@
 // Open/Closed Principle: Open for extension, closed for modification
 // New shipping methods can be added without modifying existing code
 
+import { Injectable } from '@angular/core';
+
 export interface IShippingStrategy {
   getName(): string;
   calculateCost(weight: number, distance: number): number;
@@ -63,6 +65,11 @@ export class OvernightShipping implements IShippingStrategy {
 }
 
 export class ShippingStrategyFactory {
+  private strategies = new Map<string, IShippingStrategy>([
+    ['standard', new StandardShipping()],
+    ['express', new ExpressShipping()],
+    ['overnight', new OvernightShipping()]
+  ]);
   private strategies = new Map<string, IShippingStrategy>([
     ['standard', new StandardShipping()],
     ['express', new ExpressShipping()],

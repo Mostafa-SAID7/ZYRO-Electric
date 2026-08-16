@@ -5,7 +5,7 @@ import { Injectable, Injector } from '@angular/core';
 
 /**
  * Service Locator
- * Provides a centralized way to access services
+ * Provides a centralized way to access services via Angular's Injector
  * Implements Service Locator pattern for Dependency Inversion
  */
 @Injectable({ providedIn: 'root' })
@@ -21,7 +21,7 @@ export class ServiceLocator {
   }
 
   /**
-   * Get any service by token/class
+   * Get any service by token/class using Angular's Injector
    * Decouples component from direct service dependencies
    */
   getService<T>(serviceToken: any): T {

@@ -1,5 +1,7 @@
 // Open/Closed Principle: New notification channels can be added without modifying existing code
 
+import { Injectable } from '@angular/core';
+
 export interface INotificationChannel {
   getName(): string;
   send(recipient: string, subject: string, message: string): Promise<boolean>;
@@ -49,6 +51,7 @@ export class SlackNotification implements INotificationChannel {
   }
 }
 
+@Injectable({ providedIn: 'root' })
 export class NotificationChannelFactory {
   private channels = new Map<string, INotificationChannel>([
     ['email', new EmailNotification()],
