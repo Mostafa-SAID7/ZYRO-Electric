@@ -1,26 +1,19 @@
-﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FeaturesGridComponent } from './features-grid.component';
+﻿import { FeaturesGridComponent } from './features-grid.component';
 import { HomeModule } from '../../home.module';
 import { RouterTestingModule } from '@angular/router/testing';
+import { createBasicComponentTest } from '../../shared/testing/test-helpers';
 
 describe('FeaturesGridComponent', () => {
-  let component: FeaturesGridComponent;
-  let fixture: ComponentFixture<FeaturesGridComponent>;
+  const { beforeEach: setupTest, createTest, getComponent } = createBasicComponentTest(
+    FeaturesGridComponent,
+    [HomeModule, RouterTestingModule]
+  );
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HomeModule, RouterTestingModule],
-      schemas: [ NO_ERRORS_SCHEMA ]
-    }).compileComponents();
+  beforeEach(setupTest);
 
-    fixture = TestBed.createComponent(FeaturesGridComponent);
-    component = fixture.componentInstance;
-    component.features = [];
-    fixture.detectChanges();
+  beforeEach(() => {
+    getComponent().features = [];
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it('should create', createTest());
 });

@@ -157,12 +157,12 @@ export function setupNotificationMock() {
  * 
  * @example
  * describe('MyComponent', () => {
- *   const { beforeEach, createTest } = createBasicComponentTest(
+ *   const { beforeEach: setupTest, createTest, getComponent } = createBasicComponentTest(
  *     MyComponent,
  *     [SharedModule]
  *   );
  *   
- *   beforeEach(beforeEach);
+ *   beforeEach(setupTest);
  *   
  *   it('should create', createTest());
  * });
@@ -187,6 +187,8 @@ export function createBasicComponentTest<T>(
     },
     createTest: () => () => {
       expect(component).toBeTruthy();
-    }
+    },
+    getComponent: () => component,
+    getFixture: () => fixture
   };
 }

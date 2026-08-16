@@ -295,7 +295,29 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.authStateSubject.value.isAuthenticated;
+    // Check both in-memory state and storage for robustness
+    const stateIsAuth = this.authStateSubject.value.isAuthenticated;
+    const storageData = this.loadFromStorage();
+    const storageIsAuth = !!storageData?.token && !!storageData?.user;
+    
+    const result = stateIsAuth || storageIsAuth;
+    
+    if (!result && (stateIsAuth || storageIsAuth)) {
+      // If one says authenticated but other doesn't, sync them
+      if (storageIsAuth && !stateIsAuth) {
+        console.warn('[AuthService] Storage has auth data but state does not - syncing state');
+        this.authStateSubject.next({
+          user: storageData?.user || null,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+          token: storageData?.token || null
+        });
+        return true;
+      }
+    }
+    
+    return result;
   }
 
   getAuthToken(): string | null {
