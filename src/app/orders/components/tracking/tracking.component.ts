@@ -312,9 +312,9 @@ export class TrackingComponent implements OnInit {
             </div>
             <div class="total-row">
               <span class="label">Shipping:</span>
-              <span class="value">$${this.order.shippingCost.toFixed(2)}</span>
+              <span class="value">$${this.order.shipping.toFixed(2)}</span>
             </div>
-            ${this.order.discount > 0 ? `
+            ${this.order.discount && this.order.discount > 0 ? `
             <div class="total-row">
               <span class="label">Discount:</span>
               <span class="value" style="color: #10b981;">-$${this.order.discount.toFixed(2)}</span>
