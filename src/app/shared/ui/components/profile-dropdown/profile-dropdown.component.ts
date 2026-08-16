@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter, HostListener, ElementRef, inject } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-profile-dropdown',
   standalone: true,
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, RouterModule],
   template: `
     <div class="relative">
       <!-- Avatar Button -->
@@ -34,72 +35,80 @@ import { LucideAngularModule } from 'lucide-angular';
           <!-- Menu Items -->
           <div class="py-2">
             <!-- Profile -->
-            <button
-              (click)="navigateTo('/profile')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+            <a
+              routerLink="/profile"
+              (click)="toggleDropdown()"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group cursor-pointer">
               <lucide-icon name="user" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>My Profile</span>
-            </button>
+            </a>
 
             <!-- Orders Tracking -->
-            <button
-              (click)="navigateTo('/orders/tracking')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+            <a
+              routerLink="/orders/tracking"
+              (click)="toggleDropdown()"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group cursor-pointer">
               <lucide-icon name="package" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Track Orders</span>
-            </button>
+            </a>
 
             <!-- Orders History -->
-            <button
-              (click)="navigateTo('/profile')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+            <a
+              routerLink="/profile"
+              (click)="toggleDropdown()"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group cursor-pointer">
               <lucide-icon name="list" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Order History</span>
-            </button>
+            </a>
 
             <div class="my-2 border-t border-border/50"></div>
 
             <!-- Wishlist -->
-            <button
-              (click)="navigateTo('/profile')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+            <a
+              routerLink="/profile"
+              (click)="toggleDropdown()"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group cursor-pointer">
               <lucide-icon name="star" class="w-4 h-4 text-muted-foreground group-hover:text-yellow-500 transition-colors"></lucide-icon>
               <span>Wishlist</span>
-            </button>
+            </a>
 
             <!-- Saved Addresses -->
-            <button
-              (click)="navigateTo('/profile')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+            <a
+              routerLink="/profile"
+              (click)="toggleDropdown()"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group cursor-pointer">
               <lucide-icon name="map-pin" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Saved Addresses</span>
-            </button>
+            </a>
 
             <!-- Payment Methods -->
-            <button
-              (click)="navigateTo('/profile')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+            <a
+              routerLink="/profile"
+              (click)="toggleDropdown()"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group cursor-pointer">
               <lucide-icon name="credit-card" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Payment Methods</span>
-            </button>
+            </a>
 
             <div class="my-2 border-t border-border/50"></div>
 
             <!-- Settings -->
-            <button
-              (click)="navigateTo('/profile')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+            <a
+              routerLink="/profile"
+              (click)="toggleDropdown()"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group cursor-pointer">
               <lucide-icon name="sliders" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Preferences</span>
-            </button>
+            </a>
 
             <!-- Help & Support -->
-            <button
-              (click)="navigateTo('/help')"
-              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group">
+            <a
+              routerLink="/help"
+              (click)="toggleDropdown()"
+              class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group cursor-pointer">
               <lucide-icon name="help-circle" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
               <span>Help & Support</span>
-            </button>
+            </a>
 
             <div class="my-2 border-t border-border/50"></div>
 
@@ -126,7 +135,6 @@ export class ProfileDropdownComponent {
   @Input() userEmail: string = '';
   @Input() isOnline: boolean = false;
   @Output() logout = new EventEmitter<void>();
-  @Output() navigate = new EventEmitter<string>();
 
   isOpen = false;
   private elementRef = inject(ElementRef);
@@ -137,12 +145,6 @@ export class ProfileDropdownComponent {
 
   toggleDropdown(): void {
     this.isOpen = !this.isOpen;
-  }
-
-  navigateTo(route: string): void {
-    this.isOpen = false;
-    console.log(`[ProfileDropdown] Emitting navigation event for: ${route}`);
-    this.navigate.emit(route);
   }
 
   onLogout(): void {

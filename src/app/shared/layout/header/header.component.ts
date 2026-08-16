@@ -255,17 +255,6 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  onProfileNavigate(route: string): void {
-    console.log(`[Header] Received navigation event from profile dropdown:`, route);
-    this.router.navigate([route]).then(success => {
-      if (!success) {
-        console.error(`[Header] Navigation to ${route} failed`);
-      }
-    }).catch(err => {
-      console.error(`[Header] Navigation error:`, err);
-    });
-  }
-
   logout(): void {
     this.onProfileLogout();
   }
