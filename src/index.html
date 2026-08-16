@@ -14,9 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Load Cairo font via link tag (non-blocking, no FOUC) -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- Preload critical LCP hero image (first slide) -->
-  <link rel="preload" as="image" href="/assets/banners/banner-laptop-accessories.png">
-  <!-- Prefetch remaining hero banners -->
+  <!-- Prefetch hero banners for faster slide transitions (not LCP, so prefetch not preload) -->
+  <link rel="prefetch" as="image" href="/assets/banners/banner-laptop-accessories.png">
   <link rel="prefetch" as="image" href="/assets/banners/banner-smartphone-accessories.png">
   <link rel="prefetch" as="image" href="/assets/banners/banner-charging-accessories.png">
   <!-- Critical inline CSS + shimmer skeleton -->
