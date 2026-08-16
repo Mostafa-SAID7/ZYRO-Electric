@@ -13,7 +13,7 @@ export class EmailNotification implements INotificationChannel {
   }
 
   async send(recipient: string, subject: string, message: string): Promise<boolean> {
-    console.log(`📧 Email to ${recipient}: ${subject} - ${message}`);
+    // Do not log raw payloads - recipient, subject, and message may contain PII
     return new Promise(resolve => setTimeout(() => resolve(true), 500));
   }
 }
@@ -24,7 +24,7 @@ export class SMSNotification implements INotificationChannel {
   }
 
   async send(recipient: string, subject: string, message: string): Promise<boolean> {
-    console.log(`📱 SMS to ${recipient}: ${subject} - ${message}`);
+    // Do not log raw payloads - recipient, subject, and message may contain PII
     return new Promise(resolve => setTimeout(() => resolve(true), 300));
   }
 }
@@ -35,7 +35,7 @@ export class PushNotification implements INotificationChannel {
   }
 
   async send(recipient: string, subject: string, message: string): Promise<boolean> {
-    console.log(`🔔 Push to ${recipient}: ${subject} - ${message}`);
+    // Do not log raw payloads - recipient, subject, and message may contain PII
     return new Promise(resolve => setTimeout(() => resolve(true), 200));
   }
 }
@@ -46,7 +46,7 @@ export class SlackNotification implements INotificationChannel {
   }
 
   async send(recipient: string, subject: string, message: string): Promise<boolean> {
-    console.log(`💬 Slack to ${recipient}: ${subject} - ${message}`);
+    // Do not log raw payloads - recipient, subject, and message may contain PII
     return new Promise(resolve => setTimeout(() => resolve(true), 400));
   }
 }

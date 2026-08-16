@@ -22,6 +22,11 @@ import { environment } from '../../../environments/environment';
  * - CSRF token injection for state-changing operations
  * - Automatic cache invalidation for POST/PUT/DELETE requests
  * - Service-level cache with TTL expiration
+ * 
+ * Cache Key Namespace:
+ * All HTTP cache keys use the format: http:{resource}:{id}:{queryHash}
+ * where resource is derived from endpoint (products, categories, search, etc.)
+ * This aligns with invalidation patterns like http:products:*, http:categories:*
  */
 @Injectable()
 export class CacheInterceptor implements HttpInterceptor {
@@ -34,13 +39,12 @@ export class CacheInterceptor implements HttpInterceptor {
   // Cacheable methods (only GET and HEAD)
   private readonly CACHEABLE_METHODS = ['GET', 'HEAD'];
 
-  // Explicit allowlist of cacheable endpoints
-  // Only includes public, variant-independent endpoints that don't depend on authentication
-  private readonly CACHEABLE_ENDPOINTS = [
-    '/api/products',      // Public product catalog - safe to cache across sessions
-    '/api/categories',    // Public category data - safe to cache across sessions
-    '/api/search',        // Public search results - safe to cache across sessions
-  ];
+  // Explicit allowlist of cacheable endpoints with resource identifiers
+  private readonly CACHEABLE_ENDPOINTS: { [key: string]: string } = {
+    '/api/products': 'products',
+    '/api/categories': 'categories',
+    '/api/search': 'search'
+  };
 
   // Cache TTL defaults (in milliseconds)
   private readonly DEFAULT_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
@@ -53,29 +57,42 @@ export class CacheInterceptor implements HttpInterceptor {
     '/api/search': 30 * 60 * 1000,          // 30 minutes
   };
 
+  // Mutation endpoint to resource mapping for cache invalidation
+  // Maps mutation endpoints to the resources they affect
+  private readonly MUTATION_INVALIDATION_MAP: { [key: string]: string[] } = {
+    '/api/products': ['http:products:*', 'http:search:*'],
+    '/api/categories': ['http:categories:*', 'http:search:*'],
+    '/api/cart': ['http:cart:*'],
+    '/api/orders': ['http:orders:*'],
+    '/api/auth': ['http:auth:*', 'http:user:*'],
+    '/api/coupons': ['http:coupon:*', 'http:discount:*']
+  };
+
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    // For cacheable GET/HEAD requests, use caching strategy
+    if (this.isCacheable(request)) {
+      return this.handleCacheableRequest(request, next);
+    }
+
     // Add CSRF token to state-changing requests only if origin is trusted
     if (!this.CACHEABLE_METHODS.includes(request.method) && this.isTrustedOrigin(request)) {
       request = this.addCSRFToken(request);
     }
 
-    // For other requests, invalidate related caches after a successful mutation
-    return next.handle(request).pipe(
-      tap(event => {
-        if (
-          request.method !== 'GET' &&
-          request.method !== 'HEAD' &&
-          event instanceof HttpResponse &&
-          event.status >= 200 &&
-          event.status < 300
-        ) {
-          this.invalidateRelatedCaches(request);
-        }
-      })
-    );
+    // For mutations, invalidate related caches after a successful response
+    return this.handleMutationResponse(request, next);
+  }
+
+  /**
+   * Handle mutation response and invalidate related caches
+   */
+  private handleMutationResponse(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       tap(event => {
         if (
@@ -145,11 +162,11 @@ export class CacheInterceptor implements HttpInterceptor {
         setHeaders: {
           'X-CSRF-Token': csrfToken
         }
-    // Don't cache if Cache-Control: no-cache or no-store
-    const cacheControl = request.headers.get('Cache-Control');
-    if (cacheControl && /\b(no-cache|no-store)\b/i.test(cacheControl)) {
-      return false;
+      });
     }
+    return request;
+  }
+
   /**
    * Check if request origin is trusted (matches configured API origin)
    * Prevents CSRF token injection to third-party endpoints
@@ -184,7 +201,7 @@ export class CacheInterceptor implements HttpInterceptor {
     }
 
     // Check if endpoint is in the allowlist
-    const isCacheableEndpoint = this.CACHEABLE_ENDPOINTS.some(endpoint =>
+    const isCacheableEndpoint = Object.keys(this.CACHEABLE_ENDPOINTS).some(endpoint =>
       request.url.includes(endpoint)
     );
 
@@ -247,31 +264,69 @@ export class CacheInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Generate cache key from request URL and query params
+   * Generate cache key with consistent namespace
+   * Format: http:{resource}:{queryHash}
+   * 
+   * Examples:
+   * - http:products:abc123def456
+   * - http:categories:xyz789
+   * - http:search:query_laptop
+   * 
+   * This enables aligned invalidation patterns like http:products:*
    */
   private generateCacheKey(request: HttpRequest<unknown>): string {
-    const url = request.url;
+    // Determine resource type from URL
+    let resourceType = 'http'; // default fallback
+    for (const [endpoint, resource] of Object.entries(this.CACHEABLE_ENDPOINTS)) {
+      if (request.url.includes(endpoint)) {
+        resourceType = resource;
+        break;
+      }
+    }
+
+    // Generate query hash for uniqueness
     const params = request.params.keys()
       .sort()
       .map(key => `${key}=${request.params.get(key)}`)
       .join('&');
 
-    return params ? `http:${url}?${params}` : `http:${url}`;
+    const queryHash = params ? this.hashString(params) : 'default';
+
+    return `http:${resourceType}:${queryHash}`;
+  }
+
+  /**
+   * Simple string hash for query parameters
+   * Creates a short, consistent hash of query strings
+   */
+  private hashString(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash).toString(36);
   }
 
   /**
    * Invalidate related caches on state-changing operations
    * 
-   * Only invalidates caches for endpoints in the allowlist.
-   * User-specific endpoints like /api/orders are not cached and don't need invalidation.
+   * Uses the MUTATION_INVALIDATION_MAP to determine which cache patterns
+   * to invalidate based on the mutated endpoint.
    */
   private invalidateRelatedCaches(request: HttpRequest<unknown>): void {
     const url = request.url.toLowerCase();
 
-    if (url.includes('/products') || url.includes('/categories')) {
-      this.cacheService.invalidate('product:*');
-      this.cacheService.invalidate('category:*');
-      this.cacheService.invalidate('search:*');
+    // Find matching endpoints in the invalidation map
+    for (const [endpoint, patterns] of Object.entries(this.MUTATION_INVALIDATION_MAP)) {
+      if (url.includes(endpoint)) {
+        // Invalidate all related cache patterns for this endpoint
+        patterns.forEach(pattern => {
+          this.cacheService.invalidate(pattern);
+        });
+        return;
+      }
     }
   }
 }

@@ -2,10 +2,15 @@
 
 import { Injectable } from '@angular/core';
 
+export interface DiscountContext {
+  subtotal: number;
+  itemCount?: number;
+}
+
 export interface IDiscountStrategy {
   getType(): string;
-  calculate(subtotal: number): number;
-  validate(context: unknown): boolean;
+  calculate(context: DiscountContext): number;
+  validate(context: DiscountContext): boolean;
 }
 
 export class PercentageDiscount implements IDiscountStrategy {
@@ -15,14 +20,12 @@ export class PercentageDiscount implements IDiscountStrategy {
     return 'PERCENTAGE';
   }
 
-  calculate(subtotal: number): number {
-    return Math.round(subtotal * (this.percent / 100) * 100) / 100;
+  calculate(context: DiscountContext): number {
+    return Math.round(context.subtotal * (this.percent / 100) * 100) / 100;
   }
 
-  validate(context: unknown): boolean {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _unused = context;
-    return this.percent > 0 && this.percent <= 100;
+  validate(context: DiscountContext): boolean {
+    return this.percent > 0 && this.percent <= 100 && context.subtotal >= 0;
   }
 }
 
@@ -33,14 +36,12 @@ export class FixedDiscount implements IDiscountStrategy {
     return 'FIXED';
   }
 
-  calculate(subtotal: number): number {
-    return Math.min(this.amount, subtotal);
+  calculate(context: DiscountContext): number {
+    return Math.min(this.amount, context.subtotal);
   }
 
-  validate(context: unknown): boolean {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _unused = context;
-    return this.amount > 0;
+  validate(context: DiscountContext): boolean {
+    return this.amount > 0 && context.subtotal >= 0;
   }
 }
 
@@ -51,16 +52,21 @@ export class BulkDiscount implements IDiscountStrategy {
     return 'BULK';
   }
 
-  calculate(bulkSubtotal: number): number {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _unused = bulkSubtotal;
-    // Calculate based on context
-    return 0;
+  calculate(context: DiscountContext): number {
+    // Only apply discount if item count meets minimum quantity threshold
+    if (!context.itemCount || context.itemCount < this.minQuantity) {
+      return 0;
+    }
+    return Math.round(context.subtotal * (this.discountPercent / 100) * 100) / 100;
   }
 
-  validate(context: unknown): boolean {
-    const c = context as Record<string, unknown>;
-    return typeof c?.itemCount === 'number' && c.itemCount >= this.minQuantity;
+  validate(context: DiscountContext): boolean {
+    return (
+      typeof context?.itemCount === 'number' &&
+      context.itemCount >= this.minQuantity &&
+      this.discountPercent > 0 &&
+      this.discountPercent <= 100
+    );
   }
 }
 
@@ -76,10 +82,10 @@ export class DiscountStrategyFactory {
     return this.strategies.get(type.toUpperCase());
   }
 
-  applyDiscount(strategy: IDiscountStrategy, subtotal: number): number {
-    if (!strategy.validate({ subtotal })) {
+  applyDiscount(strategy: IDiscountStrategy, context: DiscountContext): number {
+    if (!strategy.validate(context)) {
       return 0;
     }
-    return strategy.calculate(subtotal);
+    return strategy.calculate(context);
   }
 }
