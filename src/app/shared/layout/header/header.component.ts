@@ -79,6 +79,13 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn = !!user;
     this.userName = user?.name || '';
     this.userEmail = user?.email || '';
+
+    // Subscribe to auth state changes to update header when user logs in/out
+    this.authService.authState$.subscribe(state => {
+      this.isLoggedIn = state.isAuthenticated;
+      this.userName = state.user?.name || '';
+      this.userEmail = state.user?.email || '';
+    });
   }
 
   private passwordMatchValidator(g: FormGroup) {
@@ -135,13 +142,7 @@ export class HeaderComponent implements OnInit {
     this.isAuthLoading = true;
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
-        this.isAuthLoading = false;
-        this.isLoggedIn = true;
-        const user = this.authService.getCurrentUser();
-        this.userName = user?.name || '';
-        this.userEmail = user?.email || '';
-        this.showToast('success', 'Success', 'Logged in successfully');
-        this.closeAuthModal();
+        this.handleAuthSuccess('Logged in successfully');
       },
       error: (err) => {
         this.isAuthLoading = false;
@@ -155,19 +156,23 @@ export class HeaderComponent implements OnInit {
     this.isAuthLoading = true;
     this.authService.register(this.registerForm.value).subscribe({
       next: () => {
-        this.isAuthLoading = false;
-        this.isLoggedIn = true;
-        const user = this.authService.getCurrentUser();
-        this.userName = user?.name || '';
-        this.userEmail = user?.email || '';
-        this.showToast('success', 'Success', 'Account created successfully');
-        this.closeAuthModal();
+        this.handleAuthSuccess('Account created successfully');
       },
       error: (err) => {
         this.isAuthLoading = false;
         this.showToast('error', 'Registration Failed', err || 'An error occurred');
       }
     });
+  }
+
+  private handleAuthSuccess(message: string): void {
+    this.isAuthLoading = false;
+    this.isLoggedIn = true;
+    const user = this.authService.getCurrentUser();
+    this.userName = user?.name || '';
+    this.userEmail = user?.email || '';
+    this.showToast('success', 'Success', message);
+    this.closeAuthModal();
   }
 
   isLoginFieldInvalid(fieldName: string): boolean {
