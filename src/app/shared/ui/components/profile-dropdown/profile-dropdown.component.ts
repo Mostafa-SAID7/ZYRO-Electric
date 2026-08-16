@@ -45,7 +45,7 @@ import { LucideAngularModule } from 'lucide-angular';
 
             <!-- Orders Tracking -->
             <a
-              routerLink="/orders/tracking"
+              routerLink="/profile"
               (click)="toggleDropdown()"
               class="w-full px-4 py-3 flex items-center gap-3 hover:bg-secondary/50 transition-colors text-left text-sm font-medium text-foreground group cursor-pointer">
               <lucide-icon name="package" class="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors"></lucide-icon>
