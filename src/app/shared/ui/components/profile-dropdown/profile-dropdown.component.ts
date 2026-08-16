@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, HostListener, ElementRef, inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -127,9 +126,9 @@ export class ProfileDropdownComponent {
   @Input() userEmail: string = '';
   @Input() isOnline: boolean = false;
   @Output() logout = new EventEmitter<void>();
+  @Output() navigate = new EventEmitter<string>();
 
   isOpen = false;
-  private router = inject(Router);
   private elementRef = inject(ElementRef);
 
   get userInitial(): string {
@@ -142,23 +141,8 @@ export class ProfileDropdownComponent {
 
   navigateTo(route: string): void {
     this.isOpen = false;
-    console.log(`[ProfileDropdown] Navigating to: ${route}`, {
-      isOpen: this.isOpen
-    });
-    this.router.navigate([route]).then(success => {
-      if (!success) {
-        console.error(`[ProfileDropdown] Navigation to ${route} failed`, {
-          route,
-          userEmail: this.userEmail
-        });
-        // Try to navigate to home as fallback
-        this.router.navigate(['/']);
-      } else {
-        console.log(`[ProfileDropdown] Successfully navigated to ${route}`);
-      }
-    }).catch(err => {
-      console.error(`[ProfileDropdown] Navigation error:`, err);
-    });
+    console.log(`[ProfileDropdown] Emitting navigation event for: ${route}`);
+    this.navigate.emit(route);
   }
 
   onLogout(): void {

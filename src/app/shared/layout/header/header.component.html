@@ -91,7 +91,8 @@
             [userName]="userName"
             [userEmail]="userEmail"
             [isOnline]="true"
-            (logout)="onProfileLogout()">
+            (logout)="onProfileLogout()"
+            (navigate)="onProfileNavigate($event)">
           </app-profile-dropdown>
         }
 
