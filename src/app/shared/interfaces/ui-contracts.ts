@@ -21,8 +21,8 @@ export interface IPaginator {
 }
 
 export interface IFilter {
-  filters: Record<string, any>;
-  onFilterChange: (filters: Record<string, any>) => void;
+  filters: Record<string, unknown>;
+  onFilterChange: (filters: Record<string, unknown>) => void;
 }
 
 export interface ISortable {

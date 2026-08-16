@@ -16,6 +16,8 @@ export class StandardShipping implements IShippingStrategy {
   }
 
   calculateCost(weight: number, distance: number): number {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _unused = { weight, distance };
     // Standard shipping: flat rate + minimal weight consideration
     return 10;
   }

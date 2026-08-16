@@ -11,7 +11,6 @@ import {
 } from '../models';
 import { MOCK_PRODUCTS_NICHES } from '../data/mock-products-niches';
 import { SORT_STRATEGY_TOKEN, FILTER_STRATEGY_TOKEN } from '../../shared/interfaces/dependency-injection';
-import type { ISortStrategy, IFilterStrategy } from '../../shared/interfaces/business-logic';
 
 @Injectable({
   providedIn: 'root'

@@ -1,7 +1,7 @@
 // Dependency Inversion: Factory Provider pattern
 // Creates service instances based on configuration, not hardcoded in components
 
-import { Provider, InjectionToken } from '@angular/core';
+import { Provider } from '@angular/core';
 import { ProductsService } from '../../products/services/products.service';
 import { CartsService } from '../../carts/services/carts.service';
 import { AuthService } from '../../auth/services/auth.service';

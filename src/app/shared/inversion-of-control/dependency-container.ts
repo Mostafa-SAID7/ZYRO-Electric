@@ -6,11 +6,11 @@ import { Injectable, Type, InjectionToken } from '@angular/core';
 export type ServiceType<T> = Type<T> | InjectionToken<T>;
 
 interface ServiceDescriptor {
-  provide: any;
-  useClass?: any;
-  useValue?: any;
-  useFactory?: (...args: any[]) => any;
-  deps?: any[];
+  provide: unknown;
+  useClass?: unknown;
+  useValue?: unknown;
+  useFactory?: (...args: unknown[]) => unknown;
+  deps?: unknown[];
 }
 
 /**
@@ -20,13 +20,13 @@ interface ServiceDescriptor {
  */
 @Injectable({ providedIn: 'root' })
 export class DependencyContainer {
-  private services = new Map<any, any>();
-  private singletons = new Map<any, any>();
+  private services = new Map<unknown, unknown>();
+  private singletons = new Map<unknown, unknown>();
 
   /**
    * Register a service with its implementation
    */
-  register<T>(provide: ServiceType<T>, implementation: Type<T> | any): void {
+  register<T>(provide: ServiceType<T>, implementation: Type<T> | unknown): void {
     this.services.set(provide, {
       provide,
       useClass: implementation
@@ -36,7 +36,7 @@ export class DependencyContainer {
   /**
    * Register a singleton service (same instance everywhere)
    */
-  registerSingleton<T>(provide: ServiceType<T>, implementation: Type<T> | any): void {
+  registerSingleton<T>(provide: ServiceType<T>, implementation: Type<T> | unknown): void {
     const descriptor = {
       provide,
       useClass: implementation,
@@ -60,8 +60,8 @@ export class DependencyContainer {
    */
   registerFactory<T>(
     provide: ServiceType<T>,
-    factory: (...args: any[]) => T,
-    deps?: ServiceType<any>[]
+    factory: (...args: unknown[]) => T,
+    deps?: ServiceType<unknown>[]
   ): void {
     this.services.set(provide, {
       provide,
@@ -81,25 +81,26 @@ export class DependencyContainer {
     }
 
     // Return singleton if already instantiated
-    if (descriptor.isSingleton && this.singletons.has(provide)) {
-      return this.singletons.get(provide);
+    if ((descriptor as { isSingleton?: boolean }).isSingleton && this.singletons.has(provide)) {
+      return this.singletons.get(provide) as T;
     }
 
     let instance: T;
 
-    if (descriptor.useValue !== undefined) {
-      instance = descriptor.useValue;
-    } else if (descriptor.useClass) {
-      instance = new descriptor.useClass();
-    } else if (descriptor.useFactory) {
-      const deps = descriptor.deps ? descriptor.deps.map(d => this.resolve(d)) : [];
-      instance = descriptor.useFactory(...deps);
+    const d = descriptor as ServiceDescriptor;
+    if (d.useValue !== undefined) {
+      instance = d.useValue as T;
+    } else if (d.useClass) {
+      instance = new (d.useClass as Type<T>)();
+    } else if (d.useFactory) {
+      const deps = d.deps ? d.deps.map(dep => this.resolve(dep as ServiceType<unknown>)) : [];
+      instance = (d.useFactory as (...args: unknown[]) => T)(...deps);
     } else {
       throw new Error(`Invalid service descriptor for ${provide}`);
     }
 
     // Cache singleton
-    if (descriptor.isSingleton) {
+    if ((descriptor as { isSingleton?: boolean }).isSingleton) {
       this.singletons.set(provide, instance);
     }
 
@@ -117,7 +118,7 @@ export class DependencyContainer {
   /**
    * Get all registered service tokens
    */
-  getRegisteredServices(): any[] {
+  getRegisteredServices(): unknown[] {
     return Array.from(this.services.keys());
   }
 }

@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { Product, Review } from '../../products/models';
 import { CartItem } from '../../carts/models';
 import { Order } from '../../orders/models';
-import { Category } from '../../home/models';
 
 // ============ REPOSITORY INTERFACES ============
 
@@ -33,8 +32,6 @@ export interface IProductRepository extends IReadRepository<Product> {
   getFeatured(): Observable<Product[]>;
   getTopRated(): Observable<Product[]>;
 }
-
-export interface IProductPersistence extends IWriteRepository<Product> {}
 
 // ============ CART REPOSITORIES ============
 

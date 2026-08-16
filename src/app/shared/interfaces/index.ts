@@ -1,17 +1,20 @@
 // Interface Segregation: Separate concerns into focused interfaces
 
+import { Observable } from 'rxjs';
+import { CartItem } from '../../carts/models';
+
 // Read operations only
 export interface IProductRepository {
-  getAll(): Promise<any[]>;
-  getById(id: string): Promise<any>;
-  search(query: string): Promise<any[]>;
+  getAll(): Promise<unknown[]>;
+  getById(id: string): Promise<unknown>;
+  search(query: string): Promise<unknown[]>;
 }
 
 // Write operations only
 export interface IProductPersistence {
-  save(product: any): Promise<void>;
+  save(product: unknown): Promise<void>;
   delete(id: string): Promise<void>;
-  update(id: string, product: any): Promise<void>;
+  update(id: string, product: unknown): Promise<void>;
 }
 
 // Cart business operations
@@ -50,6 +53,3 @@ export interface ITwoFactorAuth {
   disableTwoFactor(code: string): Promise<void>;
   verifyTwoFactor(code: string): Promise<boolean>;
 }
-
-import { Observable } from 'rxjs';
-import { CartItem } from '../../carts/models';

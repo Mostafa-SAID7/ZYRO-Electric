@@ -15,7 +15,8 @@ export interface PaymentDetails {
   expiryDate?: string;
   accountNumber?: string;
   email?: string;
-  [key: string]: any;
+  token?: string;
+  [key: string]: unknown;
 }
 
 export interface PaymentResult {
@@ -30,6 +31,8 @@ export class CreditCardPayment implements IPaymentStrategy {
   }
 
   processPayment(amount: number, details: PaymentDetails): Promise<PaymentResult> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _unused = { amount, details };
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
@@ -52,6 +55,8 @@ export class PayPalPayment implements IPaymentStrategy {
   }
 
   processPayment(amount: number, details: PaymentDetails): Promise<PaymentResult> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _unused = { amount, details };
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
@@ -74,6 +79,8 @@ export class ApplePayPayment implements IPaymentStrategy {
   }
 
   processPayment(amount: number, details: PaymentDetails): Promise<PaymentResult> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _unused = { amount, details };
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({

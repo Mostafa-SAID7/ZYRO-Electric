@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product, Review } from '../../models';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
-import { IProductService, ICartService } from '../../../shared/interfaces/business-logic';
 import { PRODUCT_SERVICE_TOKEN, CART_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({

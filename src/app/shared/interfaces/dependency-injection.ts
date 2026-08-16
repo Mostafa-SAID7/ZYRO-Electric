@@ -12,7 +12,6 @@ import {
   IFilterStrategy
 } from './business-logic';
 import {
-  IReadRepository,
   IProductRepository,
   ICartReadRepository,
   IOrderRepository

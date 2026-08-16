@@ -22,7 +22,7 @@ export class CalculationService {
     return Math.round(subtotal * (discountPercent / 100) * 100) / 100;
   }
 
-  calculateTotal(subtotal: number, tax: number, shipping: number, discount: number = 0): number {
+  calculateTotal(subtotal: number, tax: number, shipping: number, discount = 0): number {
     return Math.max(0, Math.round((subtotal + tax + shipping - discount) * 100) / 100);
   }
 

@@ -2,7 +2,6 @@ import { Component, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
-import { IAuthenticationService } from '../../../shared/interfaces/business-logic';
 import { AUTH_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({

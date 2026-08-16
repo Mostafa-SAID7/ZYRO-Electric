@@ -5,7 +5,6 @@ import { UiToastComponent } from '../../../shared/ui/components/toast/toast.comp
 import { FilterGroup } from '../../../shared/ui/components/filter-panel/filter-panel.component';
 import { SortOption } from '../../../shared/ui/components/sort-dropdown/sort-dropdown.component';
 import { SORT_OPTIONS, DEFAULT_FILTER_GROUPS, DEFAULT_PAGE_SIZE, DEFAULT_CURRENT_PAGE } from '../../../shared/data/mock-data';
-import { IProductService, ICartService } from '../../../shared/interfaces/business-logic';
 import { PRODUCT_SERVICE_TOKEN, CART_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({

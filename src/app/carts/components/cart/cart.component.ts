@@ -3,7 +3,6 @@ import { CartItem, CartSummary } from '../../models';
 import { Router } from '@angular/router';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
 import { UiConfirmationComponent } from '../../../shared/ui/components/confirmation/confirmation.component';
-import { ICartService, IProductService } from '../../../shared/interfaces/business-logic';
 import { CART_SERVICE_TOKEN, PRODUCT_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({

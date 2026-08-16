@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 // Single Responsibility: Handle storage operations only
 @Injectable({ providedIn: 'root' })
 export class PersistenceService {
-  set(key: string, value: any): void {
+  set(key: string, value: unknown): void {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {

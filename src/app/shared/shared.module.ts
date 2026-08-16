@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UiModule } from './ui/ui.module';
-import { FactoryProvider } from './inversion-of-control/factory-provider';
 
 // DIP: Import all injection tokens
 import {

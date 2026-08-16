@@ -2,7 +2,7 @@
 // Each interface should have a single purpose
 
 import { Observable } from 'rxjs';
-import { AddToCartRequest, UpdateCartItemRequest, CartSummary, Cart } from '../../carts/models';
+import { AddToCartRequest, UpdateCartItemRequest, CartSummary, Cart, CartItem } from '../../carts/models';
 import { AuthCredentials, RegisterData, User, UserProfile, AuthResponse } from '../../auth/models';
 import { Product, ProductPage, ProductFilter, Category, Review } from '../../products/models';
 import { Order, OrderItem, ShippingAddress, PaymentMethod, OrderPage, OrderFilter, OrderStatus } from '../../orders/models';
@@ -41,17 +41,17 @@ export interface IProductService extends IProductQuery, ICategoryQuery, IProduct
 export interface ICartQuery {
   getCart(): Observable<Cart>;
   getCartSummary(): CartSummary;
-  cartState$: Observable<any>;
-  cartItems$: Observable<any>;
+  cartState$: Observable<Cart>;
+  cartItems$: Observable<CartItem[]>;
   cartTotal$: Observable<number>;
   cartItemCount$: Observable<number>;
 }
 
 // ISP: Clients modifying cart only need write operations
 export interface ICartMutation {
-  addToCart(request: AddToCartRequest): Observable<any>;
-  removeFromCart(productId: string): Observable<any>;
-  updateCartItem(request: UpdateCartItemRequest): Observable<any>;
+  addToCart(request: AddToCartRequest): Observable<Cart>;
+  removeFromCart(productId: string): Observable<Cart>;
+  updateCartItem(request: UpdateCartItemRequest): Observable<Cart>;
   clearCart(): Observable<void>;
 }
 
@@ -145,31 +145,31 @@ export interface ICalculationService {
 
 // ISP: Clients filtering only need filter methods
 export interface IFilterService {
-  filter(items: any[], filters: any): any[];
+  filter(items: Product[], filters: unknown): Product[];
 }
 
 // ISP: Clients sorting only need sort methods
 export interface ISortService {
-  sort(items: any[], sortBy: string): any[];
+  sort(items: Product[], sortBy: string): Product[];
 }
 
 // ============ STRATEGY SERVICE INTERFACES ============
 
 // DIP: ProductsService depends on ISortStrategy abstraction, not concrete SortStrategyService
 export interface ISortStrategy {
-  sort(items: any[], sortBy: string): any[];
+  sort(items: Product[], sortBy: string): Product[];
 }
 
 // DIP: ProductsService depends on IFilterStrategy abstraction, not concrete FilterStrategyService
 export interface IFilterStrategy {
-  filter(items: any[], filters: any): any[];
+  filter(items: Product[], filters: unknown): Product[];
 }
 
 // ============ REVIEW SERVICE INTERFACE ============
 
 export interface IReviewService {
-  getReviews(productId: string): Observable<any[]>;
+  getReviews(productId: string): Observable<Review[]>;
   getAverageRating(productId: string): Observable<number>;
-  addReview(review: any): Observable<void>;
+  addReview(review: Review): Observable<void>;
   deleteReview(reviewId: string): Observable<void>;
 }

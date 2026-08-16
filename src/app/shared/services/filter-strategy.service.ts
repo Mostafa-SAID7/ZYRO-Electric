@@ -6,25 +6,26 @@ import { IFilterStrategy } from '../interfaces/business-logic';
 // DIP: Implements IFilterStrategy interface - depends on abstraction
 @Injectable({ providedIn: 'root' })
 export class FilterStrategyService implements IFilterStrategy {
-  filter(products: Product[], filters: any): Product[] {
+  filter(products: Product[], filters: unknown): Product[] {
+    const f = filters as Record<string, unknown>;
     return products.filter(product => {
-      if (filters.categories?.length && !filters.categories.includes(product.category)) {
+      if (f.categories && Array.isArray(f.categories) && f.categories.length > 0 && !f.categories.includes(product.category)) {
         return false;
       }
-      if (filters.minPrice !== undefined && product.price < filters.minPrice) {
+      if (typeof f.minPrice === 'number' && product.price < f.minPrice) {
         return false;
       }
-      if (filters.maxPrice !== undefined && product.price > filters.maxPrice) {
+      if (typeof f.maxPrice === 'number' && product.price > f.maxPrice) {
         return false;
       }
-      if (filters.rating !== undefined && (product.rating?.average || 0) < filters.rating) {
+      if (typeof f.rating === 'number' && (product.rating?.average || 0) < f.rating) {
         return false;
       }
-      if (filters.inStock !== undefined && (product.stock > 0) !== filters.inStock) {
+      if (f.inStock !== undefined && (product.stock > 0) !== f.inStock) {
         return false;
       }
-      if (filters.searchQuery) {
-        const query = filters.searchQuery.toLowerCase();
+      if (typeof f.searchQuery === 'string' && f.searchQuery) {
+        const query = f.searchQuery.toLowerCase();
         return (
           product.title.toLowerCase().includes(query) ||
           product.description.toLowerCase().includes(query)

@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { UserProfile } from '../../auth/models';
 import { Order } from '../../orders/models';
-import { IAuthenticationService, IOrderService } from '../../shared/interfaces/business-logic';
 import { AUTH_SERVICE_TOKEN, ORDER_SERVICE_TOKEN } from '../../shared/interfaces/dependency-injection';
 
 @Component({

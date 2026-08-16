@@ -12,7 +12,7 @@ export interface Coupon {
 // Single Responsibility: Handle coupon validation and discount calculation
 @Injectable({ providedIn: 'root' })
 export class CouponService {
-  private coupons: Map<string, Coupon> = new Map([
+  private coupons: Map<string, Coupon> = new Map<string, Coupon>([
     ['SAVE10', { code: 'SAVE10', discountPercent: 10, maxUses: 100, currentUses: 45, expiryDate: new Date('2025-12-31'), isActive: true }],
     ['SAVE20', { code: 'SAVE20', discountPercent: 20, maxUses: 50, currentUses: 48, expiryDate: new Date('2025-12-31'), isActive: true }],
     ['FREESHIP', { code: 'FREESHIP', discountPercent: 15, maxUses: 200, currentUses: 120, expiryDate: new Date('2025-12-31'), isActive: true }]

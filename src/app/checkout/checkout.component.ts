@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { CartItem } from '../carts/models';
 import { UiToastComponent } from '../shared/ui/components/toast/toast.component';
 import { UiConfirmationComponent } from '../shared/ui/components/confirmation/confirmation.component';
-import { ICartService, IAuthenticationService, IOrderService } from '../shared/interfaces/business-logic';
 import { CART_SERVICE_TOKEN, AUTH_SERVICE_TOKEN, ORDER_SERVICE_TOKEN } from '../shared/interfaces/dependency-injection';
 
 @Component({

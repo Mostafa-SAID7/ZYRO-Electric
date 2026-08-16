@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from '../../models';
-import { IOrderService } from '../../../shared/interfaces/business-logic';
 import { ORDER_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({

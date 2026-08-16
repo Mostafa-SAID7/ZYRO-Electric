@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 export interface IDiscountStrategy {
   getType(): string;
   calculate(subtotal: number): number;
-  validate(context: any): boolean;
+  validate(context: unknown): boolean;
 }
 
 export class PercentageDiscount implements IDiscountStrategy {
@@ -19,7 +19,9 @@ export class PercentageDiscount implements IDiscountStrategy {
     return Math.round(subtotal * (this.percent / 100) * 100) / 100;
   }
 
-  validate(context: any): boolean {
+  validate(context: unknown): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _unused = context;
     return this.percent > 0 && this.percent <= 100;
   }
 }
@@ -35,7 +37,9 @@ export class FixedDiscount implements IDiscountStrategy {
     return Math.min(this.amount, subtotal);
   }
 
-  validate(context: any): boolean {
+  validate(context: unknown): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _unused = context;
     return this.amount > 0;
   }
 }
@@ -47,13 +51,16 @@ export class BulkDiscount implements IDiscountStrategy {
     return 'BULK';
   }
 
-  calculate(subtotal: number): number {
+  calculate(bulkSubtotal: number): number {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _unused = bulkSubtotal;
     // Calculate based on context
     return 0;
   }
 
-  validate(context: any): boolean {
-    return context?.itemCount >= this.minQuantity;
+  validate(context: unknown): boolean {
+    const c = context as Record<string, unknown>;
+    return typeof c?.itemCount === 'number' && c.itemCount >= this.minQuantity;
   }
 }
 
