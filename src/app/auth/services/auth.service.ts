@@ -447,3 +447,4 @@ export class AuthService {
       isActive: true
     };
   }
+}

@@ -369,16 +369,33 @@ export class OrderService {
       if (stored) {
         // Convert date strings back to Date objects
         return stored.map((order: Record<string, unknown>) => ({
-          ...order,
+          id: order['id'] as string,
+          userId: order['userId'] as string,
+          items: order['items'] as any[],
+          total: order['total'] as number,
+          subtotal: order['subtotal'] as number,
+          tax: order['tax'] as number,
+          shipping: order['shipping'] as number,
+          discount: order['discount'] as number | undefined,
+          status: order['status'] as any,
+          paymentStatus: order['paymentStatus'] as any,
+          shippingAddress: order['shippingAddress'] as any,
+          billingAddress: order['billingAddress'] as any,
+          paymentMethod: order['paymentMethod'] as any,
           createdAt: new Date(order['createdAt'] as string),
           updatedAt: new Date(order['updatedAt'] as string),
           estimatedDelivery: order['estimatedDelivery'] ? new Date(order['estimatedDelivery'] as string) : undefined,
           actualDelivery: order['actualDelivery'] ? new Date(order['actualDelivery'] as string) : undefined,
+          trackingNumber: order['trackingNumber'] as string | undefined,
           history: (order['history'] as Record<string, unknown>[]).map((h: Record<string, unknown>) => ({
-            ...h,
-            timestamp: new Date(h['timestamp'] as string)
-          }))
-        }));
+            status: h['status'] as any,
+            timestamp: new Date(h['timestamp'] as string),
+            message: h['message'] as string,
+            metadata: h['metadata'] as Record<string, unknown>
+          })) as any[],
+          notes: order['notes'] as string | undefined,
+          cancellationReason: order['cancellationReason'] as string | undefined
+        } as unknown as Order));
       }
       return [];
     } catch (error) {
@@ -443,3 +460,4 @@ export class OrderService {
       return [];
     }
   }
+}
