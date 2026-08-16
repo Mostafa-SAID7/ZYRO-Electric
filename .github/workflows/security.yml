@@ -29,5 +29,5 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          npm install -g snyk
+          npm install --ignore-scripts -g snyk
           snyk test
