@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Order } from '../../models';
+import { Order } from '../../orders/models';
 
 // Single Responsibility: Handle order statistics and analytics only
 @Injectable({ providedIn: 'root' })

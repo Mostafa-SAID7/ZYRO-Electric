@@ -52,4 +52,4 @@ export interface ITwoFactorAuth {
 }
 
 import { Observable } from 'rxjs';
-import { CartItem } from '../../models';
+import { CartItem } from '../../carts/models';
