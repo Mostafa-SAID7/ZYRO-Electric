@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { tap, catchError, delay } from 'rxjs/operators';
 import {
@@ -11,11 +11,16 @@ import {
   ShippingAddress,
   PaymentMethod
 } from '../models';
+import { StorageService } from '../../shared/services/storage.service';
+import { CacheService } from '../../shared/services/cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
+  private storageService = inject(StorageService);
+  private cacheService = inject(CacheService);
+
   private mockOrders: Order[] = [];
 
   // State Management
@@ -26,6 +31,12 @@ export class OrderService {
   public orders$ = this.ordersSubject.asObservable();
   public isLoading$ = this.isLoadingSubject.asObservable();
   public error$ = this.errorSubject.asObservable();
+
+  // Cache configuration
+  private readonly ORDER_LIST_CACHE_TTL = 15 * 60 * 1000; // 15 minutes
+  private readonly ORDER_DETAIL_CACHE_TTL = 60 * 60 * 1000; // 1 hour
+  private readonly ORDER_STATS_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+  private readonly RECENT_ORDERS_STORAGE_KEY = 'recent_orders';
 
   constructor() {
     this.initializeOrders();
@@ -77,6 +88,16 @@ export class OrderService {
         this.mockOrders.unshift(order);
         this.ordersSubject.next([...this.mockOrders]);
         this.saveOrdersToStorage();
+        
+        // Cache newly created order
+        this.cacheService.set(`order:${order.id}`, order, this.ORDER_DETAIL_CACHE_TTL);
+        
+        // Add to recent orders in localStorage
+        this.addRecentOrder(order);
+        
+        // Invalidate list cache since we added a new order
+        this.invalidateOrderListCache();
+        
         this.setLoading(false);
       }),
       catchError(error => {
@@ -88,11 +109,24 @@ export class OrderService {
   }
 
   getOrders(page = 1, pageSize = 10, filter?: OrderFilter): Observable<OrderPage> {
+    const cacheKey = this.generateOrderListCacheKey(page, pageSize, filter);
+    
+    // Check cache first
+    const cached = this.cacheService.get<OrderPage>(cacheKey);
+    if (cached) {
+      this.setLoading(false);
+      return of(cached);
+    }
+
     this.setLoading(true);
 
     return of(this.filterOrders(page, pageSize, filter)).pipe(
       delay(300),
-      tap(() => this.setLoading(false)),
+      tap(result => {
+        // Cache the result
+        this.cacheService.set(cacheKey, result, this.ORDER_LIST_CACHE_TTL);
+        this.setLoading(false);
+      }),
       catchError(error => {
         this.setError('Failed to load orders');
         this.setLoading(false);
@@ -102,13 +136,27 @@ export class OrderService {
   }
 
   getOrderById(id: string): Observable<Order> {
+    const cacheKey = `order:${id}`;
+    
+    // Check cache first
+    const cached = this.cacheService.get<Order>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const order = this.mockOrders.find(o => o.id === id);
 
     if (!order) {
       return throwError(() => new Error('Order not found'));
     }
 
-    return of(order).pipe(delay(200));
+    return of(order).pipe(
+      delay(200),
+      tap(result => {
+        // Cache individual order
+        this.cacheService.set(cacheKey, result, this.ORDER_DETAIL_CACHE_TTL);
+      })
+    );
   }
 
   // ============ Order Status Management ============
@@ -136,6 +184,10 @@ export class OrderService {
     this.ordersSubject.next([...this.mockOrders]);
     this.saveOrdersToStorage();
 
+    // Invalidate cache for this order
+    this.cacheService.set(`order:${orderId}`, order, this.ORDER_DETAIL_CACHE_TTL);
+    this.invalidateOrderListCache();
+
     return of(order).pipe(delay(300));
   }
 
@@ -161,6 +213,10 @@ export class OrderService {
 
     this.ordersSubject.next([...this.mockOrders]);
     this.saveOrdersToStorage();
+
+    // Invalidate cache for this order
+    this.cacheService.set(`order:${orderId}`, order, this.ORDER_DETAIL_CACHE_TTL);
+    this.invalidateOrderListCache();
 
     return of(order).pipe(delay(300));
   }
@@ -188,12 +244,24 @@ export class OrderService {
     this.ordersSubject.next([...this.mockOrders]);
     this.saveOrdersToStorage();
 
+    // Invalidate cache for this order
+    this.cacheService.set(`order:${orderId}`, order, this.ORDER_DETAIL_CACHE_TTL);
+    this.invalidateOrderListCache();
+
     return of(order).pipe(delay(300));
   }
 
   // ============ Order Statistics ============
 
   getOrderStatistics(): Observable<OrderStatistics> {
+    const cacheKey = 'order:statistics';
+    
+    // Check cache first
+    const cached = this.cacheService.get<OrderStatistics>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const totalOrders = this.mockOrders.length;
     const totalSpent = this.mockOrders.reduce((sum, order) => sum + order.total, 0);
     const averageOrderValue = totalOrders > 0 ? totalSpent / totalOrders : 0;
@@ -217,7 +285,13 @@ export class OrderService {
       ordersByStatus
     };
 
-    return of(stats).pipe(delay(200));
+    return of(stats).pipe(
+      delay(200),
+      tap(result => {
+        // Cache statistics
+        this.cacheService.set(cacheKey, result, this.ORDER_STATS_CACHE_TTL);
+      })
+    );
   }
 
   // ============ Private Methods ============
@@ -286,16 +360,15 @@ export class OrderService {
   }
 
   private saveOrdersToStorage(): void {
-    localStorage.setItem('orders', JSON.stringify(this.mockOrders));
+    this.storageService.set('orders', this.mockOrders, 'localStorage', 0); // Permanent storage
   }
 
   private loadOrdersFromStorage(): Order[] {
     try {
-      const stored = localStorage.getItem('orders');
+      const stored = this.storageService.get<Record<string, unknown>[]>('orders', 'localStorage');
       if (stored) {
-        const orders = JSON.parse(stored);
         // Convert date strings back to Date objects
-        return orders.map((order: Record<string, unknown>) => ({
+        return stored.map((order: Record<string, unknown>) => ({
           ...order,
           createdAt: new Date(order['createdAt'] as string),
           updatedAt: new Date(order['updatedAt'] as string),
@@ -308,7 +381,8 @@ export class OrderService {
         }));
       }
       return [];
-    } catch {
+    } catch (error) {
+      console.error('Error loading orders from storage:', error);
       return [];
     }
   }
@@ -318,4 +392,54 @@ export class OrderService {
     date.setDate(date.getDate() + 5); // 5 days from now
     return date;
   }
-}
+
+  /**
+   * Generate cache key for order list with filter parameters
+   */
+  private generateOrderListCacheKey(page: number, pageSize: number, filter?: OrderFilter): string {
+    if (!filter) {
+      return `order:list:${page}:${pageSize}`;
+    }
+    try {
+      const hash = JSON.stringify(filter)
+        .split('')
+        .reduce((acc, char) => ((acc << 5) - acc) + char.charCodeAt(0), 0)
+        .toString(36);
+      return `order:list:${page}:${pageSize}:${hash}`;
+    } catch {
+      return `order:list:${page}:${pageSize}`;
+    }
+  }
+
+  /**
+   * Invalidate all order list caches
+   */
+  private invalidateOrderListCache(): void {
+    this.cacheService.invalidate('order:list:*');
+    this.cacheService.remove('order:statistics');
+  }
+
+  /**
+   * Add order to recent orders in localStorage
+   */
+  private addRecentOrder(order: Order, maxRecent = 10): void {
+    try {
+      const recent = this.storageService.get<Order[]>(this.RECENT_ORDERS_STORAGE_KEY, 'localStorage') || [];
+      const updated = [order, ...recent].slice(0, maxRecent);
+      this.storageService.set(this.RECENT_ORDERS_STORAGE_KEY, updated, 'localStorage', 30 * 24 * 60 * 60 * 1000); // 30 days
+    } catch (error) {
+      console.error('Error adding recent order:', error);
+    }
+  }
+
+  /**
+   * Get recent orders from localStorage
+   */
+  getRecentOrders(): Order[] {
+    try {
+      return this.storageService.get<Order[]>(this.RECENT_ORDERS_STORAGE_KEY, 'localStorage') || [];
+    } catch (error) {
+      console.error('Error getting recent orders:', error);
+      return [];
+    }
+  }

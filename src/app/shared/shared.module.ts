@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UiModule } from './ui/ui.module';
@@ -24,16 +24,27 @@ import {
   ORDER_REPOSITORY_TOKEN
 } from './interfaces/dependency-injection';
 
-// Services
+// Domain Services
 import { ProductsService } from '../products/services/products.service';
 import { CartsService } from '../carts/services/carts.service';
 import { AuthService } from '../auth/services/auth.service';
 import { OrderService } from '../orders/services/order.service';
+
+// Infrastructure Services
 import { NotificationService } from './services/notification.service';
 import { CalculationService } from './services/calculation.service';
 import { PersistenceService } from './services/persistence.service';
 import { FilterStrategyService } from './services/filter-strategy.service';
 import { SortStrategyService } from './services/sort-strategy.service';
+
+// Caching Services
+import { CacheService } from './services/cache.service';
+import { StorageService } from './services/storage.service';
+import { CookieService } from './services/cookie.service';
+import { SessionService } from './services/session.service';
+
+// Interceptors
+import { CacheInterceptor } from './interceptors/cache.interceptor';
 
 // DIP: Configure all service providers using injection tokens
 const DIP_PROVIDERS: Provider[] = [
@@ -52,10 +63,19 @@ const DIP_PROVIDERS: Provider[] = [
   { provide: FILTER_STRATEGY_TOKEN, useClass: FilterStrategyService },
   { provide: SORT_STRATEGY_TOKEN, useClass: SortStrategyService },
   
-  // Repository Implementations (also required for module)
+  // Repository Implementations
   { provide: PRODUCT_REPOSITORY_TOKEN, useClass: ProductsService },
   { provide: CART_REPOSITORY_TOKEN, useClass: CartsService },
-  { provide: ORDER_REPOSITORY_TOKEN, useClass: OrderService }
+  { provide: ORDER_REPOSITORY_TOKEN, useClass: OrderService },
+  
+  // Caching Services (singleton scope)
+  CacheService,
+  StorageService,
+  CookieService,
+  SessionService,
+  
+  // HTTP Interceptors
+  { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true }
 ];
 
 @NgModule({

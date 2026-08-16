@@ -24,6 +24,7 @@ import { ShippingModule } from './pages/shipping/shipping.module';
 import { FAQModule } from './pages/faq/faq.module';
 import { BlogModule } from './pages/blog/blog.module';
 import { PressModule } from './pages/press/press.module';
+import { SessionTimeoutWarningComponent } from './shared/components/session-timeout-warning/session-timeout-warning.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { PressModule } from './pages/press/press.module';
     FAQModule,
     BlogModule,
     PressModule,
-    SharedModule
+    SharedModule,
+    SessionTimeoutWarningComponent
   ],
   providers: [
     {

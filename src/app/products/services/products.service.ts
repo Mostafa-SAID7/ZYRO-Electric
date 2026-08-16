@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError, shareReplay } from 'rxjs';
 import { tap, catchError, delay } from 'rxjs/operators';
 import {
   Product,
@@ -11,12 +11,15 @@ import {
 } from '../models';
 import { MOCK_PRODUCTS_NICHES } from '../data/mock-products-niches';
 import { SORT_STRATEGY_TOKEN, FILTER_STRATEGY_TOKEN } from '../../shared/interfaces/dependency-injection';
+import { CacheService } from '../../shared/services/cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
   private http = inject(HttpClient);
+  private cacheService = inject(CacheService);
+  
   // DIP: Depend on abstractions (ISortStrategy, IFilterStrategy) via injection tokens, not concrete classes
   private sortStrategy = inject(SORT_STRATEGY_TOKEN);
   private filterStrategy = inject(FILTER_STRATEGY_TOKEN);
@@ -31,9 +34,16 @@ export class ProductsService {
   private errorSubject = new BehaviorSubject<string | null>(null);
 
   public products$ = this.productsSubject.asObservable();
-  public categories$ = this.categoriesSubject.asObservable();
+  public categories$ = this.categoriesSubject.asObservable().pipe(
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
   public isLoading$ = this.isLoadingSubject.asObservable();
   public error$ = this.errorSubject.asObservable();
+
+  // Cache keys for invalidation
+  private readonly PRODUCT_CACHE_TTL = 60 * 60 * 1000; // 1 hour
+  private readonly CATEGORY_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+  private readonly SEARCH_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 
   constructor() {
     this.loadProducts();
@@ -42,66 +52,159 @@ export class ProductsService {
   // ============ Product Operations ============
 
   getProducts(filter?: ProductFilter, page = 1, pageSize = 12): Observable<ProductPage> {
+    // Generate cache key from filter
+    const cacheKey = this.generateCacheKey('products', { filter, page, pageSize });
+    
+    // Check cache first
+    const cached = this.cacheService.get<ProductPage>(cacheKey);
+    if (cached) {
+      this.setLoading(false);
+      return of(cached);
+    }
+
     this.setLoading(true);
 
     return of(this.filterProducts(filter, page, pageSize)).pipe(
       delay(300),
-      tap(() => this.setLoading(false)),
+      tap(result => {
+        // Cache the result
+        this.cacheService.set(cacheKey, result, this.PRODUCT_CACHE_TTL);
+        this.setLoading(false);
+      }),
       catchError((error) => {
         this.setError('Failed to load products');
+        this.setLoading(false);
         return throwError(() => error);
       })
     );
   }
 
   getProductById(id: string): Observable<Product> {
+    const cacheKey = `product:${id}`;
+    
+    // Check cache first
+    const cached = this.cacheService.get<Product>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const product = this.mockProducts.find(p => p.id === id);
 
     if (!product) {
       return throwError(() => new Error('Product not found'));
     }
 
-    return of(product).pipe(delay(200));
+    return of(product).pipe(
+      delay(200),
+      tap(result => {
+        // Cache individual product
+        this.cacheService.set(cacheKey, result, this.PRODUCT_CACHE_TTL);
+      })
+    );
   }
 
   searchProducts(query: string, page = 1, pageSize = 12): Observable<ProductPage> {
+    const cacheKey = `search:${query}:${page}:${pageSize}`;
+    
+    // Check cache first
+    const cached = this.cacheService.get<ProductPage>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const filter: ProductFilter = {
       searchQuery: query
     };
 
-    return this.getProducts(filter, page, pageSize);
+    return this.getProducts(filter, page, pageSize).pipe(
+      tap(result => {
+        // Cache search results separately
+        this.cacheService.set(cacheKey, result, this.SEARCH_CACHE_TTL);
+      })
+    );
   }
 
   getProductsByCategory(categoryId: string, page = 1, pageSize = 12): Observable<ProductPage> {
+    const cacheKey = `category:${categoryId}:${page}:${pageSize}`;
+    
+    // Check cache first
+    const cached = this.cacheService.get<ProductPage>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const filter: ProductFilter = {
       categories: [categoryId]
     };
 
-    return this.getProducts(filter, page, pageSize);
+    return this.getProducts(filter, page, pageSize).pipe(
+      tap(result => {
+        this.cacheService.set(cacheKey, result, this.PRODUCT_CACHE_TTL);
+      })
+    );
   }
 
   getFeaturedProducts(limit = 8): Observable<Product[]> {
+    const cacheKey = `featured:${limit}`;
+    
+    // Check cache first
+    const cached = this.cacheService.get<Product[]>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const featured = this.mockProducts
       .filter(p => p.isFeatured && p.isActive)
       .slice(0, limit);
 
-    return of(featured).pipe(delay(200));
+    return of(featured).pipe(
+      delay(200),
+      tap(result => {
+        this.cacheService.set(cacheKey, result, this.PRODUCT_CACHE_TTL);
+      })
+    );
   }
 
   // ============ Category Operations ============
 
   getCategories(): Observable<Category[]> {
-    return of(this.mockCategories).pipe(delay(100));
+    const cacheKey = 'categories:all';
+    
+    // Check cache first
+    const cached = this.cacheService.get<Category[]>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
+    return of(this.mockCategories).pipe(
+      delay(100),
+      tap(result => {
+        this.cacheService.set(cacheKey, result, this.CATEGORY_CACHE_TTL);
+      })
+    );
   }
 
   getCategoryById(id: string): Observable<Category> {
+    const cacheKey = `category:${id}`;
+    
+    // Check cache first
+    const cached = this.cacheService.get<Category>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const category = this.mockCategories.find(c => c.id === id);
 
     if (!category) {
       return throwError(() => new Error('Category not found'));
     }
 
-    return of(category).pipe(delay(100));
+    return of(category).pipe(
+      delay(100),
+      tap(result => {
+        this.cacheService.set(cacheKey, result, this.CATEGORY_CACHE_TTL);
+      })
+    );
   }
 
   // ============ Review Operations ============
@@ -157,28 +260,100 @@ export class ProductsService {
   // ============ Filtering & Sorting ============
 
   filterByPriceRange(min: number, max: number, page = 1, pageSize = 12): Observable<ProductPage> {
+    const cacheKey = `price:${min}-${max}:${page}:${pageSize}`;
+    
+    // Check cache first
+    const cached = this.cacheService.get<ProductPage>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const filter: ProductFilter = {
       minPrice: min,
       maxPrice: max
     };
 
-    return this.getProducts(filter, page, pageSize);
+    return this.getProducts(filter, page, pageSize).pipe(
+      tap(result => {
+        this.cacheService.set(cacheKey, result, this.PRODUCT_CACHE_TTL);
+      })
+    );
   }
 
   filterByRating(minRating: number, page = 1, pageSize = 12): Observable<ProductPage> {
+    const cacheKey = `rating:${minRating}:${page}:${pageSize}`;
+    
+    // Check cache first
+    const cached = this.cacheService.get<ProductPage>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const filter: ProductFilter = {
       rating: minRating
     };
 
-    return this.getProducts(filter, page, pageSize);
+    return this.getProducts(filter, page, pageSize).pipe(
+      tap(result => {
+        this.cacheService.set(cacheKey, result, this.PRODUCT_CACHE_TTL);
+      })
+    );
   }
 
   getInStockProducts(page = 1, pageSize = 12): Observable<ProductPage> {
+    const cacheKey = `instock:${page}:${pageSize}`;
+    
+    // Check cache first
+    const cached = this.cacheService.get<ProductPage>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
     const filter: ProductFilter = {
       inStock: true
     };
 
-    return this.getProducts(filter, page, pageSize);
+    return this.getProducts(filter, page, pageSize).pipe(
+      tap(result => {
+        this.cacheService.set(cacheKey, result, this.PRODUCT_CACHE_TTL);
+      })
+    );
+  }
+
+  /**
+   * Invalidate product caches (call on order completion, inventory update, etc.)
+   */
+  invalidateProductCache(pattern = 'product:*'): void {
+    this.cacheService.invalidate(pattern);
+  }
+
+  /**
+   * Invalidate all caches (call on logout, user preference change)
+   */
+  clearAllCaches(): void {
+    this.cacheService.invalidate('product:*');
+    this.cacheService.invalidate('search:*');
+    this.cacheService.invalidate('category:*');
+    this.cacheService.invalidate('featured:*');
+    this.cacheService.invalidate('price:*');
+    this.cacheService.invalidate('rating:*');
+    this.cacheService.invalidate('instock:*');
+  }
+
+  /**
+   * Generate cache key from filter criteria
+   */
+  private generateCacheKey(prefix: string, data: unknown): string {
+    if (!data) return prefix;
+    try {
+      const hash = JSON.stringify(data)
+        .split('')
+        .reduce((acc, char) => ((acc << 5) - acc) + char.charCodeAt(0), 0)
+        .toString(36);
+      return `${prefix}:${hash}`;
+    } catch {
+      return prefix;
+    }
   }
 
   // ============ State Management ============

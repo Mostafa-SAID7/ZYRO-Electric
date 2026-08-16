@@ -1,13 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { map, delay } from 'rxjs/operators';
+import { map, delay, tap } from 'rxjs/operators';
 import { Cart, CartItem, CartState, CartSummary, AddToCartRequest, UpdateCartItemRequest, CheckoutData } from '../models';
+import { StorageService } from '../../shared/services/storage.service';
+import { CacheService } from '../../shared/services/cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartsService {
+  private storageService = inject(StorageService);
+  private cacheService = inject(CacheService);
+  private http = inject(HttpClient);
+
   // State Management
   private cartStateSubject = new BehaviorSubject<CartState>({
     items: this.loadCartFromStorage(),
@@ -33,10 +39,14 @@ export class CartsService {
   private readonly TAX_RATE = 0.10;
   private readonly SHIPPING_COST = 10;
 
-  private http = inject(HttpClient);
+  // Storage configuration
+  private readonly CART_STORAGE_KEY = 'cart_items';
+  private readonly CART_SUMMARY_KEY = 'cart_summary';
+  private readonly CART_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours for persistent storage
 
   constructor() {
     this.initializeCart();
+    this.setupMultiTabSync();
   }
 
   // ============ Cart Operations ============
@@ -104,7 +114,11 @@ export class CartsService {
       isLoading: false,
       error: null
     });
-    localStorage.removeItem('cart');
+    
+    // Clear from all storage locations
+    this.storageService.remove(this.CART_STORAGE_KEY, 'localStorage');
+    this.cacheService.remove(this.CART_SUMMARY_KEY);
+    
     return of(void 0).pipe(delay(300));
   }
 
@@ -216,6 +230,9 @@ export class CartsService {
 
   // ============ Private Methods ============
 
+  /**
+   * Initialize cart from localStorage
+   */
   private initializeCart(): void {
     const items = this.loadCartFromStorage();
     const state = this.cartStateSubject.value;
@@ -223,6 +240,36 @@ export class CartsService {
     this.updateCartState();
   }
 
+  /**
+   * Setup multi-tab synchronization via storage events
+   * Synchronizes cart changes across browser tabs
+   */
+  private setupMultiTabSync(): void {
+    window.addEventListener('storage', (event: StorageEvent) => {
+      // Handle cart items sync from other tabs
+      if (event.key === this.CART_STORAGE_KEY && event.newValue) {
+        try {
+          const updatedItems = JSON.parse(event.newValue) as CartItem[];
+          const state = this.cartStateSubject.value;
+          state.items = updatedItems;
+          this.updateCartState();
+          console.log('Cart synchronized from other tab');
+        } catch (error) {
+          console.error('Error syncing cart from other tab:', error);
+        }
+      }
+
+      // Handle cart summary sync
+      if (event.key === this.CART_SUMMARY_KEY) {
+        // Clear summary cache so it recalculates
+        this.cacheService.remove(this.CART_SUMMARY_KEY);
+      }
+    });
+  }
+
+  /**
+   * Update cart state and persist to storage
+   */
   private updateCartState(): void {
     const state = this.cartStateSubject.value;
     const items = state.items;
@@ -241,7 +288,7 @@ export class CartsService {
     const total = subtotal + tax + this.SHIPPING_COST - discount;
 
     // Update state
-    this.cartStateSubject.next({
+    const updatedState: CartState = {
       items,
       subtotal: Math.round(subtotal * 100) / 100,
       tax: Math.round(tax * 100) / 100,
@@ -251,11 +298,20 @@ export class CartsService {
       itemCount: items.length,
       isLoading: false,
       error: null
-    });
+    };
 
-    this.saveCartToStorage(items);
+    this.cartStateSubject.next(updatedState);
+
+    // Persist to localStorage (no TTL = permanent until clear)
+    this.storageService.set(this.CART_STORAGE_KEY, items, 'localStorage', 0);
+
+    // Cache summary in memory for quick access (1 hour TTL)
+    this.cacheService.set(this.CART_SUMMARY_KEY, this.createCartSummary(updatedState), 60 * 60 * 1000);
   }
 
+  /**
+   * Create cart summary from state
+   */
   private createCartSummary(state: CartState): CartSummary {
     const uniqueProducts = new Set(state.items.map(item => item.productId)).size;
     return {
@@ -269,16 +325,31 @@ export class CartsService {
     };
   }
 
-  private saveCartToStorage(items: CartItem[]): void {
-    localStorage.setItem('cart', JSON.stringify(items));
-  }
-
+  /**
+   * Load cart from localStorage
+   */
   private loadCartFromStorage(): CartItem[] {
     try {
-      const stored = localStorage.getItem('cart');
-      return stored ? JSON.parse(stored) : [];
-    } catch {
+      const stored = this.storageService.get<CartItem[]>(this.CART_STORAGE_KEY, 'localStorage');
+      return stored || [];
+    } catch (error) {
+      console.error('Error loading cart from storage:', error);
       return [];
     }
+  }
+
+  /**
+   * Invalidate cart cache (call on checkout completion)
+   */
+  invalidateCartCache(): void {
+    this.cacheService.remove(this.CART_SUMMARY_KEY);
+    this.cacheService.invalidate('cart:*');
+  }
+
+  /**
+   * Get current cart without waiting for observable
+   */
+  getCurrentCartSync(): CartState {
+    return this.cartStateSubject.value;
   }
 }

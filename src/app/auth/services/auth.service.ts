@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { tap, catchError, map, delay } from 'rxjs/operators';
 import {
@@ -18,11 +18,18 @@ import {
   UserProfile,
   Address
 } from '../models';
+import { StorageService } from '../../shared/services/storage.service';
+import { CookieService } from '../../shared/services/cookie.service';
+import { CacheService } from '../../shared/services/cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private storageService = inject(StorageService);
+  private cookieService = inject(CookieService);
+  private cacheService = inject(CacheService);
+
   // State Management
   private authStateSubject = new BehaviorSubject<AuthState>({
     user: this.loadFromStorage()?.user || null,
@@ -45,13 +52,21 @@ export class AuthService {
   private twoFactorEnabledSubject = new BehaviorSubject<boolean>(false);
   public twoFactorEnabled$ = this.twoFactorEnabledSubject.asObservable();
 
+  // Storage configuration
+  private readonly AUTH_TOKEN_KEY = 'auth_token';
+  private readonly AUTH_USER_KEY = 'auth_user';
+  private readonly CSRF_TOKEN_KEY = 'csrf_token';
+  private readonly SESSION_ID_KEY = 'session_id';
+  private readonly TOKEN_CACHE_TTL = 60 * 60 * 1000; // 1 hour
+  private readonly CSRF_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
   constructor() {
     this.initializeAuth();
   }
 
   // ============ Authentication ============
 
-  login(credentials: AuthCredentials): Observable<AuthResponse> {
+  login(credentials: AuthCredentials, rememberMe = false): Observable<AuthResponse> {
     this.setLoading(true);
     return of({
       user: this.createMockUser(credentials.email),
@@ -60,7 +75,7 @@ export class AuthService {
     }).pipe(
       delay(500),
       tap(response => {
-        this.setUser(response.user, response.token);
+        this.setUser(response.user, response.token, rememberMe);
         this.setLoading(false);
       }),
       catchError(error => {
@@ -84,7 +99,7 @@ export class AuthService {
     }).pipe(
       delay(500),
       tap(response => {
-        this.setUser(response.user, response.token);
+        this.setUser(response.user, response.token, false);
         this.setLoading(false);
       }),
       catchError(error => {
@@ -302,7 +317,11 @@ export class AuthService {
     }
   }
 
-  private setUser(user: User, token: string): void {
+  /**
+   * Set authenticated user with token
+   * Handles Remember Me functionality - determines storage type
+   */
+  private setUser(user: User, token: string, rememberMe = false): void {
     const state = this.authStateSubject.value;
     this.authStateSubject.next({
       ...state,
@@ -311,7 +330,26 @@ export class AuthService {
       token,
       error: null
     });
-    this.saveToStorage({ user, token });
+
+    // Store based on rememberMe flag
+    const storageType: 'localStorage' | 'sessionStorage' = rememberMe ? 'localStorage' : 'sessionStorage';
+    
+    this.storageService.set(this.AUTH_TOKEN_KEY, token, storageType, 24 * 60 * 60 * 1000);
+    this.storageService.set(this.AUTH_USER_KEY, user, storageType, 24 * 60 * 60 * 1000);
+    
+    // Set CSRF token cookie for server communication
+    const csrfToken = 'csrf_' + Math.random().toString(36).substr(2, 9);
+    this.cookieService.setCSRFToken(csrfToken);
+    this.cacheService.set(this.CSRF_TOKEN_KEY, csrfToken, this.CSRF_CACHE_TTL);
+    
+    // Set session ID cookie
+    const sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+    this.cookieService.set(this.SESSION_ID_KEY, sessionId, {
+      expires: 1, // 1 day
+      secure: true,
+      sameSite: 'Lax',
+      path: '/'
+    });
   }
 
   private setLoading(isLoading: boolean): void {
@@ -330,6 +368,10 @@ export class AuthService {
     this.authStateSubject.next({ ...state, error: null });
   }
 
+  /**
+   * Clear all auth data from storage and cache
+   * Called on logout
+   */
   private clearAuth(): void {
     this.authStateSubject.next({
       user: null,
@@ -338,19 +380,40 @@ export class AuthService {
       error: null,
       token: null
     });
-    localStorage.removeItem('authData');
+
+    // Clear from both storage types
+    this.storageService.remove(this.AUTH_TOKEN_KEY, 'localStorage');
+    this.storageService.remove(this.AUTH_USER_KEY, 'localStorage');
+    this.storageService.remove(this.AUTH_TOKEN_KEY, 'sessionStorage');
+    this.storageService.remove(this.AUTH_USER_KEY, 'sessionStorage');
+    
+    // Clear cache
+    this.cacheService.invalidate('auth:*');
+    this.cacheService.invalidate('user:*');
+    
     this.sessionsSubject.next([]);
   }
 
-  private saveToStorage(data: { user: User; token: string }): void {
-    localStorage.setItem('authData', JSON.stringify(data));
-  }
-
+  /**
+   * Load auth data from storage (checks both localStorage and sessionStorage)
+   */
   private loadFromStorage(): { user: User; token: string } | null {
     try {
-      const stored = localStorage.getItem('authData');
-      return stored ? JSON.parse(stored) : null;
-    } catch {
+      // Try localStorage first (Remember Me)
+      let token = this.storageService.get<string>(this.AUTH_TOKEN_KEY, 'localStorage');
+      let user = this.storageService.get<User>(this.AUTH_USER_KEY, 'localStorage');
+      
+      // Fall back to sessionStorage
+      if (!token) {
+        token = this.storageService.get<string>(this.AUTH_TOKEN_KEY, 'sessionStorage');
+      }
+      if (!user) {
+        user = this.storageService.get<User>(this.AUTH_USER_KEY, 'sessionStorage');
+      }
+      
+      return (token && user) ? { token, user } : null;
+    } catch (error) {
+      console.error('Error loading auth from storage:', error);
       return null;
     }
   }
@@ -384,4 +447,3 @@ export class AuthService {
       isActive: true
     };
   }
-}
