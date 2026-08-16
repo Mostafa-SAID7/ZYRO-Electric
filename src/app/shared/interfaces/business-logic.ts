@@ -81,8 +81,13 @@ export interface IUserProfileQuery {
   updateUserProfile(profile: Partial<UserProfile>): Observable<UserProfile>;
 }
 
+// ISP: Clients monitoring auth state only need auth state observable
+export interface IAuthStateObserver {
+  authState$: Observable<any>;
+}
+
 // COMPOSITE: For components that need full authentication service
-export interface IAuthenticationService extends IAuthOperation, IUserProfileQuery {}
+export interface IAuthenticationService extends IAuthOperation, IUserProfileQuery, IAuthStateObserver {}
 
 // ============ ORDER SERVICE INTERFACES (SEGREGATED) ============
 
