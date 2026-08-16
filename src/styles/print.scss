@@ -182,63 +182,71 @@ body {
 }
 
 /* ==================== PRINT MEDIA QUERY ==================== */
-/* Styles applied when actually printing to paper */
+/* Keep dark theme when printing to paper */
 
 @media print {
   body {
-    background: white;
-    color: black;
+    background: #0A0A0A !important;
+    color: #FAFAFA !important;
     padding: 0;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .print-document {
-    background: white;
-    color: black;
+    background: #0A0A0A !important;
+    color: #FAFAFA !important;
     box-shadow: none;
     padding: 20px;
     border-radius: 0;
   }
 
   .print-header {
-    border-bottom-color: #E8C547;
+    border-bottom-color: #E8C547 !important;
   }
 
   .print-logo {
-    color: #E8C547;
+    color: #E8C547 !important;
   }
 
   .print-title {
-    color: black;
+    color: #FAFAFA !important;
   }
 
   .print-subtitle {
-    color: #666;
+    color: #888 !important;
   }
 
   .print-section-title {
-    color: #E8C547;
+    color: #E8C547 !important;
   }
 
   .print-label {
-    color: #666;
+    color: #888 !important;
   }
 
   .print-value {
-    color: black;
+    color: #FAFAFA !important;
+  }
+
+  .print-table {
+    background: #1A1A1A !important;
   }
 
   .print-table thead {
-    background: #f5f5f5;
+    background: #1A1A1A !important;
   }
 
   .print-table th {
-    color: #E8C547;
-    border-bottom-color: #E8C547;
+    color: #E8C547 !important;
+    border-bottom-color: #E8C547 !important;
+    background: #1A1A1A !important;
   }
 
   .print-table td {
-    color: black;
-    border-bottom-color: #e0e0e0;
+    color: #FAFAFA !important;
+    border-bottom-color: #2A2A2A !important;
+    background: #1A1A1A !important;
   }
 
   .print-table tbody tr:hover {
@@ -246,29 +254,29 @@ body {
   }
 
   .print-summary {
-    background: #f9f9f9;
-    border-color: #e0e0e0;
+    background: #1A1A1A !important;
+    border-color: #2A2A2A !important;
   }
 
   .print-summary-label {
-    color: #666;
+    color: #888 !important;
   }
 
   .print-summary-value {
-    color: black;
+    color: #FAFAFA !important;
   }
 
   .print-summary-total {
-    border-top-color: #E8C547;
+    border-top-color: #E8C547 !important;
   }
 
   .print-summary-total .print-summary-value {
-    color: #E8C547;
+    color: #E8C547 !important;
   }
 
   .print-footer {
-    border-top-color: #e0e0e0;
-    color: #888;
+    border-top-color: #2A2A2A !important;
+    color: #666 !important;
   }
 
   /* Hide interactive elements when printing */
@@ -291,9 +299,10 @@ body {
     page-break-after: auto;
   }
 
-  /* Force print in portrait */
+  /* Force print in portrait with dark background */
   @page {
     size: A4 portrait;
     margin: 1cm;
+    background: #0A0A0A;
   }
 }
