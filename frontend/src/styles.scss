@@ -155,31 +155,31 @@
   }
 
   /* Scrollbar Utilities */
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+  // .scrollbar-hide {
+  //   -ms-overflow-style: none;
+  //   scrollbar-width: none;
+  // }
 
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
+  // .scrollbar-hide::-webkit-scrollbar {
+  //   display: none;
+  // }
 
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-  }
+  // .custom-scrollbar::-webkit-scrollbar {
+  //   width: 4px;
+  // }
 
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: var(--muted);
-  }
+  // .custom-scrollbar::-webkit-scrollbar-track {
+  //   background: var(--muted);
+  // }
 
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    border-radius: 2px;
-  }
+  // .custom-scrollbar::-webkit-scrollbar-thumb {
+  //   background: var(--accent);
+  //   border-radius: 2px;
+  // }
 
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
-  }
+  // .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  //   background: var(--primary);
+  // }
 
   /* Cursor Utilities */
   .cursor-dot {
@@ -487,27 +487,5 @@
   }
 }
 
-/* Custom Scrollbar — adapts to dark/light mode via CSS variables */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 9999px;
-  border: 2px solid var(--background);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) var(--background);
-}
+/* Import scrollbar styles */
+@import './styles/scrollbar.scss';
