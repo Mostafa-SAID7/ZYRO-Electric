@@ -1,0 +1,15 @@
+
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+import { BlogComponent } from './blog.component';
+
+@NgModule({
+  declarations: [BlogComponent],
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
+  exports: [BlogComponent]
+})
+export class BlogModule { }
