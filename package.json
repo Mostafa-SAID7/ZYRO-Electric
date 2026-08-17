@@ -1,6 +1,6 @@
 {
   "name": "zyro-electric-monorepo",
-  "version": "1.0.40",
+  "version": "1.0.41",
   "description": "ZYRO - Tech Accessories E-Commerce Platform (Monorepo: Frontend + Backend)",
   "private": true,
   "engines": {
