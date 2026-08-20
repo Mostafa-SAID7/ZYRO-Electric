@@ -34,16 +34,4 @@ public abstract class BaseTestFixture : IAsyncLifetime
     }
 }
 
-/// <summary>
-/// Base fixture for integration tests
-/// </summary>
-[Collection("Database collection")]
-public abstract class BaseIntegrationFixture : BaseTestFixture
-{
-    protected DatabaseFixture DatabaseFixture { get; }
 
-    protected BaseIntegrationFixture(DatabaseFixture databaseFixture)
-    {
-        DatabaseFixture = databaseFixture;
-    }
-}
