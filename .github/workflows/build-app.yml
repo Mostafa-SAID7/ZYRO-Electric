@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ['20']
+        node-version: ['22']
 
     steps:
       - name: Checkout code
@@ -28,18 +28,22 @@ jobs:
         uses: actions/setup-node@v4.0.3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm install --ignore-scripts --legacy-peer-deps
+        working-directory: frontend
 
       - name: Build production bundle
         run: npm run build
+        working-directory: frontend
 
       - name: Verify build output
         run: |
-          if [ -d "dist/market" ]; then
+          if [ -d "frontend/dist" ]; then
             echo "Build successful"
-            ls -lah dist/market/
+            ls -lah frontend/dist/
           else
             echo "Build failed"
             exit 1
@@ -50,5 +54,5 @@ jobs:
         if: success()
         with:
           name: build-${{ github.run_id }}
-          path: dist/
+          path: frontend/dist/
           retention-days: 5

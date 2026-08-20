@@ -32,8 +32,10 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
+# Angular cache (can be very large - never commit)
 /.angular/cache
+frontend/.angular/
+.angular/
 .sass-cache/
 /connect.lock
 /coverage
