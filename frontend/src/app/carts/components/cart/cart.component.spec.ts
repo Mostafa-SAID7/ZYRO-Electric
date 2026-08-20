@@ -13,9 +13,9 @@ import { ProductsService } from '../../../products/services/products.service';
 describe('CartComponent', () => {
   let component: CartComponent;
   let fixture: ComponentFixture<CartComponent>;
-  let mockCartService: any;
-  let mockProductsService: any;
-  let mockRouter: any;
+  let mockCartService: unknown;
+  let mockProductsService: unknown;
+  let mockRouter: unknown;
 
   beforeEach(async () => {
     mockCartService = {

@@ -1,5 +1,5 @@
-import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, interval } from 'rxjs';
+import { Injectable, OnDestroy, inject } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { StorageService } from './storage.service';
 import { CookieService } from './cookie.service';
 
@@ -33,7 +33,7 @@ export interface SessionState {
  * - Multi-tab synchronization
  */
 @Injectable({ providedIn: 'root' })
-export class SessionService {
+export class SessionService implements OnDestroy {
   private storageService = inject(StorageService);
   private cookieService = inject(CookieService);
 
@@ -160,7 +160,6 @@ export class SessionService {
       clearTimeout(this.activityTimeout);
     }
 
-    const state = this.sessionStateSubject.value;
     const expiresAt = Date.now() + this.config.timeout;
 
     this.activityTimeout = setTimeout(() => {

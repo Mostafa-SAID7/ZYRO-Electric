@@ -17,7 +17,7 @@ export class PrintService {
    * @param title - Document title for the print window
    * @param styleUrls - Optional array of CSS file paths to load
    */
-  print(content: string, title: string = 'Print', styleUrls: string[] = []): void {
+  print(content: string, title = 'Print', styleUrls: string[] = []): void {
     const printWindow = window.open('', '_blank', 'width=800,height=600');
     
     if (!printWindow) {
@@ -66,7 +66,7 @@ export class PrintService {
    * Prints content with inline styles (no external CSS files).
    * Useful for quick prints or when styles are embedded in the HTML.
    */
-  printWithInlineStyles(content: string, title: string = 'Print'): void {
+  printWithInlineStyles(content: string, title = 'Print'): void {
     this.print(content, title, []);
   }
 }

@@ -35,7 +35,7 @@ describe('AuthService', () => {
 
   describe('login()', () => {
     it('should return an AuthResponse with user and token', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.login({ email: 'user@zyro.com', password: 'pass' }).subscribe(r => result = r);
       tick(600);
       expect(result.user).toBeDefined();
@@ -58,7 +58,7 @@ describe('AuthService', () => {
 
   describe('register()', () => {
     it('should throw error when passwords do not match', () => {
-      let error: any;
+      let error: unknown;
       service.register({
         email: 'a@b.com', password: '123', confirmPassword: '456', name: 'Test',
         phone: '',
@@ -70,7 +70,7 @@ describe('AuthService', () => {
     });
 
     it('should return user with provided name on success', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.register({
         email: 'new@zyro.com', password: 'abc', confirmPassword: 'abc', name: 'Mostafa',
         phone: '',
@@ -129,14 +129,14 @@ describe('AuthService', () => {
 
   describe('changePassword()', () => {
     it('should throw error when passwords do not match', () => {
-      let error: any;
+      let error: unknown;
       service.changePassword({ currentPassword: 'old', newPassword: 'new1', confirmPassword: 'new2' })
         .subscribe({ error: e => error = e });
       expect(error.message).toBe('Passwords do not match');
     });
 
     it('should return success message when passwords match', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.changePassword({ currentPassword: 'old', newPassword: 'new1', confirmPassword: 'new1' })
         .subscribe(r => result = r);
       tick(600);
@@ -146,7 +146,7 @@ describe('AuthService', () => {
 
   describe('requestPasswordReset()', () => {
     it('should return a message about sending reset link', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.requestPasswordReset({ email: 'test@zyro.com' }).subscribe(r => result = r);
       tick(600);
       expect(result.message).toBeDefined();
@@ -155,7 +155,7 @@ describe('AuthService', () => {
 
   describe('getUserProfile()', () => {
     it('should throw error if not authenticated', () => {
-      let error: any;
+      let error: unknown;
       service.getUserProfile().subscribe({ error: e => error = e });
       expect(error.message).toBe('Not authenticated');
     });
@@ -163,7 +163,7 @@ describe('AuthService', () => {
     it('should return profile with addresses after login', fakeAsync(() => {
       service.login({ email: 'u@zyro.com', password: 'p' }).subscribe();
       tick(600);
-      let profile: any;
+      let profile: unknown;
       service.getUserProfile().subscribe(p => profile = p);
       tick(400);
       expect(profile.addresses).toBeDefined();
@@ -173,7 +173,7 @@ describe('AuthService', () => {
 
   describe('authState$', () => {
     it('should emit updated state after login', fakeAsync(() => {
-      const states: any[] = [];
+      const states: unknown[] = [];
       service.authState$.subscribe(s => states.push(s));
       service.login({ email: 'u@zyro.com', password: 'p' }).subscribe();
       tick(600);
@@ -185,14 +185,14 @@ describe('AuthService', () => {
 
   describe('confirmPasswordReset()', () => {
     it('should throw error when passwords do not match', () => {
-      let error: any;
+      let error: unknown;
       service.confirmPasswordReset({ token: 't', newPassword: 'new', confirmPassword: 'old' })
         .subscribe({ error: e => error = e });
       expect(error.message).toBe('Passwords do not match');
     });
 
     it('should return success message when passwords match', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.confirmPasswordReset({ token: 't', newPassword: 'new', confirmPassword: 'new' })
         .subscribe(r => result = r);
       tick(600);
@@ -202,14 +202,14 @@ describe('AuthService', () => {
 
   describe('Email Verification', () => {
     it('should requestEmailVerification', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.requestEmailVerification({ email: 'e' }).subscribe(r => result = r);
       tick(600);
       expect(result.message).toBe('Verification code sent to email');
     }));
 
     it('should confirmEmailVerification', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.login({ email: 'u@zyro.com', password: 'p' }).subscribe();
       tick(600);
       service.confirmEmailVerification({ email: 'u@zyro.com', code: '123456' }).subscribe(r => result = r);
@@ -220,7 +220,7 @@ describe('AuthService', () => {
 
   describe('Two-Factor Auth', () => {
     it('should setupTwoFactor', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.setupTwoFactor().subscribe(r => result = r);
       tick(600);
       expect(result.secret).toBeDefined();
@@ -228,7 +228,7 @@ describe('AuthService', () => {
     }));
 
     it('should enableTwoFactor', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.enableTwoFactor({ code: 'c' }).subscribe(r => result = r);
       tick(600);
       expect(result.message).toBe('2FA enabled successfully');
@@ -236,7 +236,7 @@ describe('AuthService', () => {
     }));
 
     it('should disableTwoFactor', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.disableTwoFactor('pass').subscribe(r => result = r);
       tick(600);
       expect(result.message).toBe('2FA disabled successfully');
@@ -245,7 +245,7 @@ describe('AuthService', () => {
 
   describe('updateUserProfile()', () => {
     it('should throw error if not authenticated', () => {
-      let error: any;
+      let error: unknown;
       service.updateUserProfile({ name: 'n' }).subscribe({ error: e => error = e });
       expect(error.message).toBe('Not authenticated');
     });
@@ -253,7 +253,7 @@ describe('AuthService', () => {
     it('should update user profile if authenticated', fakeAsync(() => {
       service.login({ email: 'u@zyro.com', password: 'p' }).subscribe();
       tick(600);
-      let result: any;
+      let result: unknown;
       service.updateUserProfile({ name: 'Mostafa' }).subscribe(r => result = r);
       tick(600);
       expect(result.name).toBe('Mostafa');
@@ -262,14 +262,14 @@ describe('AuthService', () => {
 
   describe('Address Management', () => {
     it('should addAddress', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.addAddress({ type: 'home', street: 's', city: 'c', state: 's', zipCode: 'z', country: 'c', isDefault: true }).subscribe(r => result = r);
       tick(600);
       expect(result.id).toBeDefined();
     }));
 
     it('should removeAddress', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.removeAddress('id').subscribe(r => result = r);
       tick(600);
       expect(result.message).toBe('Address removed');
@@ -278,21 +278,21 @@ describe('AuthService', () => {
 
   describe('Session Management', () => {
     it('should getSessions', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.getSessions().subscribe(r => result = r);
       tick(600);
       expect(result.length).toBeGreaterThan(0);
     }));
 
     it('should revokeSession', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.revokeSession('id').subscribe(r => result = r);
       tick(600);
       expect(result.message).toBe('Session revoked');
     }));
 
     it('should revokeAllSessions', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.revokeAllSessions().subscribe(r => result = r);
       tick(600);
       expect(result.message).toBe('All sessions revoked');

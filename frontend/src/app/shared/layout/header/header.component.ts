@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CartItem } from '../../../carts/models';
 import { Product } from '../../../products/models';
 import { UiToastComponent } from '../../../shared/ui/components/toast/toast.component';
-import { ProfileDropdownComponent } from '../../../shared/ui/components/profile-dropdown/profile-dropdown.component';
 import { CART_SERVICE_TOKEN, AUTH_SERVICE_TOKEN, PRODUCT_SERVICE_TOKEN } from '../../../shared/interfaces/dependency-injection';
 
 @Component({

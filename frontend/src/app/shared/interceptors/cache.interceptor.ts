@@ -40,7 +40,7 @@ export class CacheInterceptor implements HttpInterceptor {
   private readonly CACHEABLE_METHODS = ['GET', 'HEAD'];
 
   // Explicit allowlist of cacheable endpoints with resource identifiers
-  private readonly CACHEABLE_ENDPOINTS: { [key: string]: string } = {
+  private readonly CACHEABLE_ENDPOINTS: Record<string, string> = {
     '/api/products': 'products',
     '/api/categories': 'categories',
     '/api/search': 'search'
@@ -51,7 +51,7 @@ export class CacheInterceptor implements HttpInterceptor {
   private readonly API_CACHE_TTL = 10 * 60 * 1000; // 10 minutes
 
   // Endpoint-specific TTL configurations
-  private readonly ENDPOINT_TTLS: { [key: string]: number } = {
+  private readonly ENDPOINT_TTLS: Record<string, number> = {
     '/api/products': 60 * 60 * 1000,        // 1 hour
     '/api/categories': 24 * 60 * 60 * 1000, // 24 hours
     '/api/search': 30 * 60 * 1000,          // 30 minutes
@@ -59,7 +59,7 @@ export class CacheInterceptor implements HttpInterceptor {
 
   // Mutation endpoint to resource mapping for cache invalidation
   // Maps mutation endpoints to the resources they affect
-  private readonly MUTATION_INVALIDATION_MAP: { [key: string]: string[] } = {
+  private readonly MUTATION_INVALIDATION_MAP: Record<string, string[]> = {
     '/api/products': ['http:products:*', 'http:search:*'],
     '/api/categories': ['http:categories:*', 'http:search:*'],
     '/api/cart': ['http:cart:*'],

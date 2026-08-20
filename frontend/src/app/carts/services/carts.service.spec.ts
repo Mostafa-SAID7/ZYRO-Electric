@@ -73,7 +73,7 @@ describe('CartsService', () => {
     }));
 
     it('should throw error if updating non-existent item', fakeAsync(() => {
-      let error: any;
+      let error: unknown;
       service.updateCartItem({ productId: 'none', quantity: 5 }).subscribe({
         error: (e) => error = e
       });
@@ -106,7 +106,7 @@ describe('CartsService', () => {
     it('should create checkout', fakeAsync(() => {
       service.addToCart({ productId: 'p1', quantity: 1 }).subscribe();
       tick(200);
-      let checkout: any;
+      let checkout: unknown;
       service.createCheckout('express').subscribe(c => checkout = c);
       tick(300);
       expect(checkout.shippingMethod).toBe('express');
@@ -114,7 +114,7 @@ describe('CartsService', () => {
     }));
 
     it('should throw error creating checkout with empty cart', fakeAsync(() => {
-      let error: any;
+      let error: unknown;
       service.createCheckout().subscribe({
         error: e => error = e
       });
@@ -125,14 +125,14 @@ describe('CartsService', () => {
     it('should apply valid coupon', fakeAsync(() => {
       service.addToCart({ productId: 'p1', quantity: 1 }).subscribe();
       tick(200);
-      let result: any;
+      let result: unknown;
       service.applyCoupon('SAVE10').subscribe(r => result = r);
       tick(300);
       expect(result.message).toContain('Coupon applied');
     }));
 
     it('should throw error for invalid coupon', fakeAsync(() => {
-      let error: any;
+      let error: unknown;
       service.applyCoupon('INVALID').subscribe({
         error: e => error = e
       });
@@ -152,7 +152,7 @@ describe('CartsService', () => {
 
   describe('Server Operations', () => {
     it('should create order', fakeAsync(() => {
-      let result: any;
+      let result: unknown;
       service.createOrder({}).subscribe(r => result = r);
       tick(500);
       expect(result.success).toBe(true);

@@ -45,7 +45,7 @@ describe('OrderService', () => {
 
   describe('createOrder()', () => {
     it('should create an order with correct totals', fakeAsync(() => {
-      let createdOrder: any;
+      let createdOrder: unknown;
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod)
         .subscribe(o => createdOrder = o);
       tick(600);
@@ -57,21 +57,21 @@ describe('OrderService', () => {
     }));
 
     it('should assign a unique order ID with ORD- prefix', fakeAsync(() => {
-      let order: any;
+      let order: unknown;
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe(o => order = o);
       tick(600);
       expect(order.id).toMatch(/^ORD-/);
     }));
 
     it('should set initial status to pending', fakeAsync(() => {
-      let order: any;
+      let order: unknown;
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe(o => order = o);
       tick(600);
       expect(order.status).toBe('pending');
     }));
 
     it('should include order history entry on creation', fakeAsync(() => {
-      let order: any;
+      let order: unknown;
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe(o => order = o);
       tick(600);
       expect(order.history.length).toBeGreaterThanOrEqual(1);
@@ -88,17 +88,17 @@ describe('OrderService', () => {
 
   describe('getOrderById()', () => {
     it('should throw error for non-existent order ID', () => {
-      let error: any;
+      let error: unknown;
       service.getOrderById('NONEXISTENT').subscribe({ error: e => error = e });
       expect(error.message).toBe('Order not found');
     });
 
     it('should return order by ID after creating it', fakeAsync(() => {
-      let createdOrder: any;
+      let createdOrder: unknown;
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe(o => createdOrder = o);
       tick(600);
 
-      let foundOrder: any;
+      let foundOrder: unknown;
       service.getOrderById(createdOrder.id).subscribe(o => foundOrder = o);
       tick(300);
       expect(foundOrder.id).toBe(createdOrder.id);
@@ -107,40 +107,40 @@ describe('OrderService', () => {
 
   describe('updateOrderStatus()', () => {
     it('should update the order status', fakeAsync(() => {
-      let orderId: string = '';
+      let orderId = '';
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe(o => orderId = o.id);
       tick(600);
 
-      let updated: any;
+      let updated: unknown;
       service.updateOrderStatus(orderId, 'confirmed', 'Order confirmed').subscribe(o => updated = o);
       tick(400);
       expect(updated.status).toBe('confirmed');
     }));
 
     it('should add entry to order history on status update', fakeAsync(() => {
-      let orderId: string = '';
+      let orderId = '';
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe(o => orderId = o.id);
       tick(600);
 
-      let updated: any;
+      let updated: unknown;
       service.updateOrderStatus(orderId, 'shipped', 'Shipped out').subscribe(o => updated = o);
       tick(400);
-      expect(updated.history.some((h: any) => h.status === 'shipped')).toBeTrue();
+      expect(updated.history.some((h: unknown) => h.status === 'shipped')).toBeTrue();
     }));
 
     it('should set paymentStatus to paid when order is confirmed', fakeAsync(() => {
-      let orderId: string = '';
+      let orderId = '';
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe(o => orderId = o.id);
       tick(600);
 
-      let updated: any;
+      let updated: unknown;
       service.updateOrderStatus(orderId, 'confirmed', 'Confirmed').subscribe(o => updated = o);
       tick(400);
       expect(updated.paymentStatus).toBe('paid');
     }));
 
     it('should throw error for non-existent order ID', () => {
-      let error: any;
+      let error: unknown;
       service.updateOrderStatus('FAKE', 'confirmed', 'msg').subscribe({ error: e => error = e });
       expect(error.message).toBe('Order not found');
     });
@@ -148,25 +148,25 @@ describe('OrderService', () => {
 
   describe('cancelOrder()', () => {
     it('should cancel a pending order', fakeAsync(() => {
-      let orderId: string = '';
+      let orderId = '';
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe(o => orderId = o.id);
       tick(600);
 
-      let cancelled: any;
+      let cancelled: unknown;
       service.cancelOrder(orderId, 'Changed my mind').subscribe(o => cancelled = o);
       tick(400);
       expect(cancelled.status).toBe('cancelled');
     }));
 
     it('should not allow cancelling a delivered order', fakeAsync(() => {
-      let orderId: string = '';
+      let orderId = '';
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe(o => orderId = o.id);
       tick(600);
 
       service.updateOrderStatus(orderId, 'delivered', 'Delivered').subscribe();
       tick(400);
 
-      let error: any;
+      let error: unknown;
       service.cancelOrder(orderId, 'Too late').subscribe({ error: e => error = e });
       expect(error.message).toBe('Cannot cancel order in current status');
     }));
@@ -174,7 +174,7 @@ describe('OrderService', () => {
 
   describe('getOrderStatistics()', () => {
     it('should return statistics with zero totals when no orders exist', fakeAsync(() => {
-      let stats: any;
+      let stats: unknown;
       service.getOrderStatistics().subscribe(s => stats = s);
       tick(300);
       expect(stats.totalOrders).toBe(0);
@@ -187,7 +187,7 @@ describe('OrderService', () => {
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe();
       tick(600);
 
-      let stats: any;
+      let stats: unknown;
       service.getOrderStatistics().subscribe(s => stats = s);
       tick(300);
       expect(stats.totalOrders).toBe(2);
@@ -196,7 +196,7 @@ describe('OrderService', () => {
 
   describe('getOrders()', () => {
     it('should return paginated results', fakeAsync(() => {
-      let page: any;
+      let page: unknown;
       service.getOrders(1, 10).subscribe(p => page = p);
       tick(400);
       expect(page.page).toBe(1);
@@ -207,7 +207,7 @@ describe('OrderService', () => {
 
   describe('orders$', () => {
     it('should emit updated orders after createOrder', fakeAsync(() => {
-      let orders: any[] = [];
+      let orders: unknown[] = [];
       service.orders$.subscribe(o => orders = o);
       service.createOrder(mockItems, mockShippingAddress, mockPaymentMethod).subscribe();
       tick(600);

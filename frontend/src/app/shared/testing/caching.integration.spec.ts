@@ -279,7 +279,7 @@ describe('Multi-Layer Caching Integration Tests', () => {
             done();
           });
         },
-        error => {
+        _error => {
           // Expected - product not in mock data
           done();
         }
@@ -313,8 +313,6 @@ describe('Multi-Layer Caching Integration Tests', () => {
 
   describe('CartsService Caching & Multi-Tab Sync', () => {
     it('should persist cart to localStorage', (done) => {
-      const cartItem = { productId: 'test-1', quantity: 2, price: 29.99, addedAt: new Date() };
-
       cartsService.addToCart({ productId: 'test-1', quantity: 2 }).subscribe(() => {
         const stored = localStorage.getItem('cart_items');
         expect(stored).toBeTruthy();
@@ -403,7 +401,7 @@ describe('Multi-Layer Caching Integration Tests', () => {
 
     it('should cache individual orders', (done) => {
       // First create an order
-      const items: any[] = [];
+      const items: unknown[] = [];
       const shippingAddress = {
         firstName: 'John',
         lastName: 'Doe',
@@ -415,7 +413,7 @@ describe('Multi-Layer Caching Integration Tests', () => {
         zipCode: '12345',
         country: 'Country'
       };
-      const paymentMethod = { type: 'credit_card', cardLastFour: '4242' };
+      const paymentMethod: import('../../orders/models').PaymentMethod = { type: 'card', last4: '4242' };
 
       orderService.createOrder(items, shippingAddress, paymentMethod).subscribe(order => {
         // Cache should contain this order
@@ -450,10 +448,7 @@ describe('Multi-Layer Caching Integration Tests', () => {
       cookieService.setCSRFToken('test-csrf-token');
 
       // Make a POST request
-      const testUrl = '/api/test';
-      let capturedRequest: any;
-
-      const subscription = TestBed.inject(CacheService); // Just to trigger provider
+      TestBed.inject(CacheService); // Just to trigger provider
 
       // Note: Full HTTP testing would require more setup
       // This demonstrates the concept

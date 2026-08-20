@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { map, delay, tap } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
 import { Cart, CartItem, CartState, CartSummary, AddToCartRequest, UpdateCartItemRequest, CheckoutData } from '../models';
 import { StorageService } from '../../shared/services/storage.service';
 import { CacheService } from '../../shared/services/cache.service';

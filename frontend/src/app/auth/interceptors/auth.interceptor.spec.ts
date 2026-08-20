@@ -16,7 +16,7 @@ describe('AuthInterceptor', () => {
   beforeEach(() => {
     authServiceSpy = jasmine.createSpyObj('AuthService', ['getAuthToken', 'logout']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    authServiceSpy.logout.and.returnValue({ subscribe: (fn: any) => fn() } as any);
+    authServiceSpy.logout.and.returnValue({ subscribe: (fn: unknown) => fn() } as any);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
@@ -91,7 +91,7 @@ describe('AuthInterceptor', () => {
 
     it('should re-throw the error on any HTTP error', () => {
       authServiceSpy.getAuthToken.and.returnValue(null);
-      let thrownError: any;
+      let thrownError: unknown;
       http.get('/api/products').subscribe({ error: e => thrownError = e });
       const req = httpMock.expectOne('/api/products');
       req.flush('Server Error', { status: 500, statusText: 'Internal Server Error' });

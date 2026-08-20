@@ -66,7 +66,7 @@ describe('PaginationComponent', () => {
     it('should emit page - 1 when not on first page', () => {
       component.currentPage = 3;
       component.totalPages = 10;
-      let emitted: number = 0;
+      let emitted = 0;
       component.pageChange.subscribe((p: number) => emitted = p);
       component.onPrevious();
       expect(emitted).toBe(2);
@@ -85,7 +85,7 @@ describe('PaginationComponent', () => {
     it('should emit page + 1 when not on last page', () => {
       component.currentPage = 3;
       component.totalPages = 10;
-      let emitted: number = 0;
+      let emitted = 0;
       component.pageChange.subscribe((p: number) => emitted = p);
       component.onNext();
       expect(emitted).toBe(4);
@@ -105,7 +105,7 @@ describe('PaginationComponent', () => {
     it('should emit page number when different from current', () => {
       component.currentPage = 2;
       component.totalPages = 10;
-      let emitted: number = 0;
+      let emitted = 0;
       component.pageChange.subscribe((p: number) => emitted = p);
       component.onPageChange(5);
       expect(emitted).toBe(5);

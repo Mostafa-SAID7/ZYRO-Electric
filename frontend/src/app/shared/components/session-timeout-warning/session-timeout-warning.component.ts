@@ -76,7 +76,7 @@ import { Subject, takeUntil, interval } from 'rxjs';
             class="btn-continue"
             (click)="onContinueSession()"
             [disabled]="isProcessing || isAutoLogoutCountdown"
-            autofocus
+           
           >
             {{ isProcessing ? 'Extending...' : 'Continue Session' }}
           </button>

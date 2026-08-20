@@ -46,7 +46,7 @@ describe('SearchBarComponent', () => {
     });
 
     it('should emit empty string via searchChange', () => {
-      let emitted: string = '';
+      let emitted = '';
       component.searchChange.subscribe((v: string) => emitted = v);
       component.searchQuery = 'something';
       component.clearSearch();
@@ -58,7 +58,7 @@ describe('SearchBarComponent', () => {
     it('should emit search value after debounce delay', fakeAsync(() => {
       component.debounceMs = 300;
       component.ngOnInit();
-      let emitted: string = '';
+      let emitted = '';
       component.searchChange.subscribe((v: string) => emitted = v);
 
       component.onSearchInput({ target: { value: 'USB' } } as any);

@@ -114,7 +114,7 @@ export class CryptoService {
     msg[data.length] = 0x80;
 
     // Append length in bits
-    let bits = data.length * 8;
+    const bits = data.length * 8;
     for (let t = 8; t > 0; t -= 4) {
       msg[msg.length - t] = (bits >>> (t - 4) * 8) & 0xff;
     }

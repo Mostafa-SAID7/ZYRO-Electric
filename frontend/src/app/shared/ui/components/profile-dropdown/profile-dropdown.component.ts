@@ -131,9 +131,9 @@ import { LucideAngularModule } from 'lucide-angular';
   `]
 })
 export class ProfileDropdownComponent {
-  @Input() userName: string = '';
-  @Input() userEmail: string = '';
-  @Input() isOnline: boolean = false;
+  @Input() userName = '';
+  @Input() userEmail = '';
+  @Input() isOnline = false;
   @Output() logout = new EventEmitter<void>();
 
   isOpen = false;

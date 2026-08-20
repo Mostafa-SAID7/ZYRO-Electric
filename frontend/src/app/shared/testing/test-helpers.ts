@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
  * Reduces duplication in beforeEach blocks
  */
 export function setupComponentTest<T>(
-  componentType: any,
-  imports: any[],
-  declarations?: any[]
+  componentType: unknown,
+  imports: unknown[],
+  declarations?: unknown[]
 ) {
   return async () => {
     await TestBed.configureTestingModule({
@@ -64,10 +64,10 @@ export function createMockHeroSlides(count: number) {
  * Common form validation test helper
  */
 export function testFieldInvalid(
-  component: any,
+  component: unknown,
   fieldName: string,
-  form: any,
-  validator: (component: any, fieldName: string) => boolean
+  form: unknown,
+  validator: (component: unknown, fieldName: string) => boolean
 ) {
   form.get(fieldName)?.markAsTouched();
   form.get(fieldName)?.markAsDirty();
@@ -80,11 +80,11 @@ export function testFieldInvalid(
 export function testNotFoundError(
   resource: string,
   findFn: (id: string) => any,
-  errorHandler: (error: any) => void
+  errorHandler: (error: unknown) => void
 ) {
   const resource$ = findFn('nonexistent-id');
   resource$.subscribe({
-    error: (error) => {
+    error: (error: { message: unknown; }) => {
       errorHandler(error);
       expect(error.message).toContain(`${resource} not found`);
     }
@@ -124,7 +124,7 @@ export function createMockCartItem(productId = 'p1', quantity = 1) {
  * Setup localStorage mock
  */
 export function setupLocalStorageMock() {
-  let store: { [key: string]: string } = {};
+  let store: Record<string, string> = {};
   return {
     getItem: (key: string) => store[key] || null,
     setItem: (key: string, value: string) => {
@@ -168,8 +168,8 @@ export function setupNotificationMock() {
  * });
  */
 export function createBasicComponentTest<T>(
-  componentType: any,
-  imports: any[]
+  componentType: unknown,
+  imports: unknown[]
 ) {
   let component: T;
   let fixture: ComponentFixture<T>;

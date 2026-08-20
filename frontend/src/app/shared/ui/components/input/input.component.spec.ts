@@ -63,7 +63,7 @@ describe('UiInputComponent', () => {
 
   describe('onInput()', () => {
     it('should update value and emit valueChange', () => {
-      let emitted: string = '';
+      let emitted = '';
       component.valueChange.subscribe((v: string) => emitted = v);
       component.onInput({ target: { value: 'Hello ZYRO' } } as any);
       expect(component.value).toBe('Hello ZYRO');
@@ -73,7 +73,7 @@ describe('UiInputComponent', () => {
 
   describe('onChange()', () => {
     it('should emit valueChange with input value', () => {
-      let emitted: string = '';
+      let emitted = '';
       component.valueChange.subscribe((v: string) => emitted = v);
       component.onChange({ target: { value: 'Changed' } } as any);
       expect(emitted).toBe('Changed');

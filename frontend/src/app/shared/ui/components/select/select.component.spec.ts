@@ -33,8 +33,8 @@ describe('SelectComponent', () => {
 
   describe('detectChanges()', () => {
     it('should emit selectedValue when detectChanges is called', () => {
-      let emitted: any = null;
-      component.selectedValue.subscribe((val: any) => emitted = val);
+      let emitted: unknown = null;
+      component.selectedValue.subscribe((val: unknown) => emitted = val);
       const mockEvent = { target: { value: 'electronics' } };
       component.detectChanges(mockEvent);
       expect(emitted).toEqual(mockEvent);

@@ -72,7 +72,7 @@ describe('SortDropdownComponent', () => {
     });
 
     it('should emit sortChange with selected value', () => {
-      let emitted: string = '';
+      let emitted = '';
       component.sortChange.subscribe((v: string) => emitted = v);
       component.selectOption('rating');
       expect(emitted).toBe('rating');
