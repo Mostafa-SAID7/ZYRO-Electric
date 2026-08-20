@@ -43,7 +43,7 @@ public static class AuthenticationExtensions
                     {
                         if (context.Exception is Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException)
                         {
-                            context.Response.Headers.Add("X-Token-Expired", "true");
+                            context.Response.Headers["X-Token-Expired"] = "true";
                         }
                         return Task.CompletedTask;
                     }
