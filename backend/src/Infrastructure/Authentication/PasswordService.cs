@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using Application.Services;
 
 namespace Infrastructure.Authentication;
 
@@ -17,7 +18,7 @@ public class PasswordService : IPasswordService
         if (string.IsNullOrEmpty(password))
             throw new ArgumentException("Password cannot be empty", nameof(password));
 
-        using var salt = RandomNumberGenerator.GetBytes(KeySize);
+        var salt = RandomNumberGenerator.GetBytes(KeySize);
         var hash = Pbkdf2(password, salt, Iterations, Algorithm, KeySize);
         var hashWithSalt = new byte[salt.Length + hash.Length];
 

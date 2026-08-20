@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Authentication;
 
@@ -58,11 +60,11 @@ public class PermissionRequirement : IAuthorizationRequirement
 /// </summary>
 public class PermissionHandler : AuthorizationHandler<PermissionRequirement>
 {
-    private readonly IAuthorizationService _authorizationService;
+    private readonly Application.Services.IAuthorizationService _authorizationService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public PermissionHandler(
-        IAuthorizationService authorizationService,
+        Application.Services.IAuthorizationService authorizationService,
         IHttpContextAccessor httpContextAccessor)
     {
         _authorizationService = authorizationService;

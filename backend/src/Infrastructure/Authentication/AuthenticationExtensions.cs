@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Infrastructure.Authentication;
 
@@ -91,10 +92,13 @@ public static class AuthenticationExtensions
     public static IServiceCollection AddAuthorizationServices(
         this IServiceCollection services)
     {
-        services.AddScoped<IAuthorizationService, AuthorizationService>();
+        services.AddMemoryCache();
+        services.AddSingleton<ICacheService, MemoryCacheService>();
+
+        services.AddScoped<Application.Services.IAuthorizationService, AuthorizationService>();
         
         // Add caching wrapper for authorization service
-        services.Decorate<IAuthorizationService, CachedAuthorizationService>();
+        services.Decorate<Application.Services.IAuthorizationService, CachedAuthorizationService>();
 
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
         services.AddScoped<IAuthorizationHandler, PermissionHandler>();
