@@ -39,13 +39,10 @@
     "url": "https://github.com/Mostafa-SAID7/ZYRO-Electric.git"
   },
   "devDependencies": {
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "is-ci": "^4.1.0"
   },
   "workspaces": [
     "frontend"
-  ],
-  "engines": {
-    "node": ">=22.0.0",
-    "npm": ">=10.0.0"
-  }
+  ]
 }

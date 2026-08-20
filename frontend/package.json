@@ -15,9 +15,8 @@
     "test": "ng test --watch=false",
     "test:log": "powershell -NoProfile -Command \"npm test -- --watch=false --code-coverage 2>&1 | Out-File -FilePath ./test-log/$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').log\"",
     "lint": "ng lint",
-    "generate:cache-report": "node scripts/generate-cache-report.js",
-    "docs": "npx compodoc -p tsconfig.json -d docs",
-    "prepare": "is-ci || husky"
+    "generate:cache-report": "node ../scripts/generate-cache-report.js",
+    "docs": "npx compodoc -p tsconfig.json -d docs"
   },
   "private": false,
   "publishConfig": {
@@ -68,8 +67,6 @@
     "angular-eslint": "21.0.1",
     "autoprefixer": "^10.5.4",
     "eslint": "^9.39.1",
-    "husky": "^9.1.7",
-    "is-ci": "^4.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "^6.4.3",
     "karma-chrome-launcher": "^3.2.0",
