@@ -1,2 +1,1 @@
-./frontend/node_modules/.bin/commitlint --edit "$1" --cwd ./frontend
-
+./node_modules/.bin/commitlint --edit "$1"
