@@ -11,7 +11,7 @@
     <ProjectReference Include="../../src/Application/Application.csproj" />
     <ProjectReference Include="../../src/Infrastructure/Infrastructure.csproj" />
     <ProjectReference Include="../../src/Presentation/Presentation.csproj" />
-    <ProjectReference Include="../../src/Common/Common.csproj" />
+    <ProjectReference Include="../Common/Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

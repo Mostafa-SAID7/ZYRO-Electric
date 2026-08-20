@@ -74,16 +74,16 @@ jobs:
         run: dotnet build backend/ --configuration Release --no-restore
 
       - name: Run unit tests
-        run: dotnet test backend/tests/Unit/Unit.csproj --configuration Release --no-build --logger "trx" --collect:"XPlat Code Coverage"
+        run: dotnet test backend/tests/Unit/Unit.csproj --configuration Release --no-build --logger trx --collect "XPlat Code Coverage"
 
       - name: Run integration tests
-        run: dotnet test backend/tests/Integration/Integration.csproj --configuration Release --no-build --logger "trx" --collect:"XPlat Code Coverage"
+        run: dotnet test backend/tests/Integration/Integration.csproj --configuration Release --no-build --logger trx --collect "XPlat Code Coverage"
 
       - name: Run API tests
-        run: dotnet test backend/tests/API/API.csproj --configuration Release --no-build --logger "trx" --collect:"XPlat Code Coverage"
+        run: dotnet test backend/tests/API/API.csproj --configuration Release --no-build --logger trx --collect "XPlat Code Coverage"
 
       - name: Run architecture tests
-        run: dotnet test backend/tests/Architecture/Architecture.csproj --configuration Release --no-build --logger "trx" --collect:"XPlat Code Coverage"
+        run: dotnet test backend/tests/Architecture/Architecture.csproj --configuration Release --no-build --logger trx --collect "XPlat Code Coverage"
 
       - name: Archive backend test results
         if: always()
