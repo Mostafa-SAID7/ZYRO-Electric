@@ -1,5 +1,9 @@
 using Xunit;
 using FluentAssertions;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Tests.Common.Fixtures;
 
@@ -44,7 +48,7 @@ public class ExampleApiTests : IAsyncLifetime
         var response = await _client!.GetAsync(url);
 
         // Assert
-        response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Theory]
@@ -56,7 +60,7 @@ public class ExampleApiTests : IAsyncLifetime
         var response = await _client!.GetAsync(url);
 
         // Assert
-        response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Fact]
@@ -69,7 +73,7 @@ public class ExampleApiTests : IAsyncLifetime
         var response = await _client!.GetAsync(url);
 
         // Assert
-        response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
     [Fact]
@@ -77,14 +81,14 @@ public class ExampleApiTests : IAsyncLifetime
     {
         // Arrange
         var url = "/api/example/invalid";
-        var content = new StringContent("{ invalid json", 
+        var content = new StringContent("{ invalid json",
             System.Text.Encoding.UTF8, "application/json");
 
         // Act
         var response = await _client!.PostAsync(url, content);
 
         // Assert
-        response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
     [Fact]
@@ -102,7 +106,3 @@ public class ExampleApiTests : IAsyncLifetime
     }
 }
 
-/// <summary>
-/// Marker class for test collection
-/// </summary>
-public class Program { }

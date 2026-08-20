@@ -29,6 +29,7 @@ jobs:
 
       - name: Build
         run: npm run build
+        working-directory: frontend
 
   publish-npm:
     needs: build
@@ -52,6 +53,7 @@ jobs:
 
       - name: Publish to npm
         run: npm publish
+        working-directory: frontend
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
