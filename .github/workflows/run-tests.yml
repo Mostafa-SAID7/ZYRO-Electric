@@ -73,6 +73,9 @@ jobs:
       - name: Build backend
         run: dotnet build backend/ --configuration Release --no-restore
 
+      - name: Pre-pull SQL Server Image for Integration Tests
+        run: docker pull mcr.microsoft.com/mssql/server:2022-latest
+
       - name: Run unit tests
         run: dotnet test backend/tests/Unit/Unit.csproj --configuration Release --no-build --logger trx --collect "XPlat Code Coverage"
 
