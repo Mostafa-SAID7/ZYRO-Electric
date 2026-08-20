@@ -1,2 +1,2 @@
-npm run lint
-npm run test
+npm --prefix frontend run lint
+npm --prefix frontend run test
