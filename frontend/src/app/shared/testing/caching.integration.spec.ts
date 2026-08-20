@@ -401,7 +401,7 @@ describe('Multi-Layer Caching Integration Tests', () => {
 
     it('should cache individual orders', (done) => {
       // First create an order
-      const items: unknown[] = [];
+      const items: import('../../orders/models').OrderItem[] = [];
       const shippingAddress = {
         firstName: 'John',
         lastName: 'Doe',

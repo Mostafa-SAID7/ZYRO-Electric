@@ -3,7 +3,7 @@
  * Provides common setup patterns and mock data generators
  */
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
  * Reduces duplication in beforeEach blocks
  */
 export function setupComponentTest<T>(
-  componentType: unknown,
-  imports: unknown[],
-  declarations?: unknown[]
+  componentType: Type<T>,
+  imports: any[],
+  declarations?: any[]
 ) {
   return async () => {
     await TestBed.configureTestingModule({
@@ -66,7 +66,7 @@ export function createMockHeroSlides(count: number) {
 export function testFieldInvalid(
   component: unknown,
   fieldName: string,
-  form: unknown,
+  form: any,
   validator: (component: unknown, fieldName: string) => boolean
 ) {
   form.get(fieldName)?.markAsTouched();
@@ -168,7 +168,7 @@ export function setupNotificationMock() {
  * });
  */
 export function createBasicComponentTest<T>(
-  componentType: unknown,
+  componentType: Type<T>,
   imports: unknown[]
 ) {
   let component: T;
