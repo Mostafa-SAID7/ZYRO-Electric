@@ -30,7 +30,7 @@ public abstract class BaseTestFixture : IAsyncLifetime
     /// </summary>
     protected void VerifySubstituteCallCount<T>(T substitute, int expectedCount) where T : class
     {
-        ReceivedCalls.For(substitute).Count().Should().Be(expectedCount);
+        substitute.ReceivedCalls().Count().Should().Be(expectedCount);
     }
 }
 

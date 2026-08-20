@@ -34,7 +34,7 @@ public class DatabaseFixture : IAsyncLifetime
         if (ConnectionString != null)
         {
             var masterConnection = _container.GetConnectionString().Replace("Database=master", "");
-            using var connection = new System.Data.SqlClient.SqlConnection(masterConnection);
+            using var connection = new Microsoft.Data.SqlClient.SqlConnection(masterConnection);
             connection.Open();
             using var command = connection.CreateCommand();
             command.CommandText = $"CREATE DATABASE [{DbName}]";

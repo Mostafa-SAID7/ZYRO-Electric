@@ -81,12 +81,9 @@ public class ExampleUnitTests
         var user = new { Name = "John", Age = 30 };
 
         // Act & Assert
-        user.Should()
-            .NotBeNull()
-            .And.BeOfType<object>();
-
-        user.Should()
-            .HaveProperty(x => x.Name, "John");
+        user.Should().NotBeNull();
+        user.Name.Should().Be("John");
+        user.Age.Should().Be(30);
     }
 }
 
