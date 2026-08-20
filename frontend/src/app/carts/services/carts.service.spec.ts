@@ -1,4 +1,4 @@
-﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CartsService } from './carts.service';
@@ -73,7 +73,7 @@ describe('CartsService', () => {
     }));
 
     it('should throw error if updating non-existent item', fakeAsync(() => {
-      let error: unknown;
+      let error: any;
       service.updateCartItem({ productId: 'none', quantity: 5 }).subscribe({
         error: (e) => error = e
       });
@@ -106,7 +106,7 @@ describe('CartsService', () => {
     it('should create checkout', fakeAsync(() => {
       service.addToCart({ productId: 'p1', quantity: 1 }).subscribe();
       tick(200);
-      let checkout: unknown;
+      let checkout: any;
       service.createCheckout('express').subscribe(c => checkout = c);
       tick(300);
       expect(checkout.shippingMethod).toBe('express');
@@ -114,7 +114,7 @@ describe('CartsService', () => {
     }));
 
     it('should throw error creating checkout with empty cart', fakeAsync(() => {
-      let error: unknown;
+      let error: any;
       service.createCheckout().subscribe({
         error: e => error = e
       });
@@ -125,14 +125,14 @@ describe('CartsService', () => {
     it('should apply valid coupon', fakeAsync(() => {
       service.addToCart({ productId: 'p1', quantity: 1 }).subscribe();
       tick(200);
-      let result: unknown;
+      let result: any;
       service.applyCoupon('SAVE10').subscribe(r => result = r);
       tick(300);
       expect(result.message).toContain('Coupon applied');
     }));
 
     it('should throw error for invalid coupon', fakeAsync(() => {
-      let error: unknown;
+      let error: any;
       service.applyCoupon('INVALID').subscribe({
         error: e => error = e
       });
@@ -152,7 +152,7 @@ describe('CartsService', () => {
 
   describe('Server Operations', () => {
     it('should create order', fakeAsync(() => {
-      let result: unknown;
+      let result: any;
       service.createOrder({}).subscribe(r => result = r);
       tick(500);
       expect(result.success).toBe(true);

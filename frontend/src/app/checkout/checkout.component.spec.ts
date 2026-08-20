@@ -13,7 +13,7 @@ describe('CheckoutComponent', () => {
   let fixture: ComponentFixture<CheckoutComponent>;
   let authServiceSpy: jasmine.SpyObj<AuthService>;
   let orderServiceSpy: jasmine.SpyObj<OrderService>;
-  let cartsServiceSpy: jasmine.SpyObj<CartsService> & { cartState$: unknown };
+  let cartsServiceSpy: any;
 
   beforeEach(async () => {
     authServiceSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser']);

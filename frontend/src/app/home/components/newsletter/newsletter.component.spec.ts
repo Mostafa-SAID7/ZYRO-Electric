@@ -1,7 +1,7 @@
-﻿import { NewsletterComponent } from './newsletter.component';
+import { NewsletterComponent } from './newsletter.component';
 import { HomeModule } from '../../home.module';
 import { RouterTestingModule } from '@angular/router/testing';
-import { createBasicComponentTest } from '../../shared/testing/test-helpers';
+import { createBasicComponentTest } from '../../../shared/testing/test-helpers';
 
 describe('NewsletterComponent', () => {
   const { beforeEach: setupTest, createTest } = createBasicComponentTest(
